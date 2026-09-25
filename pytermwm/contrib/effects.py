@@ -24,10 +24,15 @@ def _rgb(r, g, b):
 
 class Effect:
     name = ""
+    fps = 20.0          # frames per second: the effect moves by time, so fewer frames only mean fewer, larger steps
 
-    def __init__(self, seed=None, speed: float = 1.0):
+    def __init__(self, seed=None, speed: float = 1.0, fps=None):
         self.rng = random.Random(seed)
         self.speed = float(speed)
+        if fps is not None:
+            self.fps = float(fps)
+            if not 1 <= self.fps <= 60:
+                raise ValueError("fps must be between 1 and 60")
         self.t0 = None
         self.last = None
 
@@ -80,10 +85,25 @@ class Matrix(Effect):
         except ValueError:
             raise ValueError("unknown color %r (try: %s or R,G,B)" % (color, ", ".join(cls.COLORS)))
 
+    LEVELS = 8          # trail brightness steps: when a stream moves one cell, only the cells where a step
+                        # boundary passes change, instead of every cell of the trail (much less terminal output)
+    FLICKER = 0.5       # glyph changes per second in a trail cell ...
+    HEAD_FLICKER = 3.0  # ... and at the bright head
+
+    def _palette(self):
+        br, bg, bb = self.base
+        head = ((min(255, br // 2 + 170), min(255, bg // 2 + 170), min(255, bb // 2 + 170)), 0)
+        trail = []
+        for lv in range(self.LEVELS):
+            f = (lv + 0.5) / self.LEVELS
+            trail.append((_rgb(br * (0.12 + 0.88 * f), bg * (0.12 + 0.88 * f), bb * (0.12 + 0.88 * f)), DIM if f < 0.35 else 0))
+        return head, trail
+
     def _reset(self, cols, rows):
         self.size = (cols, rows)
         self.grid = [[self.rng.choice(self.glyphs) for _ in range(cols)] for _ in range(rows)]
         self.streams = [[] for _ in range(cols)]
+        self.head_style, self.trail_style = self._palette()
         for x in range(cols):                                   # start with a screen that is already raining
             if self.rng.random() < 0.6:
                 self.streams[x].append(self._new_stream(rows, spread=True))
@@ -91,54 +111,77 @@ class Matrix(Effect):
     def _new_stream(self, rows, spread=False):
         length = self.rng.randint(max(4, rows // 4), max(6, int(rows * 0.9)))
         y = self.rng.uniform(-length, rows) if spread else self.rng.uniform(-length, 0)
-        return {"y": y, "v": self.rng.uniform(5, 16), "len": length}
+        # the trail level of every position, computed once per stream (the gradient never changes, only moves)
+        levels = [min(self.LEVELS - 1, int(((1 - k / length) ** 1.4) * self.LEVELS)) for k in range(length)]
+        return {"y": y, "v": self.rng.uniform(5, 16), "len": length, "levels": levels}
 
     def render(self, cols, rows, t, theme=None):
         if self.size != (cols, rows):
             self._reset(cols, rows)
         dt = self.dt(t)
         cells = [[BLANK] * cols for _ in range(rows)]
-        br, bg, bb = self.base
+        rnd, choice, glyphs, grid = self.rng.random, self.rng.choice, self.glyphs, self.grid
+        head_style, trail_style = self.head_style, self.trail_style
+        p_trail, p_head = self.FLICKER * dt, self.HEAD_FLICKER * dt
+        spawn = 0.02 * max(dt, 0.02) * 30
         for x in range(cols):
             col_streams = self.streams[x]
             for st in col_streams:
                 st["y"] += st["v"] * dt
             col_streams[:] = [st for st in col_streams if st["y"] - st["len"] <= rows]
-            if len(col_streams) < 2 and self.rng.random() < 0.02 * max(dt, 0.02) * 30:
+            if len(col_streams) < 2 and rnd() < spawn:
                 if not col_streams or col_streams[-1]["y"] - col_streams[-1]["len"] > 2:
                     col_streams.append(self._new_stream(rows))
             for st in col_streams:
                 head = int(st["y"])
-                for k in range(st["len"]):
+                levels = st["levels"]
+                for k in range(max(0, head - rows + 1), min(st["len"], head + 1)):   # only the visible part
                     y = head - k
-                    if not 0 <= y < rows:
-                        continue
-                    if self.rng.random() < 0.015 + (0.08 if k == 0 else 0):
-                        self.grid[y][x] = self.rng.choice(self.glyphs)
-                    if k == 0:
-                        color, flag = (min(255, br // 2 + 170), min(255, bg // 2 + 170), min(255, bb // 2 + 170)), 0
-                    else:
-                        f = (1 - k / st["len"]) ** 1.4
-                        color, flag = _rgb(br * (0.12 + 0.88 * f), bg * (0.12 + 0.88 * f), bb * (0.12 + 0.88 * f)), (DIM if f < 0.35 else 0)
-                    cells[y][x] = (self.grid[y][x], color, None, flag)
+                    row = grid[y]
+                    if rnd() < (p_head if k == 0 else p_trail):
+                        row[x] = choice(glyphs)
+                    color, flag = head_style if k == 0 else trail_style[levels[k]]
+                    cells[y][x] = (row[x], color, None, flag)
         return cells
 
 
 class Plasma(Effect):
     name = "plasma"
     SHADES = " ·░▒▓█"
+    STEPS = 32          # colour/shade steps: a lookup table instead of three sin() per cell, and far fewer cells that
+                        # change from one frame to the next (less to send to the terminal)
+
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        self.size = (0, 0)
+        self.table = []
+        for i in range(self.STEPS):
+            h = (i + 0.5) / self.STEPS
+            col = _rgb(30 + 60 * math.sin(h * 6.28), 30 + 60 * math.sin(h * 6.28 + 2.1), 60 + 90 * math.sin(h * 6.28 + 4.2))
+            self.table.append((self.SHADES[int(h * (len(self.SHADES) - 1))], col, None, DIM))
+
+    def _reset(self, cols, rows):
+        self.size = (cols, rows)
+        # the distance of every cell from the centre never changes: compute it once per screen size
+        self.dist = [[math.hypot(x - cols / 2, (y - rows / 2) * 2) / 7.0 for x in range(cols)] for y in range(rows)]
 
     def render(self, cols, rows, t, theme=None):
+        if self.size != (cols, rows):
+            self._reset(cols, rows)
         tt = t * self.speed * 0.6
+        sin = math.sin
+        xs = [sin(x / 9.0 + tt) for x in range(cols)]                       # terms that depend on x only,
+        ys = [sin(y / 4.0 - tt * 1.3) for y in range(rows)]                 # on y only,
+        ds = [sin(d / 11.0 + tt * 0.7) for d in range(cols + rows)]         # and on x + y only
+        table, top, steps = self.table, self.STEPS - 1, self.STEPS / 8.0
         cells = []
         for y in range(rows):
+            yv, drow = ys[y], self.dist[y]
             row = []
             for x in range(cols):
-                v = (math.sin(x / 9.0 + tt) + math.sin(y / 4.0 - tt * 1.3) + math.sin((x + y) / 11.0 + tt * 0.7)
-                     + math.sin(math.hypot(x - cols / 2, (y - rows / 2) * 2) / 7.0 - tt)) / 4.0
-                h = (v + 1) / 2
-                col = _rgb(30 + 60 * math.sin(h * 6.28), 30 + 60 * math.sin(h * 6.28 + 2.1), 60 + 90 * math.sin(h * 6.28 + 4.2))
-                row.append((self.SHADES[int(h * (len(self.SHADES) - 1))], col, None, DIM))
+                v = xs[x] + yv + ds[x + y] + sin(drow[x] - tt)             # in -4..4; step = (v + 4) / 8 * STEPS
+                i = int((v + 4.0) * steps)
+                row.append(table[i if i < top else top])
             cells.append(row)
         return cells
 
@@ -419,6 +462,20 @@ def setup(api):
         cls = EFFECTS.get(name)
         if cls is None:
             raise CommandError("unknown effect %r (try: %s)" % (name, ", ".join(NAMES)))
+        # fps=N works for every effect: as an argument, in the `effect:` mapping or as the plugin's default
+        options = dict(options or {})
+        args = list(args)
+        fps = options.pop("fps", None)
+        for tok in args[1:]:
+            if tok.startswith("fps="):
+                fps = tok[4:]
+                args.remove(tok)
+        if fps is None:
+            fps = api.config.get("fps")
+        try:
+            fps = float(fps) if fps is not None else None
+        except ValueError:
+            raise CommandError("fps must be a number, got %r" % fps)
         opts = {}
         if name == "matrix":                       # effect matrix [glyphs] [color]
             for key, val in zip(("glyphs", "color"), args[1:3]):
@@ -431,7 +488,7 @@ def setup(api):
         elif name == "ansi":                       # effect ansi [path] [key=value ...]
             opts = _ansi_options(args[1:], options)
         try:
-            wm_.background = cls(speed=float(api.config.get("speed", 1.0)), **opts)
+            wm_.background = cls(speed=float(api.config.get("speed", 1.0)), fps=fps, **opts)
         except ValueError as e:
             raise CommandError(str(e))
         wm_.dirty = True
@@ -439,6 +496,6 @@ def setup(api):
 
     wm.extra["effects_command"] = effect_command
     api.on_unload(lambda: (wm.extra.pop("effects_command", None), setattr(wm, "background", None), setattr(wm, "dirty", True)))
-    api.command("effect", effect_command, usage="effect <%s|off|list> [...]" % "|".join(NAMES), help="Animated background effect; matrix takes a glyph set and a color, ansi a file or directory")
+    api.command("effect", effect_command, usage="effect <%s|off|list> [...] [fps=N]" % "|".join(NAMES), help="Animated background effect; matrix takes a glyph set and a color, ansi a file or directory; fps=N (1-60, default 20) limits its frame rate")
     if api.config.get("start"):
         effect_command(wm, [str(api.config["start"])])
