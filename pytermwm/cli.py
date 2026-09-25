@@ -473,7 +473,20 @@ def cmd_web(args) -> int:
 
 def cmd_version(args) -> int:
     print("pytermwm %s" % __version__)
-    return 0
+    # the running sessions too: a session started before an upgrade keeps running the old code
+    stale = False
+    for name in P.list_sessions():
+        info = P.server_info(name)
+        if info is None:
+            continue
+        started = time.strftime("%Y-%m-%d %H:%M", time.localtime(info["started"])) if info.get("started") else "?"
+        print("  session %-12s server %s (pid %s, started %s)" % (name, info["version"] or "older than 1.0.2",
+                                                                 info.get("pid", "?"), started))
+        why = P.version_mismatch(name, info, __version__)
+        if why:
+            stale = True
+            sys.stderr.write("warning: " + why + "\n")
+    return 1 if stale and getattr(args, "check", False) else 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -565,7 +578,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--http", metavar="PORT", help="serve MCP over HTTP instead")
     sp("doctor", cmd_doctor, "check that this machine can run pytermwm (pty/ConPTY, sockets, terminal)")
     sp("web", cmd_web, "print the URL (with token) of the web interface")
-    sp("version", cmd_version, "print the version")
+    p = sp("version", cmd_version, "print the version, and the version each running session's server runs")
+    p.add_argument("--check", action="store_true", help="exit with 1 when a running session runs another version")
     return ap
 
 
