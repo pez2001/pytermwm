@@ -323,6 +323,8 @@ class Palette:
         self.items: List[Tuple[str, str, str]] = []    # (label, detail, command)
         self.filtered: List[Tuple[str, str, str]] = []
         self.sel = 0
+        self.n_args = 0                                  # leading entries of `filtered` that are argument completions
+        self.picked = False                              # the selection was moved by hand since the last edit
         self.max_rows = 12
 
     def open(self, scope: str = "all", prefill: str = ""):
@@ -331,6 +333,7 @@ class Palette:
         self.editor = LineEditor(prefill)
         self.items = self.wm.palette_items(scope)
         self.sel = 0
+        self.picked = False
         self._filter()
         self.wm.dirty = True
 
@@ -354,19 +357,23 @@ class Palette:
         scored.sort(key=lambda t: -t[0])
         self.filtered = [it for _s, it in scored]
         # when the query already looks like "command args", offer arg completions first
+        self.n_args = 0
         if q and " " in q:
             from .completion import complete_command_args
-            for cand in complete_command_args(self.wm, q):
-                self.filtered.insert(0, (cand, "", cand))
+            cands = complete_command_args(self.wm, q)
+            self.filtered[:0] = [(cand, "", cand) for cand in cands]
+            self.n_args = len(cands)
         self.sel = min(self.sel, max(0, len(self.filtered) - 1))
 
     def handle_key(self, key: str):
         if key in ("Up", "C-p", "S-Tab"):
             self.sel = max(0, self.sel - 1)
+            self.picked = True
             self.wm.dirty = True
             return
         if key in ("Down", "C-n"):
             self.sel = min(len(self.filtered) - 1, self.sel + 1)
+            self.picked = True
             self.wm.dirty = True
             return
         if key == "Tab":
@@ -377,7 +384,10 @@ class Palette:
             return
         if key == "Enter":
             q = self.editor.text.strip()
-            if self.filtered and (not q or " " not in q or self.filtered[0][2] != q):
+            typed = " " in q and self.wm.commands.get(q.split(" ", 1)[0]) is not None
+            if self.filtered and not (typed and (not self.n_args or self.filtered[0][2] == q) and not self.picked):
+                # a full command line whose arguments complete to nothing (`effect none`) runs as typed rather than as
+                # whichever palette entry happens to fuzzy-match it (`effect`, i.e. `effect list`)
                 cmd = self.filtered[self.sel][2]
             else:
                 cmd = q
@@ -391,6 +401,7 @@ class Palette:
         res = self.editor.handle(key)
         if res in ("changed", "moved"):
             self.sel = 0
+            self.picked = False
             self._filter()
             self.wm.dirty = True
         elif res == "cancel":

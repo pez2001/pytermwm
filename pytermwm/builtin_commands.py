@@ -243,6 +243,47 @@ def c_record_mark(wm, args):
     return "marker added"
 
 
+@command("screenshot", usage="screenshot [-f] [FILE.svg|.ans|.txt]",
+         help="Save the whole screen as an SVG picture, ANSI art or plain text (default: an .svg in the state directory)",
+         category="session")
+def c_screenshot(wm, args):
+    from . import screenshot
+    f, rest = parse_flags(args, {"-f": 0}, intermixed=True)
+    path = os.path.abspath(os.path.expanduser(rest[0])) if rest else screenshot.default_path("screenshots", ".svg")
+    if os.path.exists(path) and "-f" not in f:
+        raise CommandError("%s already exists (use screenshot -f to overwrite it)" % path)
+    try:
+        path = screenshot.screenshot(wm, path)
+    except (ValueError, OSError) as e:
+        raise CommandError(str(e))
+    wm.message("screenshot saved to %s" % path, "ok", 4.0)
+    return path
+
+
+@command("record-screen", usage="record-screen [-f] [FILE.cast]",
+         help="Record the whole screen (all windows, borders, status line) to an asciicast v2 file", category="session")
+def c_record_screen(wm, args):
+    from . import screenshot
+    f, rest = parse_flags(args, {"-f": 0}, intermixed=True)
+    try:
+        rec = screenshot.start_recording(wm, rest[0] if rest else None, overwrite="-f" in f)
+    except (ValueError, OSError) as e:
+        raise CommandError(str(e))
+    wm.message("recording the screen to %s" % rec.path, "ok", 4.0)
+    return "recording the screen to %s" % rec.path
+
+
+@command("record-screen-stop", usage="record-screen-stop", help="Stop the screen recording", category="session")
+def c_record_screen_stop(wm, args):
+    from . import screenshot
+    info = screenshot.stop_recording(wm)
+    if info is None:
+        raise CommandError("the screen is not being recorded")
+    msg = "saved %s (%d frames, %.0f s)" % (info["path"], info["events"], info["seconds"])
+    wm.message(msg, "ok", 4.0)
+    return msg
+
+
 @command("replay", usage="replay FILE [--speed N] [--idle SECONDS] [--loop] [--float]",
          help="Play an asciicast (.cast) file in a window (keys: Space pause, +/- speed, r restart, arrows skip)",
          category="window")
@@ -1094,6 +1135,12 @@ def c_routes(wm, args):
 
 
 # ----------------------------------------------------------------------------- session / server
+@command("redraw", usage="redraw", help="Repaint the whole screen of every attached client (when the terminal shows garbage)", category="ui")
+def c_redraw(wm, args):
+    wm.redraw_requested = True
+    wm.dirty = True
+
+
 @command("detach", usage="detach", help="Detach this client (session keeps running)", category="session")
 def c_detach(wm, args):
     wm.detach_requested = True

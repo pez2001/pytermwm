@@ -14,7 +14,7 @@ from pytermwm.theme import all_theme_names
 
 GOLDEN = os.path.join(os.path.dirname(os.path.abspath(__file__)), "golden")
 UPDATE = bool(os.environ.get("PTW_UPDATE_GOLDEN"))
-BUILTIN_THEMES = ("default", "light", "modern", "hacker", "bbs", "mc", "c64", "amiga")
+BUILTIN_THEMES = ("default", "light", "modern", "hacker", "bbs", "mc", "c64", "amiga", "nes", "matrix", "dos")
 
 
 def build(theme="default", layout="tile", windows=4, cols=60, rows=18):

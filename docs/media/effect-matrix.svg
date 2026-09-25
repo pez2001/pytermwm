@@ -1,0 +1,633 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="948" height="614" viewBox="0 0 948.0 614.0">
+<style>text{font-family:"Cascadia Mono","DejaVu Sans Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:14.0px;white-space:pre}.b{font-weight:bold}.i{font-style:italic}.u{text-decoration:underline}.s{text-decoration:line-through}</style>
+<rect width="100%" height="100%" rx="8" fill="#1e1e1e"/>
+<circle cx="20.0" cy="23.0" r="6" fill="#ff5f57"/>
+<circle cx="40.0" cy="23.0" r="6" fill="#febc2e"/>
+<circle cx="60.0" cy="23.0" r="6" fill="#28c840"/>
+<text x="474.0" y="27.0" text-anchor="middle" fill="#aaaaaa">pytermwm - theme matrix + effect matrix</text>
+<rect x="12.0" y="42.0" width="924.0" height="560.0" fill="#000000"/>
+<text x="12.00" y="55.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">┌</text>
+<text x="20.40" y="55.65" fill="#00fd40" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="28.80" y="55.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">┤</text>
+<text x="45.60" y="55.65" fill="#d0ffd8" class="b" textLength="210.00" lengthAdjust="spacingAndGlyphs">ｦ follow the white rabbit</text>
+<text x="264.00" y="55.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">├</text>
+<text x="272.40" y="55.65" fill="#00c92a" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="280.80" y="55.65" fill="#00c729" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="289.20" y="55.65" fill="#00c628" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="297.60" y="55.65" fill="#00c427" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="306.00" y="55.65" fill="#00c227" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="314.40" y="55.65" fill="#00c026" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="322.80" y="55.65" fill="#00bf25" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="331.20" y="55.65" fill="#00bd24" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="339.60" y="55.65" fill="#00bb24" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="348.00" y="55.65" fill="#00ba23" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="356.40" y="55.65" fill="#00b822" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="364.80" y="55.65" fill="#00b621" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="373.20" y="55.65" fill="#00b421" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="381.60" y="55.65" fill="#00b320" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="390.00" y="55.65" fill="#00b11f" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="398.40" y="55.65" fill="#00af1f" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="406.80" y="55.65" fill="#00ae1e" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="415.20" y="55.65" fill="#00ac1d" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="423.60" y="55.65" fill="#00aa1c" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="432.00" y="55.65" fill="#00a81c" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="440.40" y="55.65" fill="#00a71b" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="448.80" y="55.65" fill="#00a51a" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="457.20" y="55.65" fill="#00a319" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="465.60" y="55.65" fill="#00a119" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="474.00" y="55.65" fill="#00a018" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="482.40" y="55.65" fill="#009e17" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="499.20" y="55.65" fill="#d0ffd8" textLength="42.00" lengthAdjust="spacingAndGlyphs">float</text>
+<text x="549.60" y="55.65" fill="#009011" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="558.00" y="55.65" fill="#008f11" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">┐</text>
+<text x="574.80" y="55.65" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="625.20" y="55.65" fill="#00370e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="709.20" y="55.65" fill="#00a42d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="726.00" y="55.65" fill="#00d83b" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="734.40" y="55.65" fill="#002409" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="759.60" y="55.65" fill="#00310d" textLength="8.40" lengthAdjust="spacingAndGlyphs">&lt;</text>
+<text x="776.40" y="55.65" fill="#00e13d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="793.20" y="55.65" fill="#00db3c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="801.60" y="55.65" fill="#003a0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="818.40" y="55.65" fill="#00d039" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="852.00" y="55.65" fill="#00c235" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾘ</text>
+<text x="868.80" y="55.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="12.00" y="73.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="73.15" fill="#00ff41" textLength="302.40" lengthAdjust="spacingAndGlyphs">pytermwm - a terminal window manager</text>
+<text x="558.00" y="73.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="73.15" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">1</text>
+<text x="616.80" y="73.15" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="625.20" y="73.15" fill="#006e1e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="709.20" y="73.15" fill="#00ba33" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｹ</text>
+<text x="726.00" y="73.15" fill="#00eb40" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="734.40" y="73.15" fill="#002e0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="759.60" y="73.15" fill="#00370e" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="776.40" y="73.15" fill="#00f041" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="793.20" y="73.15" fill="#00e73f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾜ</text>
+<text x="801.60" y="73.15" fill="#007c22" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="818.40" y="73.15" fill="#00e73f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="852.00" y="73.15" fill="#00ce38" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="12.00" y="90.65" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">│                                                                │</text>
+<text x="574.80" y="90.65" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="616.80" y="90.65" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="625.20" y="90.65" fill="#007821" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="709.20" y="90.65" fill="#00d039" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="726.00" y="90.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="734.40" y="90.65" fill="#00390f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾁ</text>
+<text x="759.60" y="90.65" fill="#006e1e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="776.40" y="90.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="793.20" y="90.65" fill="#00f342" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="801.60" y="90.65" fill="#009027" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="818.40" y="90.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="852.00" y="90.65" fill="#00da3b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="12.00" y="108.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="37.20" y="108.15" fill="#00ff41" textLength="193.20" lengthAdjust="spacingAndGlyphs">M-Enter      new window</text>
+<text x="558.00" y="108.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="108.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="616.80" y="108.15" fill="#002409" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾙ</text>
+<text x="625.20" y="108.15" fill="#008324" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="709.20" y="108.15" fill="#00e73f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="734.40" y="108.15" fill="#007e22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｶ</text>
+<text x="759.60" y="108.15" fill="#007821" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="793.20" y="108.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="801.60" y="108.15" fill="#00a42d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾍ</text>
+<text x="843.60" y="108.15" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="852.00" y="108.15" fill="#00e63f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="12.00" y="125.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="37.20" y="125.65" fill="#00ff41" textLength="226.80" lengthAdjust="spacingAndGlyphs">M-h/j/k/l    move the focus</text>
+<text x="558.00" y="125.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="125.65" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="616.80" y="125.65" fill="#002e0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="625.20" y="125.65" fill="#008e27" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="709.20" y="125.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="734.40" y="125.65" fill="#009529" textLength="8.40" lengthAdjust="spacingAndGlyphs">.</text>
+<text x="759.60" y="125.65" fill="#008324" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="768.00" y="125.65" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="801.60" y="125.65" fill="#00ba33" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="843.60" y="125.65" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="852.00" y="125.65" fill="#00f242" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="12.00" y="143.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="37.20" y="143.15" fill="#00ff41" textLength="201.60" lengthAdjust="spacingAndGlyphs">M-Space      next layout</text>
+<text x="558.00" y="143.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="143.15" fill="#009729" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="583.20" y="143.15" fill="#001104" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="616.80" y="143.15" fill="#00390f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="625.20" y="143.15" fill="#00992a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="734.40" y="143.15" fill="#00ae2f" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="759.60" y="143.15" fill="#008e27" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="768.00" y="143.15" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="801.60" y="143.15" fill="#00d039" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="843.60" y="143.15" fill="#001806" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="852.00" y="143.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="12.00" y="160.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="37.20" y="160.65" fill="#00ff41" textLength="235.20" lengthAdjust="spacingAndGlyphs">M-p          command palette</text>
+<text x="558.00" y="160.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="160.65" fill="#00aa2e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="583.20" y="160.65" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="616.80" y="160.65" fill="#007e22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="625.20" y="160.65" fill="#00a52d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="734.40" y="160.65" fill="#00c836" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="759.60" y="160.65" fill="#00992a" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="768.00" y="160.65" fill="#001806" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="801.60" y="160.65" fill="#00e73f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾎ</text>
+<text x="843.60" y="160.65" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾎ</text>
+<text x="12.00" y="178.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="37.20" y="178.15" fill="#00ff41" textLength="319.20" lengthAdjust="spacingAndGlyphs">C-b :        prompt in the status line</text>
+<text x="558.00" y="178.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="178.15" fill="#00be34" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="583.20" y="178.15" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="616.80" y="178.15" fill="#009529" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="625.20" y="178.15" fill="#00b130" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="734.40" y="178.15" fill="#00e23e" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="759.60" y="178.15" fill="#00a52d" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="768.00" y="178.15" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="801.60" y="178.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｹ</text>
+<text x="843.60" y="178.15" fill="#002108" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾑ</text>
+<text x="12.00" y="195.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="37.20" y="195.65" fill="#00ff41" textLength="394.80" lengthAdjust="spacingAndGlyphs">C-b d        detach (the session keeps running)</text>
+<text x="558.00" y="195.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="195.65" fill="#00d33a" textLength="8.40" lengthAdjust="spacingAndGlyphs">8</text>
+<text x="583.20" y="195.65" fill="#001806" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾙ</text>
+<text x="616.80" y="195.65" fill="#00ae2f" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="625.20" y="195.65" fill="#00bd34" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="734.40" y="195.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="759.60" y="195.65" fill="#00b130" textLength="8.40" lengthAdjust="spacingAndGlyphs">8</text>
+<text x="768.00" y="195.65" fill="#002108" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="843.60" y="195.65" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾍ</text>
+<text x="12.00" y="213.15" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">│                                                                │</text>
+<text x="574.80" y="213.15" fill="#00e83f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="583.20" y="213.15" fill="#001b07" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="591.60" y="213.15" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="616.80" y="213.15" fill="#00c836" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾜ</text>
+<text x="625.20" y="213.15" fill="#00ca37" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾁ</text>
+<text x="717.60" y="213.15" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="759.60" y="213.15" fill="#00bd34" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="768.00" y="213.15" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="843.60" y="213.15" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="902.40" y="213.15" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="12.00" y="230.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="230.65" fill="#00ff41" textLength="344.40" lengthAdjust="spacingAndGlyphs">Drive it from the keyboard, the CLI, HTTP</text>
+<text x="558.00" y="230.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="574.80" y="230.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="583.20" y="230.65" fill="#001e08" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="591.60" y="230.65" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="616.80" y="230.65" fill="#00e23e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="625.20" y="230.65" fill="#00d73b" textLength="8.40" lengthAdjust="spacingAndGlyphs">6</text>
+<text x="717.60" y="230.65" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="726.00" y="230.65" fill="#001305" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="759.60" y="230.65" fill="#00ca37" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="768.00" y="230.65" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="843.60" y="230.65" fill="#00300d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｾ</text>
+<text x="885.60" y="230.65" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="902.40" y="230.65" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="12.00" y="248.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="248.15" fill="#00ff41" textLength="310.80" lengthAdjust="spacingAndGlyphs">or MCP: one command registry for all.</text>
+<text x="558.00" y="248.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="583.20" y="248.15" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾜ</text>
+<text x="591.60" y="248.15" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="616.80" y="248.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="625.20" y="248.15" fill="#00e43e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｸ</text>
+<text x="633.60" y="248.15" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｶ</text>
+<text x="717.60" y="248.15" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾇ</text>
+<text x="726.00" y="248.15" fill="#001906" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾘ</text>
+<text x="759.60" y="248.15" fill="#00d73b" textLength="8.40" lengthAdjust="spacingAndGlyphs">&lt;</text>
+<text x="768.00" y="248.15" fill="#00300d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="843.60" y="248.15" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="885.60" y="248.15" fill="#001a07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="902.40" y="248.15" fill="#001b07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾝ</text>
+<text x="12.00" y="265.65" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">│                                                                │</text>
+<text x="583.20" y="265.65" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾑ</text>
+<text x="591.60" y="265.65" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="625.20" y="265.65" fill="#00f142" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="633.60" y="265.65" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｲ</text>
+<text x="684.00" y="265.65" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="717.60" y="265.65" fill="#001a07" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="726.00" y="265.65" fill="#002008" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="759.60" y="265.65" fill="#00e43e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="768.00" y="265.65" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="776.40" y="265.65" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="843.60" y="265.65" fill="#006e1e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="885.60" y="265.65" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｲ</text>
+<text x="902.40" y="265.65" fill="#002108" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="12.00" y="283.15" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">│                                                                │</text>
+<text x="583.20" y="283.15" fill="#00290b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="591.60" y="283.15" fill="#00280b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="625.20" y="283.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="633.60" y="283.15" fill="#001806" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｲ</text>
+<text x="650.40" y="283.15" fill="#001505" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="684.00" y="283.15" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｾ</text>
+<text x="717.60" y="283.15" fill="#001e08" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="726.00" y="283.15" fill="#00280b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="759.60" y="283.15" fill="#00f142" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="768.00" y="283.15" fill="#006e1e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="776.40" y="283.15" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="843.60" y="283.15" fill="#007921" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="885.60" y="283.15" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="902.40" y="283.15" fill="#00270a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="12.00" y="300.65" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">│                                                                │</text>
+<text x="583.20" y="300.65" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="591.60" y="300.65" fill="#002f0d" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="633.60" y="300.65" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="650.40" y="300.65" fill="#001d07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="667.20" y="300.65" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="684.00" y="300.65" fill="#001b07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="709.20" y="300.65" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="717.60" y="300.65" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="726.00" y="300.65" fill="#00300d" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="759.60" y="300.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾜ</text>
+<text x="768.00" y="300.65" fill="#007921" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="776.40" y="300.65" fill="#001b07" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="843.60" y="300.65" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="885.60" y="300.65" fill="#00340e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="902.40" y="300.65" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="12.00" y="318.15" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">│                                                                │</text>
+<text x="566.40" y="318.15" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="583.20" y="318.15" fill="#00320d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾝ</text>
+<text x="591.60" y="318.15" fill="#00370e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾑ</text>
+<text x="633.60" y="318.15" fill="#001f08" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="650.40" y="318.15" fill="#00270a" textLength="8.40" lengthAdjust="spacingAndGlyphs">&lt;</text>
+<text x="667.20" y="318.15" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="684.00" y="318.15" fill="#002108" textLength="8.40" lengthAdjust="spacingAndGlyphs">5</text>
+<text x="709.20" y="318.15" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="717.60" y="318.15" fill="#00260a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾙ</text>
+<text x="726.00" y="318.15" fill="#003a0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="768.00" y="318.15" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">6</text>
+<text x="776.40" y="318.15" fill="#002108" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="843.60" y="318.15" fill="#009127" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="885.60" y="318.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="902.40" y="318.15" fill="#00340e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="12.00" y="335.65" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">│                                                                │</text>
+<text x="566.40" y="335.65" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="583.20" y="335.65" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="591.60" y="335.65" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="633.60" y="335.65" fill="#002409" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="650.40" y="335.65" fill="#00320d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="667.20" y="335.65" fill="#002409" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="684.00" y="335.65" fill="#00270a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｶ</text>
+<text x="709.20" y="335.65" fill="#001806" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="717.60" y="335.65" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="726.00" y="335.65" fill="#007c22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="768.00" y="335.65" fill="#009127" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾝ</text>
+<text x="776.40" y="335.65" fill="#00270a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾕ</text>
+<text x="843.60" y="335.65" fill="#009d2b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="877.20" y="335.65" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="885.60" y="335.65" fill="#008825" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="902.40" y="335.65" fill="#003b0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="12.00" y="353.15" fill="#00ff41" class="b" textLength="554.40" lengthAdjust="spacingAndGlyphs">└────────────────────────────────────────────────────────────────┘</text>
+<text x="566.40" y="353.15" fill="#001d07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="574.80" y="353.15" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="583.20" y="353.15" fill="#003a0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="591.60" y="353.15" fill="#008223" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="633.60" y="353.15" fill="#00290b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾍ</text>
+<text x="650.40" y="353.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="667.20" y="353.15" fill="#002e0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾍ</text>
+<text x="684.00" y="353.15" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="709.20" y="353.15" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾜ</text>
+<text x="717.60" y="353.15" fill="#002f0d" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="726.00" y="353.15" fill="#009027" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｸ</text>
+<text x="768.00" y="353.15" fill="#009d2b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="776.40" y="353.15" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="843.60" y="353.15" fill="#00aa2e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="877.20" y="353.15" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="885.60" y="353.15" fill="#009d2b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾔ</text>
+<text x="902.40" y="353.15" fill="#007a21" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｲ</text>
+<text x="62.40" y="370.65" fill="#00d33a" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="87.60" y="370.65" fill="#007821" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="96.00" y="370.65" fill="#001104" textLength="8.40" lengthAdjust="spacingAndGlyphs">1</text>
+<text x="104.40" y="370.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="112.80" y="370.65" fill="#007c22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="146.40" y="370.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="154.80" y="370.65" fill="#002f0d" textLength="8.40" lengthAdjust="spacingAndGlyphs">8</text>
+<text x="188.40" y="370.65" fill="#002409" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="205.20" y="370.65" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="222.00" y="370.65" fill="#007921" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="440.40" y="370.65" fill="#00a62d" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="499.20" y="370.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="566.40" y="370.65" fill="#002309" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="574.80" y="370.65" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="583.20" y="370.65" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="591.60" y="370.65" fill="#009228" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="633.60" y="370.65" fill="#002e0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="650.40" y="370.65" fill="#008c26" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾇ</text>
+<text x="667.20" y="370.65" fill="#00390f" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="684.00" y="370.65" fill="#00340e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="709.20" y="370.65" fill="#002108" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="717.60" y="370.65" fill="#00340e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾕ</text>
+<text x="726.00" y="370.65" fill="#00a42d" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="768.00" y="370.65" fill="#00aa2e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="776.40" y="370.65" fill="#00340e" textLength="8.40" lengthAdjust="spacingAndGlyphs">8</text>
+<text x="843.60" y="370.65" fill="#00b732" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="877.20" y="370.65" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="885.60" y="370.65" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="902.40" y="370.65" fill="#008925" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="62.40" y="388.15" fill="#00e83f" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="87.60" y="388.15" fill="#008223" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾁ</text>
+<text x="96.00" y="388.15" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="112.80" y="388.15" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="154.80" y="388.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">6</text>
+<text x="188.40" y="388.15" fill="#00280b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="205.20" y="388.15" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="222.00" y="388.15" fill="#008725" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="440.40" y="388.15" fill="#00c235" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="566.40" y="388.15" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="574.80" y="388.15" fill="#002f0d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾝ</text>
+<text x="583.20" y="388.15" fill="#007c22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾁ</text>
+<text x="591.60" y="388.15" fill="#00a32c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾑ</text>
+<text x="633.60" y="388.15" fill="#00330e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="650.40" y="388.15" fill="#00a62d" textLength="8.40" lengthAdjust="spacingAndGlyphs">.</text>
+<text x="667.20" y="388.15" fill="#007e22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="684.00" y="388.15" fill="#003b0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">6</text>
+<text x="709.20" y="388.15" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="717.60" y="388.15" fill="#00390f" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="726.00" y="388.15" fill="#00ba33" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾇ</text>
+<text x="768.00" y="388.15" fill="#00b732" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="776.40" y="388.15" fill="#003b0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="843.60" y="388.15" fill="#00c536" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="877.20" y="388.15" fill="#001a07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｶ</text>
+<text x="885.60" y="388.15" fill="#00cc38" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="902.40" y="388.15" fill="#009829" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾑ</text>
+<text x="62.40" y="405.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="87.60" y="405.65" fill="#008c26" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾙ</text>
+<text x="96.00" y="405.65" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="112.80" y="405.65" fill="#008e27" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="154.80" y="405.65" fill="#009228" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="188.40" y="405.65" fill="#002c0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="205.20" y="405.65" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="222.00" y="405.65" fill="#009428" textLength="8.40" lengthAdjust="spacingAndGlyphs">1</text>
+<text x="289.20" y="405.65" fill="#001104" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="440.40" y="405.65" fill="#00e03d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾁ</text>
+<text x="566.40" y="405.65" fill="#00320d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="574.80" y="405.65" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="583.20" y="405.65" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="591.60" y="405.65" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="633.60" y="405.65" fill="#00390f" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="650.40" y="405.65" fill="#00c235" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="667.20" y="405.65" fill="#009529" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="684.00" y="405.65" fill="#007a21" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="709.20" y="405.65" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="717.60" y="405.65" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">5</text>
+<text x="726.00" y="405.65" fill="#00d039" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="768.00" y="405.65" fill="#00c536" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="776.40" y="405.65" fill="#007a21" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｹ</text>
+<text x="818.40" y="405.65" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="843.60" y="405.65" fill="#00d33a" textLength="8.40" lengthAdjust="spacingAndGlyphs">.</text>
+<text x="877.20" y="405.65" fill="#001f08" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="885.60" y="405.65" fill="#00e53e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="902.40" y="405.65" fill="#00a82e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｹ</text>
+<text x="87.60" y="423.15" fill="#009629" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="96.00" y="423.15" fill="#001806" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="112.80" y="423.15" fill="#009729" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="121.20" y="423.15" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="154.80" y="423.15" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="188.40" y="423.15" fill="#00300d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="205.20" y="423.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="222.00" y="423.15" fill="#00a22c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="289.20" y="423.15" fill="#001305" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="440.40" y="423.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="566.40" y="423.15" fill="#003a0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="574.80" y="423.15" fill="#009228" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="583.20" y="423.15" fill="#008e27" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="591.60" y="423.15" fill="#00c636" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="633.60" y="423.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="650.40" y="423.15" fill="#00e03d" textLength="8.40" lengthAdjust="spacingAndGlyphs">6</text>
+<text x="667.20" y="423.15" fill="#00ae2f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="684.00" y="423.15" fill="#008925" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="709.20" y="423.15" fill="#00300d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="717.60" y="423.15" fill="#007d22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="726.00" y="423.15" fill="#00e73f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾕ</text>
+<text x="768.00" y="423.15" fill="#00d33a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="776.40" y="423.15" fill="#008925" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾍ</text>
+<text x="818.40" y="423.15" fill="#001a07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="843.60" y="423.15" fill="#00e13d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="877.20" y="423.15" fill="#002309" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="885.60" y="423.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="902.40" y="423.15" fill="#00b832" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="87.60" y="440.65" fill="#00a12c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="96.00" y="440.65" fill="#001b07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="112.80" y="440.65" fill="#00a02c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="121.20" y="440.65" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｸ</text>
+<text x="154.80" y="440.65" fill="#00d83b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="188.40" y="440.65" fill="#00350e" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="205.20" y="440.65" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="222.00" y="440.65" fill="#00b030" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="289.20" y="440.65" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="322.80" y="440.65" fill="#001204" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="465.60" y="440.65" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">6</text>
+<text x="566.40" y="440.65" fill="#007b21" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="574.80" y="440.65" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="583.20" y="440.65" fill="#009729" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="591.60" y="440.65" fill="#00d83b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="633.60" y="440.65" fill="#007e22" textLength="8.40" lengthAdjust="spacingAndGlyphs">&lt;</text>
+<text x="650.40" y="440.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="667.20" y="440.65" fill="#00c836" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾇ</text>
+<text x="684.00" y="440.65" fill="#009829" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="700.80" y="440.65" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="709.20" y="440.65" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="717.60" y="440.65" fill="#008825" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="726.00" y="440.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">&lt;</text>
+<text x="768.00" y="440.65" fill="#00e13d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾁ</text>
+<text x="776.40" y="440.65" fill="#009829" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="818.40" y="440.65" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">&lt;</text>
+<text x="843.60" y="440.65" fill="#00f041" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｿ</text>
+<text x="877.20" y="440.65" fill="#00280b" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="902.40" y="440.65" fill="#00c937" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="87.60" y="458.15" fill="#00ac2f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="96.00" y="458.15" fill="#001e08" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾔ</text>
+<text x="112.80" y="458.15" fill="#00aa2e" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="121.20" y="458.15" fill="#001d07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="154.80" y="458.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="188.40" y="458.15" fill="#003a0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｾ</text>
+<text x="205.20" y="458.15" fill="#009729" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="222.00" y="458.15" fill="#00bf34" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾝ</text>
+<text x="289.20" y="458.15" fill="#001906" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="322.80" y="458.15" fill="#001505" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="465.60" y="458.15" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="566.40" y="458.15" fill="#008c26" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾇ</text>
+<text x="574.80" y="458.15" fill="#00d83b" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="583.20" y="458.15" fill="#00a02c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾇ</text>
+<text x="591.60" y="458.15" fill="#00eb40" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾝ</text>
+<text x="633.60" y="458.15" fill="#008a25" textLength="8.40" lengthAdjust="spacingAndGlyphs">8</text>
+<text x="642.00" y="458.15" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="667.20" y="458.15" fill="#00e23e" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="684.00" y="458.15" fill="#00a82e" textLength="8.40" lengthAdjust="spacingAndGlyphs">.</text>
+<text x="700.80" y="458.15" fill="#001f08" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="709.20" y="458.15" fill="#006e1e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="717.60" y="458.15" fill="#009228" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="768.00" y="458.15" fill="#00f041" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="776.40" y="458.15" fill="#00a82e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾘ</text>
+<text x="818.40" y="458.15" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="843.60" y="458.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="868.80" y="458.15" fill="#001405" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="877.20" y="458.15" fill="#002c0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="902.40" y="458.15" fill="#00da3c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="87.60" y="475.65" fill="#00b732" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="96.00" y="475.65" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="112.80" y="475.65" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾖ</text>
+<text x="121.20" y="475.65" fill="#002309" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="163.20" y="475.65" fill="#001706" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾜ</text>
+<text x="188.40" y="475.65" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="205.20" y="475.65" fill="#00aa2e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾝ</text>
+<text x="222.00" y="475.65" fill="#00cf38" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="289.20" y="475.65" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="322.80" y="475.65" fill="#001906" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="465.60" y="475.65" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="566.40" y="475.65" fill="#009d2b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾍ</text>
+<text x="574.80" y="475.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">6</text>
+<text x="583.20" y="475.65" fill="#00aa2e" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="591.60" y="475.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="633.60" y="475.65" fill="#009529" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾕ</text>
+<text x="642.00" y="475.65" fill="#001806" textLength="8.40" lengthAdjust="spacingAndGlyphs">&lt;</text>
+<text x="667.20" y="475.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾕ</text>
+<text x="684.00" y="475.65" fill="#00b832" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="700.80" y="475.65" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="709.20" y="475.65" fill="#007921" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="717.60" y="475.65" fill="#009d2b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｾ</text>
+<text x="768.00" y="475.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="776.40" y="475.65" fill="#00b832" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="818.40" y="475.65" fill="#00340e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾕ</text>
+<text x="868.80" y="475.65" fill="#001c07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="877.20" y="475.65" fill="#00310d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="902.40" y="475.65" fill="#00ec40" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾘ</text>
+<text x="12.00" y="493.15" fill="#001505" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="87.60" y="493.15" fill="#00c235" textLength="8.40" lengthAdjust="spacingAndGlyphs">.</text>
+<text x="96.00" y="493.15" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾘ</text>
+<text x="112.80" y="493.15" fill="#00be34" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="121.20" y="493.15" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="163.20" y="493.15" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="188.40" y="493.15" fill="#007c22" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="205.20" y="493.15" fill="#00be34" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="222.00" y="493.15" fill="#00de3d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾔ</text>
+<text x="289.20" y="493.15" fill="#001f08" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="322.80" y="493.15" fill="#001d07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="465.60" y="493.15" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="566.40" y="493.15" fill="#00af30" textLength="8.40" lengthAdjust="spacingAndGlyphs">1</text>
+<text x="583.20" y="493.15" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="633.60" y="493.15" fill="#00a12c" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="642.00" y="493.15" fill="#001e08" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="684.00" y="493.15" fill="#00c937" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="700.80" y="493.15" fill="#00380f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="709.20" y="493.15" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="717.60" y="493.15" fill="#00a92e" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="776.40" y="493.15" fill="#00c937" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="818.40" y="493.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾘ</text>
+<text x="868.80" y="493.15" fill="#002409" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｾ</text>
+<text x="877.20" y="493.15" fill="#00370e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="902.40" y="493.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="12.00" y="510.65" fill="#001d07" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="87.60" y="510.65" fill="#00ce38" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="96.00" y="510.65" fill="#00290b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="112.80" y="510.65" fill="#00c837" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="121.20" y="510.65" fill="#00320d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｹ</text>
+<text x="163.20" y="510.65" fill="#002f0d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="188.40" y="510.65" fill="#008624" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="205.20" y="510.65" fill="#00d33a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="222.00" y="510.65" fill="#00ee41" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾙ</text>
+<text x="289.20" y="510.65" fill="#002309" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｳ</text>
+<text x="322.80" y="510.65" fill="#002209" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="465.60" y="510.65" fill="#00280b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="566.40" y="510.65" fill="#00c235" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="583.20" y="510.65" fill="#00be34" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="633.60" y="510.65" fill="#00ae2f" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="642.00" y="510.65" fill="#00250a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="684.00" y="510.65" fill="#00da3c" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="700.80" y="510.65" fill="#008123" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="709.20" y="510.65" fill="#009127" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾉ</text>
+<text x="717.60" y="510.65" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="776.40" y="510.65" fill="#00da3c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="818.40" y="510.65" fill="#008825" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="868.80" y="510.65" fill="#002e0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="877.20" y="510.65" fill="#006e1e" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="12.00" y="528.15" fill="#00270a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾈ</text>
+<text x="87.60" y="528.15" fill="#00da3b" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="96.00" y="528.15" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="112.80" y="528.15" fill="#00d33a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="121.20" y="528.15" fill="#003a0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="163.20" y="528.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾎ</text>
+<text x="188.40" y="528.15" fill="#009027" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="205.20" y="528.15" fill="#00e83f" textLength="8.40" lengthAdjust="spacingAndGlyphs">:</text>
+<text x="222.00" y="528.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="289.20" y="528.15" fill="#00270a" textLength="42.00" lengthAdjust="spacingAndGlyphs">ｸ   ﾄ</text>
+<text x="465.60" y="528.15" fill="#002f0d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="566.40" y="528.15" fill="#00d63a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｼ</text>
+<text x="583.20" y="528.15" fill="#00c837" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾊ</text>
+<text x="633.60" y="528.15" fill="#00bb33" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾏ</text>
+<text x="642.00" y="528.15" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾇ</text>
+<text x="684.00" y="528.15" fill="#00ec40" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｻ</text>
+<text x="700.80" y="528.15" fill="#009d2b" textLength="16.80" lengthAdjust="spacingAndGlyphs">-ﾄ</text>
+<text x="717.60" y="528.15" fill="#00c034" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="776.40" y="528.15" fill="#00ec40" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="818.40" y="528.15" fill="#009d2b" textLength="8.40" lengthAdjust="spacingAndGlyphs">=</text>
+<text x="868.80" y="528.15" fill="#00390f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="877.20" y="528.15" fill="#007821" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="12.00" y="545.65" fill="#00320d" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="87.60" y="545.65" fill="#00e63f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="96.00" y="545.65" fill="#00320d" textLength="8.40" lengthAdjust="spacingAndGlyphs">1</text>
+<text x="112.80" y="545.65" fill="#00de3c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｹ</text>
+<text x="121.20" y="545.65" fill="#007b21" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="163.20" y="545.65" fill="#009228" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="188.40" y="545.65" fill="#009a2a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="205.20" y="545.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="289.20" y="545.65" fill="#002a0b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="322.80" y="545.65" fill="#002d0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾗ</text>
+<text x="465.60" y="545.65" fill="#00370e" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="566.40" y="545.65" fill="#00ea40" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="583.20" y="545.65" fill="#00d33a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="633.60" y="545.65" fill="#00c836" textLength="8.40" lengthAdjust="spacingAndGlyphs">1</text>
+<text x="642.00" y="545.65" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="684.00" y="545.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">.</text>
+<text x="700.80" y="545.65" fill="#00bc33" textLength="8.40" lengthAdjust="spacingAndGlyphs">2</text>
+<text x="709.20" y="545.65" fill="#00aa2e" textLength="8.40" lengthAdjust="spacingAndGlyphs">&gt;</text>
+<text x="717.60" y="545.65" fill="#00cc38" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="776.40" y="545.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">*</text>
+<text x="818.40" y="545.65" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｺ</text>
+<text x="868.80" y="545.65" fill="#007e22" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="877.20" y="545.65" fill="#008324" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="12.00" y="563.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">+</text>
+<text x="87.60" y="563.15" fill="#00f242" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｴ</text>
+<text x="96.00" y="563.15" fill="#00360e" textLength="8.40" lengthAdjust="spacingAndGlyphs">0</text>
+<text x="112.80" y="563.15" fill="#00e83f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾂ</text>
+<text x="121.20" y="563.15" fill="#008c26" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾌ</text>
+<text x="163.20" y="563.15" fill="#00b431" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="188.40" y="563.15" fill="#00a42d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾒ</text>
+<text x="289.20" y="563.15" fill="#002f0c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾐ</text>
+<text x="322.80" y="563.15" fill="#00320d" textLength="8.40" lengthAdjust="spacingAndGlyphs">8</text>
+<text x="465.60" y="563.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="566.40" y="563.15" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾆ</text>
+<text x="583.20" y="563.15" fill="#00de3c" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾑ</text>
+<text x="633.60" y="563.15" fill="#00d53a" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾑ</text>
+<text x="642.00" y="563.15" fill="#00731f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="700.80" y="563.15" fill="#00dc3c" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="709.20" y="563.15" fill="#00b732" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾍ</text>
+<text x="717.60" y="563.15" fill="#00d83b" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<text x="818.40" y="563.15" fill="#00cc38" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾛ</text>
+<text x="868.80" y="563.15" fill="#009529" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="877.20" y="563.15" fill="#008e27" textLength="8.40" lengthAdjust="spacingAndGlyphs">5</text>
+<text x="894.00" y="563.15" fill="#001606" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾅ</text>
+<text x="12.00" y="580.65" fill="#008c26" textLength="8.40" lengthAdjust="spacingAndGlyphs">3</text>
+<text x="87.60" y="580.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｷ</text>
+<text x="96.00" y="580.65" fill="#003a0f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｵ</text>
+<text x="112.80" y="580.65" fill="#00f342" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾄ</text>
+<text x="121.20" y="580.65" fill="#009d2b" textLength="8.40" lengthAdjust="spacingAndGlyphs">7</text>
+<text x="163.20" y="580.65" fill="#00d83b" textLength="8.40" lengthAdjust="spacingAndGlyphs">9</text>
+<text x="188.40" y="580.65" fill="#00af30" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｹ</text>
+<text x="255.60" y="580.65" fill="#001304" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾚ</text>
+<text x="289.20" y="580.65" fill="#00330d" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾓ</text>
+<text x="322.80" y="580.65" fill="#00380f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾀ</text>
+<text x="465.60" y="580.65" fill="#008223" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾜ</text>
+<text x="583.20" y="580.65" fill="#00e83f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾕ</text>
+<text x="633.60" y="580.65" fill="#00e23e" textLength="8.40" lengthAdjust="spacingAndGlyphs">4</text>
+<text x="642.00" y="580.65" fill="#008524" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾋ</text>
+<text x="700.80" y="580.65" fill="#aaffcd" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｽ</text>
+<text x="709.20" y="580.65" fill="#00c536" textLength="8.40" lengthAdjust="spacingAndGlyphs">ｱ</text>
+<text x="717.60" y="580.65" fill="#00e53e" textLength="109.20" lengthAdjust="spacingAndGlyphs">ﾒ           &gt;</text>
+<text x="868.80" y="580.65" fill="#00ae2f" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾁ</text>
+<text x="877.20" y="580.65" fill="#00992a" textLength="8.40" lengthAdjust="spacingAndGlyphs">-</text>
+<text x="894.00" y="580.65" fill="#001f08" textLength="8.40" lengthAdjust="spacingAndGlyphs">ﾃ</text>
+<rect x="154.80" y="584.50" width="67.50" height="17.80" fill="#00ff41"/>
+<text x="12.00" y="598.15" fill="#00ff41" class="b" textLength="126.00" lengthAdjust="spacingAndGlyphs">wake up, neo...</text>
+<text x="163.20" y="598.15" fill="#000000" class="b" textLength="50.40" lengthAdjust="spacingAndGlyphs">1:main</text>
+<text x="230.40" y="598.15" fill="#00ff41" textLength="386.40" lengthAdjust="spacingAndGlyphs">float     follow the white rabbit      CPU 26%</text>
+<rect x="675.60" y="599.81" width="8.70" height="2.49" fill="#00ff41"/>
+<rect x="684.00" y="595.44" width="8.70" height="6.86" fill="#00ff41"/>
+<text x="709.20" y="598.15" fill="#00ff41" textLength="218.40" lengthAdjust="spacingAndGlyphs">MEM  3%  / 30G free  17:51</text>
+</svg>

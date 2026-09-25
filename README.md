@@ -31,20 +31,50 @@ python -m pytermwm web                         # print the web UI URL
 python -m pytermwm mcp                         # MCP server on stdio for an agent
 ```
 
+## Screenshots
+
+![pytermwm with the default theme: a shell, a chart and a notes window, tiled](docs/media/theme-default.svg)
+
+| | | |
+|---|---|---|
+| ![modern](docs/media/theme-modern.svg) `modern` | ![nes](docs/media/theme-nes.svg) `nes` | ![dos](docs/media/theme-dos.svg) `dos` |
+| ![matrix](docs/media/theme-matrix.svg) `matrix` | ![amiga](docs/media/theme-amiga.svg) `amiga` | ![c64](docs/media/theme-c64.svg) `c64` |
+| ![bbs](docs/media/theme-bbs.svg) `bbs` | ![mc](docs/media/theme-mc.svg) `mc` | ![hacker](docs/media/theme-hacker.svg) `hacker` |
+| ![light](docs/media/theme-light.svg) `light` | ![command palette](docs/media/palette.svg) command palette (`M-p`) | ![effect matrix](docs/media/effect-matrix.svg) `effect matrix` behind a floating window |
+
+A recorded tour (windows, layouts, the palette, themes, an effect): [docs/media/demo.cast](docs/media/demo.cast) -
+play it with `asciinema play docs/media/demo.cast` or inside pytermwm with `replay docs/media/demo.cast`.
+
+### Making screenshots and recordings
+
+Every picture and recording above is generated, not hand-made: `python3 scripts/make_media.py` drives a headless
+session through scripted scenes and writes `docs/media/` again (`--only themes|palette|effect|cast`, `--out DIR`).
+The recording runs on a virtual clock, so it is the same on a slow or a fast machine.
+
+From a running session (keys, prompt, `pytermwm ctl`, HTTP or MCP) the same is one command:
+
+```
+screenshot                       # the whole screen as an SVG in the state directory
+screenshot ~/shot.svg            # .svg picture, .ans ANSI art (cat it) or .txt plain text; -f overwrites
+record-screen ~/demo.cast        # asciicast v2 of the whole screen: every window, border and the status line
+record-screen-stop
+record -t 2 ~/win.cast           # just one window's output (record-stop to finish)
+```
+
 ## What is in the box
 
 | area | what |
 |---|---|
 | windows | terminal, piped process, file/FIFO tail, text, help, log, status, viewer, dirwatch, chart, debugger; history, virtual size, scrollbars, overflow modes, CP437 conversion |
 | layouts | recursive tile, master, spiral, columns, rows, grid, centered, monocle, table (spans), float, docking; multiple desktops |
-| look | themes `default light modern hacker bbs mc c64 amiga` + your own YAML themes; borders, shadows, focus cues, effects (matrix, plasma, starfield, fire, rain, ANSI/ASCII art from a file or directory) |
+| look | themes `default light modern hacker bbs mc c64 amiga nes matrix dos` + your own YAML themes; borders, shadows, focus cues, effects (matrix, plasma, starfield, fire, rain, ANSI/ASCII art from a file or directory) |
 | UI | status line with pluggable segments, prompt in the status line, command palette, autocompletion, history, dialogs |
 | sessions | detachable server, multi-client attach, save/restore |
 | control | one command registry shared by hotkeys, prompt, CLI, HTTP, MCP, rules and scripts; scoped tokens (`read`, `agent`) for dashboards and AI agents |
 | automation | YAML rules (output/idle/exit/interval/event/status triggers, undo after N seconds) and Python scripts/plugins with hot reload |
 | web | live screen with keyboard/mouse/paste, window list, console, config editor, rule builder, script editor, plugin and log views |
 | projects | `.pytermwm.yaml` + `pytermwm up` builds a whole workspace (desktops, windows, env) and is safe to repeat |
-| recording | asciicast v2 recording of any window (`record`) and a replay window (`replay`) |
+| recording | asciicast v2 recording of the whole screen (`record-screen`) or any window (`record`), a replay window (`replay`), screenshots as SVG / ANSI / text (`screenshot`) |
 | selection | PuTTY-style mouse selection with copy on release, word/line/rectangle modes, keyboard copy mode, paste buffer, OSC 52 and a copy view for terminals without it |
 | plugins | docker, btop-style monitor, MQTT (own client), SSH, background effects, OpenAI-compatible chat; write your own in one file |
 | I/O | stdio re-routing between windows, `pytermwm pv` progress reporting to the status line, `cmd \| pytermwm pipe` viewers |

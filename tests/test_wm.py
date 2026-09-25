@@ -61,6 +61,23 @@ class WindowTests(WMCase):
         self.wm.close_window(w.id)
         self.assertFalse(self.wm.quit_requested)
 
+    def test_title_escape_is_no_bell_and_resize_is_no_activity(self):
+        a = self.wm.create_window({"kind": "text", "title": "a", "text": ""})
+        b = self.wm.create_window({"kind": "text", "title": "b", "text": ""})
+        self.wm.focus_window(b.id)
+        a.resized_at = 0.0
+        a.feed_text("\x1b]0;user@host: ~\x07$ ")                     # a prompt that sets the window title
+        self.assertFalse(a.bell)
+        self.assertTrue(a.activity)
+        a.feed_text("\x07")
+        self.assertTrue(a.bell)
+        self.wm.focus_window(a.id)
+        self.wm.focus_window(b.id)
+        self.assertFalse(a.activity or a.bell)
+        self.wm.resize(self.wm.cols - 10, self.wm.rows)                  # the shell redraws its prompt after SIGWINCH
+        a.feed_text("\r$ ")
+        self.assertFalse(a.activity)
+
     def test_bad_command_raises(self):
         with self.assertRaises(CommandError):
             self.wm.create_window({"cmd": ["/nonexistent/binary"]})
@@ -502,7 +519,8 @@ class RoutingTests(WMCase):
                     return ""
                 with open(path) as fh:
                     return fh.read()
-            pump(self.wm, 4, lambda: "to-stderr" in content())
+            # stdout and stderr are read independently (threads in the Windows I/O model): wait for both
+            pump(self.wm, 4, lambda: "to-stderr" in content() and "to-stdout" in w.text())
             self.assertIn("to-stderr", content())
             self.assertIn("to-stdout", w.text())
             self.assertNotIn("to-stderr", w.text())
