@@ -43,9 +43,11 @@ jobs:
       - run: python ptw.py doctor          # real ConPTY + console checks
       - run: python run_tests.py --portable
       - run: python scripts/smoke.py
-      # POSIX-shell-dependent tests: informational until they are ported
+      # POSIX-shell-dependent tests: informational until they are ported (some wait for a POSIX shell that is not
+      # there, so cap the time: a timeout counts as an allowed failure and never holds the job for hours)
       - run: python run_tests.py --all
         continue-on-error: true
+        timeout-minutes: 10
 
   # what `pip install pytermwm` gives people: build the sdist + wheel, then run the installed wheel (not the checkout)
   package:
