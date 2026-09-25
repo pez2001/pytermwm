@@ -107,6 +107,12 @@ pytermwm -s work attach  # attach (C-b d to detach)   pytermwm -s work kill
 pytermwm -s work save|restore   # snapshot layout + windows; `autosave:` in the config does it periodically
 ```
 
+Inside a pytermwm window (`$PYTERMWM_WINDOW` is set there) the commands that would take over the terminal refuse to
+run: attaching to the session you are in would show the session inside itself without end. Attaching to another
+session, or `--standalone`, works with `--nested`. Commands that only talk to the session (`run`, `send`, `ctl`,
+`capture`, `status`, ...) work from inside as usual, and `pytermwm up` there builds the project into the current
+session.
+
 ## Themes
 
 `theme NAME` (or `theme next`, `C-b T`). Built in: `default light modern hacker bbs mc c64 amiga nes matrix dos`. Define your own under

@@ -101,6 +101,7 @@ model, which is how the Windows code paths are tested without Windows.
 * [Plugins](docs/plugins.md) - bundled plugins and how to write one
 * [Control API](docs/api.md) - socket ops, HTTP/SSE, MCP, security model
 * [Command reference](docs/reference/commands.md) and [MCP tools](docs/reference/mcp.md) (generated)
+* [Contributing](CONTRIBUTING.md) - bug reports, setting up, tests, generated files, pull requests
 * Project management: [evaluation](docs/evaluation.md), [implementation plan](docs/implementation_plan.md),
   [milestones](docs/milestones.md), [tickets](docs/tickets/), [ideas](docs/ideas.md)
 

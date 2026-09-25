@@ -91,6 +91,41 @@ class EffectTests(PCase):
         self.assertFalse(self.wm.execute("effect matrix ascii chartreuse")["ok"])
         self.assertTrue(self.wm.execute("effect matrix ascii 10,200,90")["ok"])
 
+    def test_fps_option_and_frame_rate_cap(self):
+        self.assertTrue(self.wm.execute("effect matrix binary fps=10")["ok"])
+        self.assertEqual((self.wm.background.fps, self.wm.background.glyphs), (10.0, "01"))
+        self.assertTrue(self.wm.execute("effect starfield")["ok"])
+        self.assertEqual(self.wm.background.fps, 20.0)                     # the default
+        for bad in ("effect plasma fps=0", "effect plasma fps=500", "effect plasma fps=fast"):
+            self.assertFalse(self.wm.execute(bad)["ok"], bad)
+        C.apply_config(self.wm, {"effect": {"name": "plasma", "fps": 5}})
+        self.assertEqual(self.wm.background.fps, 5.0)
+        # tick() asks for a new frame only once per 1/fps: 5 fps over 2 s of 100 ticks -> about 10 frames
+        frames, t = 0, 5000.0
+        for _ in range(100):
+            self.wm.dirty = False
+            t += 0.02
+            self.wm.tick(t)
+            if self.wm.dirty and int(t) == int(t - 0.02):                   # ignore the once-a-second clock redraw
+                frames += 1
+        self.assertTrue(8 <= frames <= 11, frames)
+
+    def test_background_frames_are_reused_between_effect_frames(self):
+        from pytermwm.render import Compositor
+        self.wm.execute("effect matrix fps=10")
+        calls = []
+        real = self.wm.background.render
+        self.wm.background.render = lambda *a, **k: calls.append(1) or real(*a, **k)
+        comp = Compositor(self.wm)
+        import pytermwm.render as R
+        from unittest import mock
+        clock = [100.0]
+        with mock.patch.object(R.time, "time", lambda: clock[0]):
+            for _ in range(20):                    # 20 redraws in 0.2 s (a window printing a lot) ...
+                comp.compose(self.wm.cols, self.wm.rows)
+                clock[0] += 0.01
+        self.assertLessEqual(len(calls), 4)        # ... render the 10 fps effect only 2-3 times
+
     def test_effect_off_aliases(self):
         for word in ("off", "none", "stop"):
             self.assertTrue(self.wm.execute("effect plasma")["ok"])
