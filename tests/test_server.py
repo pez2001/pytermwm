@@ -445,6 +445,19 @@ class WebAndMcpTests(DaemonCase):
         self.assertEqual(out[0]["error"]["code"], -32700)
         self.assertEqual(out[1]["id"], 5)
 
+    def test_mcp_without_a_running_session_says_so(self):
+        # what an MCP client (LM Studio, ...) shows when the session it points at was never started
+        msgs = [{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18"}},
+                {"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+                 "params": {"name": "run_command", "arguments": {"line": "layout grid"}}},
+                {"jsonrpc": "2.0", "id": 3, "method": "resources/read", "params": {"uri": "pytermwm://state"}}]
+        r = self.cli("-s", "no-such-session", "mcp", input="".join(json.dumps(m) + "\n" for m in msgs))
+        out = {m["id"]: m for m in (json.loads(l) for l in r.stdout.splitlines())}
+        self.assertIn("protocolVersion", out[1]["result"])                 # the handshake still works
+        self.assertTrue(out[2]["result"]["isError"])
+        self.assertIn("no pytermwm session 'no-such-session' is running", out[2]["result"]["content"][0]["text"])
+        self.assertIn("pytermwm -s no-such-session start", out[3]["error"]["message"])
+
 
 if __name__ == "__main__":
     unittest.main()
