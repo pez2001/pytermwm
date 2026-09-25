@@ -502,7 +502,8 @@ class RoutingTests(WMCase):
                     return ""
                 with open(path) as fh:
                     return fh.read()
-            pump(self.wm, 4, lambda: "to-stderr" in content())
+            # stdout and stderr are read independently (threads in the Windows I/O model): wait for both
+            pump(self.wm, 4, lambda: "to-stderr" in content() and "to-stdout" in w.text())
             self.assertIn("to-stderr", content())
             self.assertIn("to-stdout", w.text())
             self.assertNotIn("to-stderr", w.text())
