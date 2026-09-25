@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import json
 import os
-import shlex
 import time
 from typing import Dict, List, Optional, Tuple
 
@@ -58,12 +57,14 @@ def truthy(s: str, current: Optional[bool] = None) -> bool:
     raise CommandError("expected on/off/toggle, got %r" % s)
 
 
-def cmd_string(rest: List[str]) -> Optional[str]:
+def cmd_string(rest: List[str]):
+    """`-- CMD` (one word: a command line for the shell) or `-- PROG ARG...` (an argv, run as is without a shell: joining
+    it into a POSIX-quoted string would be read wrongly by PowerShell / cmd.exe on Windows)."""
     if not rest:
         return None
     if len(rest) == 1:
         return rest[0]
-    return shlex.join(rest)
+    return list(rest)
 
 
 # completers
@@ -366,7 +367,7 @@ def c_new_window(wm, args):
     cmd = cmd_string(rest)
     if cmd:
         spec["cmd"] = cmd
-        spec.setdefault("title", cmd.split()[0] if cmd else "")
+        spec.setdefault("title", cmd.split()[0] if isinstance(cmd, str) else cmd[0])
     w = wm.create_window(spec)
     return {"id": w.id, "title": w.title}
 

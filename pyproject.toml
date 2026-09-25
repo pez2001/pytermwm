@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytermwm"
+dynamic = ["version"]
+description = "A modern terminal window manager in pure Python: tiled/floating windows, desktops, themes, CLI, web UI and MCP control"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "LGPL-2.1-or-later"
+license-files = ["LICENSE"]
+dependencies = ["PyYAML>=5.4"]
+keywords = ["terminal", "window manager", "tmux", "multiplexer", "tui", "mcp"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Terminals :: Terminal Emulators/X Terminals",
+    "Topic :: System :: Shells",
+]
+
+[project.urls]
+Homepage = "https://github.com/pez2001/pytermwm"
+Documentation = "https://github.com/pez2001/pytermwm/blob/main/docs/user_guide.md"
+Issues = "https://github.com/pez2001/pytermwm/issues"
+
+[project.scripts]
+pytermwm = "pytermwm.cli:main"
+ptw = "pytermwm.cli:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "pytermwm.__version__"}
+
+[tool.setuptools.packages.find]
+include = ["pytermwm*"]
+
+[tool.setuptools.package-data]
+pytermwm = ["web/*"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*.pyc"]

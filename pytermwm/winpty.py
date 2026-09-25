@@ -22,6 +22,7 @@ from .compat import Pump, ThreadWriter
 PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE = 0x00020016
 EXTENDED_STARTUPINFO_PRESENT = 0x00080000
 CREATE_UNICODE_ENVIRONMENT = 0x00000400
+STARTF_USESTDHANDLES = 0x00000100
 STILL_ACTIVE = 259
 INFINITE = 0xFFFFFFFF
 
@@ -200,6 +201,10 @@ class ConPtySource(Source):
 
         si = a.STARTUPINFOEXW()
         si.StartupInfo.cb = ct.sizeof(a.STARTUPINFOEXW)
+        # without STARTF_USESTDHANDLES the child inherits our own standard handles whenever they are redirected (the
+        # daemon's are its log file, CI's are pipes) and writes there instead of into the pseudo console; NULL handles
+        # make it use the pseudo console
+        si.StartupInfo.dwFlags = STARTF_USESTDHANDLES
         si.lpAttributeList = attr
         pi = a.PROCESS_INFORMATION()
         cmdline = ct.create_unicode_buffer(command_line(self.argv))
