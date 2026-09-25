@@ -13,7 +13,7 @@ including file wins.
 
 | key | default | meaning |
 |---|---|---|
-| `theme` | `default` | a built-in (`default light modern hacker bbs mc c64 amiga`), a name from `themes:`, or an inline mapping |
+| `theme` | `default` | a built-in (`default light modern hacker bbs mc c64 amiga nes matrix dos`), a name from `themes:`, or an inline mapping |
 | `themes` | | mapping `name -> theme` (colors, border sets, decorations); see `pytermwm/theme.py` `DEFAULTS` for every option |
 | `layout` | `tile` | initial layout of desktops: `tile master spiral columns rows grid centered monocle table float` |
 | `desktops` | `[main]` | list of names, or of mappings `{name, layout, ...params}` |

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+import re
 import os
 import threading
 import time
@@ -39,6 +40,8 @@ DEFAULT_CONFIG = {
     "window_defaults": {},
     "confirm_quit": False,
 }
+
+_OSC_RE = re.compile(r"\x1b\][^\x07\x1b]*(?:\x07|\x1b\\)")    # OSC strings (title, cwd, ...): their BEL is a terminator
 
 
 class Desktop:
@@ -92,6 +95,7 @@ class WindowManager(SelectionMixin):
         self.quit_requested = False
         self.detach_requested = False
         self.redraw_requested = False    # repaint every client from scratch on the next frame
+        self.screen_recorder = None      # screenshot.ScreenRecorder while `record-screen` runs
         self.start_time = time.time()
         self.sock_path: Optional[str] = None
         self.background = None           # effect object with render(cols, rows, t) -> cells
@@ -1255,11 +1259,13 @@ class WindowManager(SelectionMixin):
             self.message("restart failed: %s" % e, "err")
 
     # ------------------------------------------------------------------ output hooks / routing
-    def window_output(self, w: Window, text: str, stream: str, raw: bytes):
+    def window_output(self, w: Window, text: str, stream: str, raw: bytes, bell: Optional[bool] = None):
         self.dirty = True
-        if w.desktop is not self.desk or w.id != w.desktop.focus:
+        if (w.desktop is not self.desk or w.id != w.desktop.focus) and time.time() - w.resized_at > 1.0:
             w.activity = True
-        if "\x07" in text:
+        if bell is None:                  # not parsed by a screen: a BEL that only ends an OSC (window title) is no bell
+            bell = "\x07" in _OSC_RE.sub("", text)
+        if bell:
             w.bell = True
             self.emit("bell", window=w)
         r = w.routes.get(stream)
@@ -1355,6 +1361,9 @@ class WindowManager(SelectionMixin):
     # ------------------------------------------------------------------ shutdown
     def shutdown(self):
         self._closing = True
+        if self.screen_recorder is not None:
+            self.screen_recorder.close()
+            self.screen_recorder = None
         for w in list(self.windows.values()):
             try:
                 w.close()

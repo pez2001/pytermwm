@@ -40,7 +40,7 @@ class ConfigError(Exception):
 
 DEFAULT_CONFIG_YAML = """\
 # pytermwm configuration.  Changes to this file are applied immediately.
-theme: default            # default light modern hacker bbs mc c64 amiga (or an inline theme mapping)
+theme: default            # default light modern hacker bbs mc c64 amiga nes matrix dos (or an inline theme mapping)
 layout: tile              # tile master spiral columns rows grid centered monocle table float
 desktops: [main, dev, logs]
 history: 5000             # scrollback lines per window

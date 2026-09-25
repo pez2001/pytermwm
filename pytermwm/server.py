@@ -549,11 +549,17 @@ class Server:
         wm = self.wm
         self._sync_mouse()
         tty = [c for c in self.clients if c.hello and c.writer]
-        if not tty:
+        rec = wm.screen_recorder
+        if not tty and rec is None:
             wm.pending_terminal_output.clear()          # nobody to show a notification to
             return
         frame = self.comp.compose(wm.cols, wm.rows)
         self.last_frame = frame
+        if rec is not None:
+            rec.frame(frame)
+            if rec.closed:                              # disk full or the like: stop, never disturb the session
+                wm.screen_recorder = None
+                wm.message("screen recording stopped: %s" % rec.error, "err", 6.0)
         if wm.redraw_requested:
             wm.redraw_requested = False
             for c in tty:
