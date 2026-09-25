@@ -16,12 +16,20 @@ and the project uses [semantic versioning](https://semver.org/).
 - `redraw` (`C-b C-l`) repaints every attached terminal from scratch.
 - `scripts/make_media.py` generates the README screenshots and demo recording from a scripted session.
 - `CONTRIBUTING.md`: how to report bugs, run the tests and send pull requests.
+- `fps=N` for background effects (1-60, default 20): `effect matrix fps=15`, `effect: {name: plasma, fps: 10}`.
+- Setting up pytermwm's MCP server in LM Studio and other MCP clients, with a debugging checklist
+  ([docs/api.md](docs/api.md#lm-studio-and-other-mcp-clients)).
 
 ### Changed
+- Background effects are much cheaper: at most 20 frames per second, far less redrawn per frame, and every frame is
+  sent as one synchronized update. On a 200x55 screen `matrix` went from 37% to 7% CPU and `plasma` from 262% to 11%.
 - `new-window -- PROG ARG...` (and `pytermwm run -- PROG ARG...`) starts the program directly with exactly these
   arguments instead of through the shell. A single argument is still a shell command line.
 
 ### Fixed
+- While a background effect runs, the screen is no longer redrawn as fast as possible, and the cursor is no longer
+  hidden and shown again on every frame (it looked like very fast blinking and made windows lag).
+- MCP tools report "no pytermwm session ... is running" (and how to start it) instead of an internal error.
 - Running `pytermwm` (or `python ptw.py`) inside a pytermwm window no longer attaches the session to itself and
   crashes the window manager: it is refused with a hint. Attaching to another session from inside needs `--nested`.
 - Windows: programs in a window wrote to pytermwm's own redirected output (the daemon's log file) instead of
