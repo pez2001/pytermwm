@@ -1,0 +1,4 @@
+#!/bin/sh
+# Run pytermwm from this checkout without installing it.  Usage: ./ptw [pytermwm arguments]
+here=$(cd "$(dirname "$0")" && pwd)
+exec "${PYTHON:-python3}" "$here/ptw.py" "$@"

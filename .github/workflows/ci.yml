@@ -1,0 +1,48 @@
+name: ci
+on: [push, pull_request]
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ matrix.python }}"}
+      - run: pip install -r requirements.txt
+      - run: python ptw.py doctor
+      - run: python run_tests.py --all
+      - run: python scripts/smoke.py
+      # the Windows I/O model (threaded pumps, loopback TCP endpoint) exercised on Linux
+      - run: python run_tests.py --all --threaded-io --tcp
+      - run: python scripts/smoke.py
+        env: {PYTERMWM_THREADED_IO: "1", PYTERMWM_TCP: "1"}
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -r requirements.txt
+      - run: python run_tests.py --all
+      - run: python scripts/smoke.py
+
+  windows:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "${{ matrix.python }}"}
+      - run: pip install -r requirements.txt
+      - run: python ptw.py doctor          # real ConPTY + console checks
+      - run: python run_tests.py --portable
+      - run: python scripts/smoke.py
+      # POSIX-shell-dependent tests: informational until they are ported
+      - run: python run_tests.py --all
+        continue-on-error: true

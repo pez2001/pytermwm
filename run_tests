@@ -1,0 +1,4 @@
+#!/bin/sh
+# Run the test-suite from this checkout without installing anything.  Usage: ./run_tests [options]  (see run_tests.py --help)
+here=$(cd "$(dirname "$0")" && pwd)
+exec "${PYTHON:-python3}" "$here/run_tests.py" "$@"

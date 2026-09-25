@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pytermwm</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23222'/%3E%3Cpath d='M3 5l3 3-3 3M8 11h5' stroke='%2388c0d0' stroke-width='1.6' fill='none'/%3E%3C/svg%3E">
+</head>
+<body>
+<header>
+  <div class="brand"><span class="logo">&gt;_</span> pytermwm <span id="session" class="dim"></span></div>
+  <nav id="tabs" role="tablist">
+    <button data-tab="screen" class="active" role="tab">Screen</button>
+    <button data-tab="windows" role="tab">Windows</button>
+    <button data-tab="console" role="tab">Console</button>
+    <button data-tab="config" role="tab">Config</button>
+    <button data-tab="automation" role="tab">Automation</button>
+    <button data-tab="scripts" role="tab">Scripts</button>
+    <button data-tab="plugins" role="tab">Plugins</button>
+    <button data-tab="logs" role="tab">Logs</button>
+  </nav>
+  <div id="conn" class="conn bad" title="connection">offline</div>
+</header>
+
+<main>
+  <!-- ------------------------------------------------------------ screen -->
+  <section id="tab-screen" class="tab active">
+    <div class="toolbar">
+      <label>theme <select id="sel-theme"></select></label>
+      <label>layout <select id="sel-layout">
+        <option>tile</option><option>master</option><option>spiral</option><option>columns</option><option>rows</option>
+        <option>grid</option><option>centered</option><option>monocle</option><option>table</option><option>float</option></select></label>
+      <label>font <input id="font-size" type="number" min="6" max="32" value="14" style="width:4em"></label>
+      <label title="when the session follows a real terminal's size, shrink the font instead of showing a scrollbar"><input id="font-fit" type="checkbox" checked> fit</label>
+      <button data-cmd="new-window" title="M-Enter">new window</button>
+      <button data-cmd="palette">palette</button>
+      <button data-cmd="prompt">prompt</button>
+      <button data-cmd="zoom">zoom</button>
+      <button data-cmd="help">help</button>
+      <span id="size-info" class="dim"></span>
+    </div>
+    <div class="toolbar">
+      <span class="dim">desktops</span>
+      <div id="desk-bar" class="desk-bar"></div>
+      <button id="desk-new" title="create a new desktop">+ desktop</button>
+    </div>
+    <div id="screen-wrap">
+      <div id="screen" tabindex="0" aria-label="terminal"></div>
+      <div id="cursor"></div>
+      <span id="measure">MMMMMMMMMM</span>
+    </div>
+    <p class="hint">Click the screen to focus it, then type. Keys, mouse and paste go to pytermwm exactly like on a real terminal.</p>
+  </section>
+
+  <!-- ------------------------------------------------------------ windows -->
+  <section id="tab-windows" class="tab">
+    <div class="toolbar">
+      <button id="win-refresh">refresh</button>
+      <form id="new-win" class="inline">
+        <input name="cmd" placeholder="command (empty = shell)" size="26">
+        <input name="title" placeholder="title" size="12">
+        <select name="kind"><option value="">terminal</option><option>pipe</option><option>viewer</option><option>status</option><option>log</option><option>chart</option><option>help</option><option>dirwatch</option></select>
+        <label><input type="checkbox" name="floating"> floating</label>
+        <button>open</button>
+      </form>
+    </div>
+    <table id="win-table"><thead><tr><th>id</th><th>title</th><th>kind</th><th>size</th><th>state</th><th>desktop</th><th></th></tr></thead><tbody></tbody></table>
+    <h3 id="cap-title" hidden></h3>
+    <pre id="capture" hidden></pre>
+  </section>
+
+  <!-- ------------------------------------------------------------ console -->
+  <section id="tab-console" class="tab">
+    <pre id="console-out" class="out"></pre>
+    <form id="console-form" class="inline wide">
+      <span class="prompt">❯</span>
+      <input id="console-in" list="cmd-list" autocomplete="off" spellcheck="false" placeholder="any pytermwm command, e.g.  layout grid ; theme hacker">
+      <datalist id="cmd-list"></datalist>
+      <button>run</button>
+    </form>
+    <details><summary>command reference</summary><table id="cmd-table"><thead><tr><th>command</th><th>usage</th><th>help</th></tr></thead><tbody></tbody></table></details>
+  </section>
+
+  <!-- ------------------------------------------------------------ config -->
+  <section id="tab-config" class="tab">
+    <div class="toolbar">
+      <button id="cfg-save" class="primary">save &amp; apply</button>
+      <button id="cfg-reload">reload from disk</button>
+      <button id="cfg-init">starter config</button>
+      <span id="cfg-path" class="dim"></span>
+      <span id="cfg-status" class="status"></span>
+    </div>
+    <div class="split">
+      <textarea id="cfg-text" spellcheck="false" wrap="off"></textarea>
+      <div id="cfg-msgs" class="msgs"></div>
+    </div>
+    <p class="hint">The file is validated while you type. Saving writes it and applies it immediately (windows, layouts, themes, keys, plugins and rules follow the file).</p>
+  </section>
+
+  <!-- ------------------------------------------------------------ automation -->
+  <section id="tab-automation" class="tab">
+    <h3>Rules</h3>
+    <table id="rule-table"><thead><tr><th>rule</th><th>trigger</th><th>fired</th><th>last error</th><th></th></tr></thead><tbody></tbody></table>
+    <h3>Rule builder</h3>
+    <form id="rule-form" class="grid-form">
+      <label>name <input name="name" required pattern="[A-Za-z0-9_.\-]+" placeholder="fullscreen-on-error"></label>
+      <label>when
+        <select name="trigger">
+          <option value="output_matches">output matches (regex)</option>
+          <option value="output_changed">any output</option>
+          <option value="idle">idle for N seconds</option>
+          <option value="exit">process exits</option>
+          <option value="interval">every N seconds</option>
+          <option value="event">WM event</option>
+          <option value="status">status item</option>
+        </select></label>
+      <label>value <input name="value" placeholder="ERROR|FAILED   /  30  /  window_created  /  error"></label>
+      <label>window filter <input name="window" placeholder="name, id, title glob or *"></label>
+      <label>status condition <select name="cond"><option value="equals">equals</option><option value="matches">matches</option><option value="above">above</option><option value="below">below</option></select></label>
+      <label class="wide">actions (one per line; variables $window $title $line $1 $code …; prefix ! for shell)
+        <textarea name="actions" rows="4" placeholder="focus $window&#10;zoom on&#10;message build failed: $line"></textarea></label>
+      <label>undo after (s) <input name="undo_after" type="number" min="0" step="1"></label>
+      <label>cooldown (s) <input name="cooldown" type="number" min="0" step="1"></label>
+      <div class="wide"><button class="primary">add to configuration</button> <span id="rule-status" class="status"></span></div>
+    </form>
+    <pre id="rule-preview" class="out small"></pre>
+  </section>
+
+  <!-- ------------------------------------------------------------ scripts -->
+  <section id="tab-scripts" class="tab">
+    <div class="toolbar">
+      <select id="script-list"></select>
+      <button id="script-new">new</button>
+      <button id="script-save" class="primary">save &amp; run</button>
+      <span id="script-status" class="status"></span>
+    </div>
+    <div class="split">
+      <textarea id="script-text" spellcheck="false" wrap="off"></textarea>
+      <div class="msgs"><h4>script API</h4>
+<pre class="small">wm                       the WindowManager
+api.command(name, fn)    fn(wm, args) -> result
+api.on(event, fn)        window_created, window_focus, ...
+api.on_output(regex, fn) fn(window, line, match)
+api.every(seconds, fn)   periodic call
+api.key("M-g", "cmd")    bind a key
+api.status(key, value)   status line item
+wm.execute("layout grid")  run any command
+api.log.info("...")      logging</pre>
+        <p class="dim">Scripts run inside the session with full access to the window manager: only edit what you trust. Files live next to the configuration in <code>scripts/</code>; they reload when saved.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------ plugins -->
+  <section id="tab-plugins" class="tab">
+    <table id="plugin-table"><thead><tr><th>plugin</th><th>state</th><th>provides</th><th></th></tr></thead><tbody></tbody></table>
+  </section>
+
+  <!-- ------------------------------------------------------------ logs -->
+  <section id="tab-logs" class="tab">
+    <div class="toolbar">
+      <select id="log-level"><option value="">all levels</option><option>debug</option><option>info</option><option>warning</option><option>error</option></select>
+      <input id="log-pattern" placeholder="filter (regex)">
+      <label><input id="log-follow" type="checkbox" checked> follow</label>
+      <h4 style="margin:0 0 0 1em">events</h4>
+    </div>
+    <div class="split">
+      <pre id="log-out" class="out"></pre>
+      <pre id="event-out" class="out small"></pre>
+    </div>
+  </section>
+</main>
+<div id="toast" role="status"></div>
+<script src="/app.js"></script>
+</body>
+</html>

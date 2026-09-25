@@ -1,0 +1,3 @@
+# pytermwm keeps its dependencies minimal: the core runs on the standard library
+# plus PyYAML for configuration files.
+PyYAML>=5.4
