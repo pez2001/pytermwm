@@ -66,3 +66,79 @@ class ResizeAfterRawModeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class NestedAttachTests(unittest.TestCase):
+    """Running `pytermwm` (or `python ptw.py`) in a shell inside a pytermwm window attached that shell to the very
+    session it runs in: the session drew itself into one of its own windows, over and over, until the window manager
+    died. Taking over the terminal from inside a window is now refused (the same session always, another one or
+    --standalone unless --nested); commands that only talk to the session (run, send, ctl, ...) still work."""
+
+    INSIDE = {"PYTERMWM_SESSION": "work", "PYTERMWM_WINDOW": "3"}
+
+    def env(self, **extra):
+        env = {k: v for k, v in __import__("os").environ.items() if not k.startswith("PYTERMWM_")}
+        env.update(extra)
+        return mock.patch.dict("os.environ", env, clear=True)
+
+    def test_rules(self):
+        from pytermwm.client import inside_session, nesting_refused
+        with self.env():
+            self.assertIsNone(inside_session())
+            self.assertIsNone(nesting_refused("work"))
+            self.assertIsNone(nesting_refused(None))
+        with self.env(PYTERMWM_SESSION="work"):            # a chosen default session, not a window
+            self.assertIsNone(inside_session())
+            self.assertIsNone(nesting_refused("work"))
+        with self.env(**self.INSIDE):
+            self.assertEqual(inside_session(), "work")
+            self.assertIn("inside session 'work'", nesting_refused("work"))
+            self.assertIn("inside session 'work'", nesting_refused("work", nested=True))   # never: it cannot work
+            self.assertIn("--nested", nesting_refused("other"))
+            self.assertIn("--nested", nesting_refused(None))
+            self.assertIsNone(nesting_refused("other", nested=True))
+            self.assertIsNone(nesting_refused(None, nested=True))
+
+    def test_attach_refuses_before_connecting(self):
+        from pytermwm import client
+        with self.env(**self.INSIDE), mock.patch.object(P, "connect") as connect, \
+                mock.patch("sys.stderr", new_callable=__import__("io").StringIO) as err:
+            self.assertEqual(client.attach("work"), 1)
+        connect.assert_not_called()
+        self.assertIn("pytermwm run/send/ctl", err.getvalue())
+
+    def test_cli_default_command_is_refused_without_starting_anything(self):
+        from pytermwm import cli
+        for argv in ([], ["attach"], ["--standalone"], ["-s", "other", "attach"]):
+            with self.env(**self.INSIDE), mock.patch.object(cli, "start_daemon") as start, \
+                    mock.patch("pytermwm.server.run_standalone") as standalone, \
+                    mock.patch("sys.stderr", new_callable=__import__("io").StringIO):
+                self.assertEqual(cli.main(argv), 1, argv)
+            start.assert_not_called()
+            standalone.assert_not_called()
+
+    def test_cli_nested_allows_another_session_but_never_this_one(self):
+        from pytermwm import cli, client
+        with self.env(**self.INSIDE), mock.patch.object(P, "list_sessions", return_value=["work", "other"]), \
+                mock.patch.object(client, "attach", return_value=0) as attach, \
+                mock.patch("sys.stderr", new_callable=__import__("io").StringIO):
+            self.assertEqual(cli.main(["--nested", "-s", "other", "attach"]), 0)
+            attach.assert_called_once()
+            self.assertEqual(cli.main(["--nested", "attach"]), 1)          # "work": the session we are in
+
+    def test_hello_says_where_the_client_runs(self):
+        import json
+        from pytermwm import client
+        sent = []
+        sock = mock.MagicMock()
+        sock.sendall.side_effect = sent.append
+        sock.recv.return_value = b""
+        with self.env(**{"PYTERMWM_SESSION": "work", "PYTERMWM_WINDOW": "3"}), \
+                mock.patch.object(P, "connect", return_value=sock), \
+                mock.patch("sys.stderr", new_callable=__import__("io").StringIO):
+            try:
+                client.attach("other", nested=True)
+            except Exception:
+                pass                                    # RawTerminal needs a real tty; HELLO is sent before that
+        hello = [json.loads(p) for k, p in _decode_all(sent) if k == P.HELLO]
+        self.assertEqual(hello[0]["inside"], "work")
