@@ -321,7 +321,14 @@ def socket_call(session: str) -> Call:
     from .protocol import ControlClient
 
     def call(req: dict) -> dict:
-        c = ControlClient(session)
+        try:
+            c = ControlClient(session)
+        except (FileNotFoundError, ConnectionRefusedError, OSError) as e:
+            # the usual first-time problem with an MCP client (LM Studio, Claude Desktop, ...): the MCP server runs, the
+            # pytermwm session it talks to does not. Say so plainly instead of "[Errno 2] No such file or directory".
+            return {"ok": False, "error": "no pytermwm session %r is running (%s). Start one first: `pytermwm -s %s start` "
+                                          "(or attach to it in a terminal); the MCP server does not start it"
+                                          % (session, e.__class__.__name__, session)}
         try:
             return c.request(req, 60.0)
         finally:
