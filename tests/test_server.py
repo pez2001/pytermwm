@@ -233,6 +233,46 @@ class AttachTests(DaemonCase):
         finally:
             c.close()
 
+    def test_ptw_inside_its_own_session_is_refused_and_the_session_survives(self):
+        # the reported crash: `python ptw.py` in a shell inside the session attached to that same session
+        ptw = os.path.join(ROOT, "ptw.py")
+        self.s("run", "--name", "nest", "--", sys.executable, "-c",
+               "import subprocess, sys; r = subprocess.call([sys.executable, %r]); print('nest-rc=%%d' %% r); "
+               "import time; time.sleep(30)" % ptw)
+        out = self.wait_text("nest", "nest-rc=1", timeout=15)
+        self.assertIn("inside session", out.replace("\n", ""))           # the message wraps in a narrow window
+        self.assertEqual(self.s("ls").returncode, 0)                    # the window manager is still alive
+        self.assertIn("nest-rc=1", self.s("capture", "-t", "nest").stdout)
+
+    def test_server_refuses_a_client_from_its_own_window(self):
+        # an older client (no CLI guard) that says it runs inside this session gets EXIT, not the screen
+        from pytermwm import protocol as P
+        old = dict(os.environ)
+        os.environ.update({k: self.env[k] for k in ("PYTERMWM_RUNTIME_DIR", "PYTERMWM_STATE_DIR")})
+        try:
+            sock = P.connect(self.session)
+            sock.sendall(P.pack_json(P.HELLO, {"cols": 80, "rows": 24, "inside": self.session}))
+            mb, got, end = P.MessageBuffer(), [], time.time() + 5
+            sock.settimeout(1)
+            while time.time() < end and not any(k == P.EXIT for k, _ in got):
+                try:
+                    data = sock.recv(65536)
+                except OSError:
+                    continue
+                if not data:
+                    break
+                got.extend(mb.feed(data))
+            sock.close()
+        finally:
+            os.environ.clear()
+            os.environ.update(old)
+        kinds = [k for k, _ in got]
+        self.assertIn(P.EXIT, kinds)
+        self.assertNotIn(P.OUTPUT, kinds)
+        reason = json.loads([p for k, p in got if k == P.EXIT][0].decode())["reason"]
+        self.assertIn("inside session", reason)
+        self.assertEqual(self.s("ls").returncode, 0)
+
     def test_two_clients_share_session_and_resize(self):
         a = Attached(self.env, self.session, 100, 30)
         b = Attached(self.env, self.session, 70, 20)
