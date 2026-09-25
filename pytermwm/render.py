@@ -392,7 +392,10 @@ class FrameWriter:
             prev = None
         depth = self.depth
         if prev is None:
-            out.append("\x1b[0m\x1b[2J")
+            # autowrap off and a full-screen scroll region: a row that comes out wider than we measured it (a glyph the
+            # terminal draws double width) must not wrap and scroll the screen -- the diff would then paint onto a shifted
+            # screen and the status line vanish until the next full repaint
+            out.append("\x1b[?7l\x1b[r\x1b[0m\x1b[2J")
         out.append("\x1b[?25l")
         cur_style = None
         for y, row in enumerate(cells):

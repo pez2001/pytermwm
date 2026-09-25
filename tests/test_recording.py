@@ -273,3 +273,92 @@ class ReplayTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ScreenshotTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        os.environ["PYTERMWM_STATE_DIR"] = self.tmp
+        self.wm = make_wm(60, 16)
+        self.wm.create_window({"kind": "text", "title": "hello", "text": "screenshot <me> & █ block"})
+
+    def tearDown(self):
+        self.wm.shutdown()
+
+    def run_(self, line):
+        return self.wm.run_command_line(line, source="t", raise_errors=True)
+
+    def test_svg_ansi_and_text(self):
+        import xml.dom.minidom
+        svg = self.run_("screenshot %s" % os.path.join(self.tmp, "s.svg"))
+        with open(svg, encoding="utf-8") as f:
+            doc = xml.dom.minidom.parseString(f.read())              # well-formed, text escaped
+        texts = " ".join(t.firstChild.data for t in doc.getElementsByTagName("text") if t.firstChild)
+        self.assertIn("screenshot <me> &", texts)
+        self.assertIn("1:main", texts)
+        self.assertTrue(doc.getElementsByTagName("rect"))
+        txt = self.run_("screenshot %s" % os.path.join(self.tmp, "s.txt"))
+        with open(txt, encoding="utf-8") as f:
+            lines = f.read().splitlines()
+        self.assertEqual(len(lines), 16)
+        self.assertIn("screenshot <me>", lines[1])
+        ans = self.run_("screenshot %s" % os.path.join(self.tmp, "s.ans"))
+        with open(ans, encoding="utf-8", newline="") as f:
+            scr = Screen(20, 80, 0)                                   # `cat file.ans` in a (wider) terminal
+            scr.feed(f.read())
+        self.assertIn("screenshot <me>", Screen.line_text(scr.lines[1]))
+
+    def test_refuses_overwrite_and_unknown_format(self):
+        p = os.path.join(self.tmp, "a.svg")
+        self.run_("screenshot " + p)
+        with self.assertRaises(CommandError):
+            self.run_("screenshot " + p)
+        self.run_("screenshot -f " + p)
+        with self.assertRaises(CommandError):
+            self.run_("screenshot %s" % os.path.join(self.tmp, "a.png"))
+
+    def test_default_path_is_in_the_state_dir(self):
+        p = self.run_("screenshot")
+        self.assertTrue(p.startswith(self.tmp) and p.endswith(".svg") and os.path.exists(p), p)
+
+    def test_screen_recording_replays_to_the_screen(self):
+        from pytermwm import screenshot
+        p = os.path.join(self.tmp, "screen.cast")
+        self.run_("record-screen " + p)
+        rec = self.wm.screen_recorder
+        rec.frame(screenshot.compose(self.wm), 0.0)
+        self.run_("theme dos")
+        rec.frame(screenshot.compose(self.wm), 1.0)
+        self.wm.resize(50, 14)
+        rec.frame(screenshot.compose(self.wm), 2.0)
+        self.assertIn("saved", self.run_("record-screen-stop"))
+        self.assertIsNone(self.wm.screen_recorder)
+        with self.assertRaises(CommandError):
+            self.run_("record-screen-stop")
+        header, events = recording.read_cast(p)
+        self.assertEqual((header["version"], header["width"], header["height"]), (2, 60, 16))
+        self.assertIn((2.0, "r", "50x14"), [(t, k, d) for t, k, d in events])
+        scr = Screen(14, 50, 0)
+        for _t, kind, data in events:
+            if kind == "r":
+                c, r = data.split("x")
+                scr = Screen(int(r), int(c), 0)
+            elif kind == "o":
+                scr.feed(data)
+        text = "\n".join(Screen.line_text(l) for l in scr.lines)
+        self.assertIn("screenshot <me>", text)
+        self.assertIn("C:\\>", text)                                  # the dos theme's status line
+
+
+class ThemeTests(unittest.TestCase):
+    def test_new_themes_render(self):
+        wm = make_wm(60, 16)
+        try:
+            wm.create_window({"kind": "text", "title": "t", "text": "x"})
+            for name, needle in (("nes", "PLAYER 1"), ("matrix", "wake up, neo"), ("dos", "C:\\>")):
+                wm.run_command_line("theme " + name, source="t", raise_errors=True)
+                self.assertEqual(wm.theme.name, name)
+                scr, _frame = screen_of_frame(wm)
+                self.assertIn(needle, Screen.line_text(scr.lines[-1]))
+        finally:
+            wm.shutdown()
