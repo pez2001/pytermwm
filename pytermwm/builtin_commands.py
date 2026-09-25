@@ -1093,6 +1093,12 @@ def c_routes(wm, args):
 
 
 # ----------------------------------------------------------------------------- session / server
+@command("redraw", usage="redraw", help="Repaint the whole screen of every attached client (when the terminal shows garbage)", category="ui")
+def c_redraw(wm, args):
+    wm.redraw_requested = True
+    wm.dirty = True
+
+
 @command("detach", usage="detach", help="Detach this client (session keeps running)", category="session")
 def c_detach(wm, args):
     wm.detach_requested = True

@@ -554,6 +554,10 @@ class Server:
             return
         frame = self.comp.compose(wm.cols, wm.rows)
         self.last_frame = frame
+        if wm.redraw_requested:
+            wm.redraw_requested = False
+            for c in tty:
+                c.writer.invalidate()
         extra = "".join(wm.pending_terminal_output).encode("utf-8", "replace")
         wm.pending_terminal_output.clear()
         for c in tty:

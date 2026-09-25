@@ -351,7 +351,7 @@ DEFAULT_KEYS = {
         "5": "desktop 5", "6": "desktop 6", "7": "desktop 7", "8": "desktop 8", "9": "desktop 9",
         "C": "desktop new", "&": "close-desktop", "w": "palette windows", "s": "palette sessions",
         "r": "mode resize", "m": "mode move", "T": "theme next", "e": "cp437 toggle", "q": "quit-dialog",
-        "D": "debug", "S": "session-save",
+        "D": "debug", "S": "session-save", "C-l": "redraw",
     },
     "modes": {
         "resize": {

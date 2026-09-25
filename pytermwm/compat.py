@@ -715,10 +715,10 @@ def _safe_read(fd: int) -> bytes:
 class RawTerminal:
     """Context manager: raw mode + alternate screen (works on POSIX ttys and the Windows console)."""
 
-    ENTER = "\x1b[?1049h\x1b[?25l\x1b[2J\x1b[H\x1b[?2004h\x1b[?1004h"
+    ENTER = "\x1b[?1049h\x1b[?7l\x1b[?25l\x1b[2J\x1b[H\x1b[?2004h\x1b[?1004h"
     MOUSE_ON = "\x1b[?1000h\x1b[?1002h\x1b[?1006h"
     MOUSE_OFF = "\x1b[?1006l\x1b[?1002l\x1b[?1000l"
-    LEAVE = "\x1b[?1004l\x1b[?2004l\x1b[0m\x1b[?25h\x1b[?1049l"
+    LEAVE = "\x1b[?1004l\x1b[?2004l\x1b[0m\x1b[?7h\x1b[?25h\x1b[?1049l"
 
     def __init__(self, fd_in: int = 0, fd_out: int = 1, mouse: bool = True, palette: Optional[Dict[int, Tuple[int, int, int]]] = None):
         self.fd_in, self.fd_out = fd_in, fd_out

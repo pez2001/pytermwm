@@ -91,6 +91,12 @@ class EffectTests(PCase):
         self.assertFalse(self.wm.execute("effect matrix ascii chartreuse")["ok"])
         self.assertTrue(self.wm.execute("effect matrix ascii 10,200,90")["ok"])
 
+    def test_effect_off_aliases(self):
+        for word in ("off", "none", "stop"):
+            self.assertTrue(self.wm.execute("effect plasma")["ok"])
+            self.assertTrue(self.wm.execute("effect " + word)["ok"])
+            self.assertIsNone(self.wm.background, word)
+
     def test_config_effect_mapping(self):
         C.apply_config(self.wm, {"effect": {"name": "matrix", "glyphs": "hex", "color": "amber"}})
         self.assertEqual(self.wm.background.name, "matrix")

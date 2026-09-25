@@ -91,6 +91,7 @@ class WindowManager(SelectionMixin):
         self.hist_time: Dict[str, float] = {}
         self.quit_requested = False
         self.detach_requested = False
+        self.redraw_requested = False    # repaint every client from scratch on the next frame
         self.start_time = time.time()
         self.sock_path: Optional[str] = None
         self.background = None           # effect object with render(cols, rows, t) -> cells
