@@ -292,6 +292,20 @@ class PaletteTests(UICase):
         self.keys("\x1b")
         self.assertFalse(self.wm.palette.active)
 
+    def test_typed_command_line_runs_as_typed(self):
+        # `effect none` fuzzy-matches the plain `effect` entry (its help text holds n-o-n-e); Enter must still run what was typed
+        self.wm.execute("effect matrix")
+        self.assertIsNotNone(self.wm.background)
+        self.wm.execute("palette")
+        self.keys("effect none\r")
+        self.assertFalse(self.wm.palette.active)
+        self.assertIsNone(self.wm.background)
+
+    def test_argument_completion_still_wins(self):
+        self.wm.execute("palette")
+        self.keys("layout gri\r")
+        self.assertEqual(self.wm.desk.layout, "grid")
+
     def test_theme_scope(self):
         self.wm.execute("palette themes")
         self.keys("hack\r")

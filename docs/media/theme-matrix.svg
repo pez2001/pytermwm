@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="948" height="614" viewBox="0 0 948.0 614.0">
+<style>text{font-family:"Cascadia Mono","DejaVu Sans Mono",Menlo,Consolas,"Liberation Mono",monospace;font-size:14.0px;white-space:pre}.b{font-weight:bold}.i{font-style:italic}.u{text-decoration:underline}.s{text-decoration:line-through}</style>
+<rect width="100%" height="100%" rx="8" fill="#1e1e1e"/>
+<circle cx="20.0" cy="23.0" r="6" fill="#ff5f57"/>
+<circle cx="40.0" cy="23.0" r="6" fill="#febc2e"/>
+<circle cx="60.0" cy="23.0" r="6" fill="#28c840"/>
+<text x="474.0" y="27.0" text-anchor="middle" fill="#aaaaaa">pytermwm - theme matrix</text>
+<rect x="12.0" y="42.0" width="924.0" height="560.0" fill="#000000"/>
+<text x="12.00" y="55.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">┌</text>
+<text x="20.40" y="55.65" fill="#00fc40" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="28.80" y="55.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">┤</text>
+<text x="45.60" y="55.65" fill="#d0ffd8" class="b" textLength="58.80" lengthAdjust="spacingAndGlyphs">ｦ shell</text>
+<text x="112.80" y="55.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">├</text>
+<text x="121.20" y="55.65" fill="#00e435" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="129.60" y="55.65" fill="#00e134" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="138.00" y="55.65" fill="#00df33" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="146.40" y="55.65" fill="#00dd32" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="154.80" y="55.65" fill="#00db31" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="163.20" y="55.65" fill="#00d931" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="171.60" y="55.65" fill="#00d730" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="180.00" y="55.65" fill="#00d52f" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="188.40" y="55.65" fill="#00d32e" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="196.80" y="55.65" fill="#00d12d" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="205.20" y="55.65" fill="#00cf2c" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="213.60" y="55.65" fill="#00cd2b" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="222.00" y="55.65" fill="#00cb2a" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="230.40" y="55.65" fill="#00c929" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="238.80" y="55.65" fill="#00c729" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="247.20" y="55.65" fill="#00c428" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="255.60" y="55.65" fill="#00c227" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="264.00" y="55.65" fill="#00c026" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="272.40" y="55.65" fill="#00be25" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="280.80" y="55.65" fill="#00bc24" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="289.20" y="55.65" fill="#00ba23" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="297.60" y="55.65" fill="#00b822" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="306.00" y="55.65" fill="#00b621" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="314.40" y="55.65" fill="#00b421" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="322.80" y="55.65" fill="#00b220" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="331.20" y="55.65" fill="#00b01f" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="339.60" y="55.65" fill="#00ae1e" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="348.00" y="55.65" fill="#00ac1d" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="356.40" y="55.65" fill="#00a91c" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="364.80" y="55.65" fill="#00a71b" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="373.20" y="55.65" fill="#00a51a" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="381.60" y="55.65" fill="#00a319" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="390.00" y="55.65" fill="#00a119" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="398.40" y="55.65" fill="#009f18" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="406.80" y="55.65" fill="#009d17" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="415.20" y="55.65" fill="#009b16" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="423.60" y="55.65" fill="#009915" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="432.00" y="55.65" fill="#009714" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="440.40" y="55.65" fill="#009513" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="448.80" y="55.65" fill="#009312" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="457.20" y="55.65" fill="#009111" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">─</text>
+<text x="465.60" y="55.65" fill="#008f11" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">┐</text>
+<text x="474.00" y="55.65" fill="#005f10" textLength="25.20" lengthAdjust="spacingAndGlyphs">┌─┤</text>
+<text x="507.60" y="55.65" fill="#008f11" textLength="33.60" lengthAdjust="spacingAndGlyphs">load</text>
+<text x="549.60" y="55.65" fill="#005f10" textLength="386.40" lengthAdjust="spacingAndGlyphs">├────────────────────────────────────────────┐</text>
+<text x="12.00" y="73.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="73.15" fill="#00ff41" textLength="75.60" lengthAdjust="spacingAndGlyphs">$ ls docs</text>
+<text x="465.60" y="73.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="73.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="482.40" y="73.15" fill="#008c23" class="b" textLength="369.60" lengthAdjust="spacingAndGlyphs">push  now 76.9%  min 9.5  max 90.8  avg 52.4</text>
+<text x="927.60" y="73.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="90.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="90.65" fill="#00ff41" textLength="243.60" lengthAdjust="spacingAndGlyphs">api.md                  media</text>
+<text x="465.60" y="90.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="90.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="482.40" y="90.65" fill="#7e4f23" textLength="445.20" lengthAdjust="spacingAndGlyphs">100┤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="90.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="108.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="108.15" fill="#00ff41" textLength="310.80" lengthAdjust="spacingAndGlyphs">automation.md           milestones.md</text>
+<text x="465.60" y="108.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="108.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="108.15" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠖⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡶⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="108.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="125.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="125.65" fill="#00ff41" textLength="285.60" lengthAdjust="spacingAndGlyphs">configuration.md        plugins.md</text>
+<text x="465.60" y="125.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="125.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="125.65" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⢀⡖⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡼⠀⢹⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡞⠀⢳⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀</text>
+<text x="927.60" y="125.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="143.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="143.15" fill="#00ff41" textLength="277.20" lengthAdjust="spacingAndGlyphs">evaluation.md           reference</text>
+<text x="465.60" y="143.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="143.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="143.15" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠼⠀⠘⢦⣠⠖⣆⠀⠀⠀⠀⠀⠀⠀⠀⢀⡇⠀⠈⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⠃⠀⠘⡆⠀⠀⠀⠀⠀⠀⠀⠀⣸⠉⠳⣤⠞</text>
+<text x="927.60" y="143.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="160.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="160.65" fill="#00ff41" textLength="260.40" lengthAdjust="spacingAndGlyphs">ideas.md                tickets</text>
+<text x="465.60" y="160.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="160.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="160.65" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⢸⡀⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⢹⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡏⠀⠀⠀⣇⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀</text>
+<text x="927.60" y="160.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="178.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="178.15" fill="#00ff41" textLength="310.80" lengthAdjust="spacingAndGlyphs">implementation_plan.md  user_guide.md</text>
+<text x="465.60" y="178.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="178.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="178.15" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⠀⠀⠀⠀⠀⡞⠀⠀⠀⠀⠳⠤⣄⠀⠀⠀⠀⠀⡴⠋⠉⠀⠀⠀⠀⢸⠀⠀⠀⠀⠀⠀⠀⢸⠁⠀⠀⠀⠀</text>
+<text x="927.60" y="178.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="195.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="195.65" fill="#00ff41" textLength="33.60" lengthAdjust="spacingAndGlyphs">logo</text>
+<text x="465.60" y="195.65" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="195.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="195.65" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⠀⢹⠀⠀⠀⠀⠀⠀⢰⠃⠀⠀⠀⠀⠀⠀⠘⡆⠀⠀⠀⢠⠇⠀⠀⠀⠀⠀⠀⠈⡇⠀⠀⠀⠀⠀⠀⡼⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="195.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="213.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="20.40" y="213.15" fill="#00ff41" textLength="8.40" lengthAdjust="spacingAndGlyphs">$</text>
+<text x="465.60" y="213.15" fill="#00ff41" class="b" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="474.00" y="213.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="213.15" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⠀⠸⡄⠀⠀⢠⠴⠶⠚⠀⠀⠀⠀⠀⠀⠀⠀⢹⠀⠀⠀⡼⠀⠀⠀⠀⠀⠀⠀⠀⠹⣄⣀⡀⠀⠀⢀⡇⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="213.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="230.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="230.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="230.65" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⠀⠀⣇⠀⢀⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⡆⠀⢀⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠹⡄⠀⢸⠀⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="230.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="248.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="248.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="248.15" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⠀⠀⢸⡀⡼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢳⠀⣸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣀⡏⠀⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="248.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="265.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="265.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="507.60" y="265.65" fill="#7e4f23" textLength="420.00" lengthAdjust="spacingAndGlyphs">│⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠦⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="265.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="283.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="283.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="499.20" y="283.15" fill="#7e4f23" textLength="428.40" lengthAdjust="spacingAndGlyphs">0┤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
+<text x="927.60" y="283.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="300.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="300.65" fill="#005f10" textLength="462.00" lengthAdjust="spacingAndGlyphs">└─────────────────────────────────────────────────────┘</text>
+<text x="12.00" y="318.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="318.15" fill="#005f10" textLength="25.20" lengthAdjust="spacingAndGlyphs">┌─┤</text>
+<text x="507.60" y="318.15" fill="#008f11" textLength="42.00" lengthAdjust="spacingAndGlyphs">notes</text>
+<text x="558.00" y="318.15" fill="#005f10" textLength="378.00" lengthAdjust="spacingAndGlyphs">├───────────────────────────────────────────┐</text>
+<text x="12.00" y="335.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="335.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="482.40" y="335.65" fill="#008c23" textLength="302.40" lengthAdjust="spacingAndGlyphs">pytermwm - a terminal window manager</text>
+<text x="927.60" y="335.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="353.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="353.15" fill="#005f10" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="12.00" y="370.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="370.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="499.20" y="370.65" fill="#008c23" textLength="193.20" lengthAdjust="spacingAndGlyphs">M-Enter      new window</text>
+<text x="927.60" y="370.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="388.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="388.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="499.20" y="388.15" fill="#008c23" textLength="226.80" lengthAdjust="spacingAndGlyphs">M-h/j/k/l    move the focus</text>
+<text x="927.60" y="388.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="405.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="405.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="499.20" y="405.65" fill="#008c23" textLength="201.60" lengthAdjust="spacingAndGlyphs">M-Space      next layout</text>
+<text x="927.60" y="405.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="423.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="423.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="499.20" y="423.15" fill="#008c23" textLength="235.20" lengthAdjust="spacingAndGlyphs">M-p          command palette</text>
+<text x="927.60" y="423.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="440.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="440.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="499.20" y="440.65" fill="#008c23" textLength="319.20" lengthAdjust="spacingAndGlyphs">C-b :        prompt in the status line</text>
+<text x="927.60" y="440.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="458.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="458.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="499.20" y="458.15" fill="#008c23" textLength="394.80" lengthAdjust="spacingAndGlyphs">C-b d        detach (the session keeps running)</text>
+<text x="927.60" y="458.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="475.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="475.65" fill="#005f10" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="12.00" y="493.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="493.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="482.40" y="493.15" fill="#008c23" textLength="344.40" lengthAdjust="spacingAndGlyphs">Drive it from the keyboard, the CLI, HTTP</text>
+<text x="927.60" y="493.15" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="510.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="510.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="482.40" y="510.65" fill="#008c23" textLength="310.80" lengthAdjust="spacingAndGlyphs">or MCP: one command registry for all.</text>
+<text x="927.60" y="510.65" fill="#005f10" textLength="8.40" lengthAdjust="spacingAndGlyphs">│</text>
+<text x="12.00" y="528.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="528.15" fill="#005f10" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="12.00" y="545.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="545.65" fill="#005f10" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="12.00" y="563.15" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="474.00" y="563.15" fill="#005f10" textLength="462.00" lengthAdjust="spacingAndGlyphs">│                                                     │</text>
+<text x="12.00" y="580.65" fill="#00ff41" class="b" textLength="462.00" lengthAdjust="spacingAndGlyphs">└─────────────────────────────────────────────────────┘</text>
+<text x="474.00" y="580.65" fill="#005f10" textLength="462.00" lengthAdjust="spacingAndGlyphs">└─────────────────────────────────────────────────────┘</text>
+<rect x="154.80" y="584.50" width="67.50" height="17.80" fill="#00ff41"/>
+<text x="12.00" y="598.15" fill="#00ff41" class="b" textLength="126.00" lengthAdjust="spacingAndGlyphs">wake up, neo...</text>
+<text x="163.20" y="598.15" fill="#000000" class="b" textLength="50.40" lengthAdjust="spacingAndGlyphs">1:main</text>
+<text x="230.40" y="598.15" fill="#00ff41" textLength="386.40" lengthAdjust="spacingAndGlyphs">tile               shell               CPU  2%</text>
+<rect x="675.60" y="599.81" width="8.70" height="2.49" fill="#00ff41"/>
+<rect x="684.00" y="599.81" width="8.70" height="2.49" fill="#00ff41"/>
+<text x="709.20" y="598.15" fill="#00ff41" textLength="218.40" lengthAdjust="spacingAndGlyphs">MEM  3%  / 30G free  17:51</text>
+</svg>

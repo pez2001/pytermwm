@@ -629,6 +629,7 @@ class Window:
         self.spec: dict = {}                 # spec used to create it (for restore / restart)
         self.bell = False
         self.activity = False               # output while not focused
+        self.resized_at = 0.0               # a resize makes shells redraw their prompt: that is not activity
         self._lf_seen = 0
         self.closing = False
         self.hidden = False
@@ -689,6 +690,8 @@ class Window:
     def _resize_screen(self, rows, cols):
         if rows != self.screen.rows or cols != self.screen.cols:
             self.screen.resize(rows, cols)
+            if self.output_bytes:           # a running program redraws after SIGWINCH (not the initial size of a new one)
+                self.resized_at = time.time()
             if self.recorder is not None:
                 self.recorder.resize(cols, rows)
             if self.source:
@@ -736,6 +739,7 @@ class Window:
             from .colors import color_params
             text = "\x1b[%sm%s\x1b[39m" % (color_params(self.opts["stderr_color"], False), text)
         before = scr.last_line_feeds
+        bells = scr.bell_count
         route = self.routes.get(stream)
         if route is not None and route.get("self") is False:
             # output is re-routed elsewhere: do not show it in this window
@@ -760,7 +764,8 @@ class Window:
             scr.responses.clear()
         if self.wm:
             if self.emits_output:
-                self.wm.window_output(self, text, stream, raw if raw is not None else text.encode("utf-8", "replace"))
+                self.wm.window_output(self, text, stream, raw if raw is not None else text.encode("utf-8", "replace"),
+                                      bell=scr.bell_count > bells)
             else:
                 self.wm.dirty = True
 

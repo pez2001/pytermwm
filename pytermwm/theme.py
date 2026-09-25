@@ -259,6 +259,62 @@ BUILTIN: Dict[str, dict] = {
             dialog_button_bg="#aaaaaa", dialog_sel_fg="#ffffff", dialog_sel_bg="#ff8800",
             shadow_bg="#000000", accent="#ff8800", dead_fg="#cc0000"),
     },
+
+    "nes": {   # Nintendo Famicom / NES: the console's red and gold on cream, a dark gray cartridge slot, chunky frames
+        "name": "nes", "border": "outer_block", "focus_border": "outer_block", "dialog_border": "heavy",
+        "title_decor": ("▌", "▐"), "title_pad": " ", "desktop_char": "▚", "focus_marker": "▶ ",
+        "status_prefix": "PLAYER 1  ", "status_style": "pill", "scroll_thumb": "█", "scroll_track": "▒",
+        "colors": dict(
+            window_fg="#fcfcfc", window_bg="#000000", desktop_fg="#3c3c3c", desktop_bg="#242424",
+            border_fg="#7c7c7c", border_bg="#242424", focus_border_fg="#b8001c", focus_border_bg="#242424",
+            title_fg="#f0e6c8", title_bg="#7c7c7c", focus_title_fg="#f0e6c8", focus_title_bg="#b8001c",
+            scroll_fg="#7c7c7c", scroll_thumb_fg="#d8a038",
+            status_fg="#242424", status_bg="#f0e6c8", status_accent_fg="#f0e6c8", status_accent_bg="#b8001c",
+            status_dim_fg="#7c7c7c", status_ok_fg="#00a800", status_warn_fg="#d8a038", status_err_fg="#b8001c",
+            prompt_fg="#242424", prompt_bg="#d8a038",
+            dialog_fg="#fcfcfc", dialog_bg="#000000", dialog_border_fg="#fcfcfc",
+            dialog_title_fg="#000000", dialog_title_bg="#fcfcfc", dialog_button_fg="#fcfcfc",
+            dialog_button_bg="#3c3c3c", dialog_sel_fg="#f0e6c8", dialog_sel_bg="#b8001c",
+            shadow_bg="#000000", accent="#d8a038", dead_fg="#b8001c"),
+    },
+
+    "matrix": {  # green rain on black: glowing phosphor frames; goes well with `effect matrix`
+        "name": "matrix", "border": "single", "focus_border": "single", "dialog_border": "single",
+        "title_decor": ("┤ ", " ├"), "title_pad": "", "desktop_char": " ", "focus_marker": "ｦ ",
+        "status_prefix": "wake up, neo...  ", "status_style": "plain", "dim_unfocused": True,
+        "gradient": ("#00ff41", "#008f11"), "scroll_thumb": "┃",
+        "colors": dict(
+            window_fg="#00ff41", window_bg="#000000", desktop_fg="#003b00", desktop_bg="#000000",
+            border_fg="#005f10", border_bg="#000000", focus_border_fg="#00ff41", focus_border_bg="#000000",
+            title_fg="#008f11", title_bg="#000000", focus_title_fg="#d0ffd8", focus_title_bg="#000000",
+            scroll_fg="#003b00", scroll_thumb_fg="#00ff41",
+            status_fg="#00ff41", status_bg="#000000", status_accent_fg="#000000", status_accent_bg="#00ff41",
+            status_dim_fg="#008f11", status_ok_fg="#00ff41", status_warn_fg="#b8ff5a", status_err_fg="#ff3030",
+            prompt_fg="#d0ffd8", prompt_bg="#001a05",
+            dialog_fg="#00ff41", dialog_bg="#000800", dialog_border_fg="#00ff41",
+            dialog_title_fg="#000000", dialog_title_bg="#00ff41", dialog_button_fg="#00ff41",
+            dialog_button_bg="#002a08", dialog_sel_fg="#000000", dialog_sel_bg="#00ff41",
+            shadow_bg="#000000", accent="#00ff41", dead_fg="#ff3030"),
+    },
+
+    "dos": {   # MS-DOS: light gray on black, CGA colors, C:\> in the status line, EDIT.COM style dialogs
+        "name": "dos", "border": "single", "focus_border": "double", "dialog_border": "double",
+        "title_decor": ("[ ", " ]"), "title_pad": "", "desktop_char": " ", "cp437_borders": True,
+        "status_prefix": "C:\\> ", "status_style": "plain", "shadow": "block",
+        "scroll_thumb": "█", "scroll_track": "░",
+        "colors": dict(
+            window_fg="#aaaaaa", window_bg="#000000", desktop_fg="#555555", desktop_bg="#000000",
+            border_fg="#aaaaaa", border_bg="#000000", focus_border_fg="#ffffff", focus_border_bg="#000000",
+            title_fg="#aaaaaa", title_bg="#000000", focus_title_fg="#000000", focus_title_bg="#aaaaaa",
+            scroll_fg="#555555", scroll_thumb_fg="#aaaaaa",
+            status_fg="#aaaaaa", status_bg="#000000", status_accent_fg="#000000", status_accent_bg="#aaaaaa",
+            status_dim_fg="#555555", status_ok_fg="#55ff55", status_warn_fg="#ffff55", status_err_fg="#ff5555",
+            prompt_fg="#ffffff", prompt_bg="#000000",
+            dialog_fg="#000000", dialog_bg="#aaaaaa", dialog_border_fg="#ffffff",
+            dialog_title_fg="#ffffff", dialog_title_bg="#0000aa", dialog_button_fg="#000000",
+            dialog_button_bg="#aaaaaa", dialog_sel_fg="#ffffff", dialog_sel_bg="#0000aa",
+            shadow_bg="#000000", accent="#ffffff", dead_fg="#ff5555"),
+    },
 }
 
 

@@ -115,7 +115,7 @@ session.
 
 ## Themes
 
-`theme NAME` (or `theme next`, `C-b T`). Built in: `default light modern hacker bbs mc c64 amiga`. Define your own under
+`theme NAME` (or `theme next`, `C-b T`). Built in: `default light modern hacker bbs mc c64 amiga nes matrix dos`. Define your own under
 `themes:` in the config (or register one from a plugin with `api.theme`); a theme can select the border glyph set (rounded, heavy,
 double, block, powerline, ascii), title decoration, colors, shadows, focus glow, gradient titles (truecolor), and a CP437
 "BBS" look. Colors are downgraded automatically to what the terminal supports (truecolor/256/16).
@@ -249,6 +249,13 @@ Only output is recorded; `record -i` also records keystrokes, which includes pas
 `replay FILE [--speed 2] [--idle 2] [--loop]` (or a window of `kind: cast`) plays any asciicast v2 file in a window.
 Keys in a replay window: Space pause, `+` / `-` speed, `r` restart, Left / Right skip five seconds, `q` close.
 Pauses longer than `--idle` seconds are shortened.
+
+`record-screen [-f] [FILE]` records the whole screen instead (every window, the borders, the status line: exactly what
+the terminal shows) until `record-screen-stop`. `screenshot [-f] [FILE]` saves the screen once: `.svg` (a picture
+that shows on GitHub or in a browser), `.ans` (ANSI art, `cat` it) or `.txt`; without a file both go to the state
+directory. `scripts/make_media.py` makes the README's screenshots and demo recording this way from a scripted session.
+
+`redraw` (`C-b C-l`) repaints every attached terminal from scratch, for the rare case one shows leftovers.
 
 ## Notifications
 

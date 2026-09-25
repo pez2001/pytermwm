@@ -79,7 +79,7 @@ M-p opens the command palette: a temporary overlay with fuzzy search over
 commands, windows, desktops and themes. Enter runs, Tab completes.
 """),
     "themes": ("Themes", """\
-`theme next` / `theme NAME`. Builtin: default light modern hacker bbs mc c64 amiga.
+`theme next` / `theme NAME`. Builtin: default light modern hacker bbs mc c64 amiga nes matrix dos.
 Define your own in the config:
 
   themes:
