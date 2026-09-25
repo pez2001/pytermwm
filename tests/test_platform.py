@@ -74,7 +74,8 @@ class ShellAndQuoting(unittest.TestCase):
         with fake_windows():
             self.assertEqual(split_line(r"new-window -c C:\src\proj -- python -V"), [["new-window", "-c", r"C:\src\proj", "--", "python", "-V"]])
             self.assertEqual(split_line("a 'x y'; b"), [["a", "x y"], ["b"]])
-        self.assertEqual(split_line(r"echo a\ b"), [["echo", "a b"]])          # POSIX escapes still work
+        with mock.patch.object(compat, "IS_WINDOWS", False):
+            self.assertEqual(split_line(r"echo a\ b"), [["echo", "a b"]])      # POSIX escapes still work
 
     def test_shell_quote_is_injection_safe_on_windows(self):
         nasty = 'x" & calc & "%PATH%$(id)`whoami`; rm ^ | <>\r\n'

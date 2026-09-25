@@ -5,7 +5,7 @@ import time
 import unittest
 
 from tests.helpers import *
-from pytermwm import notify
+from pytermwm import compat, notify
 from pytermwm.commands import CommandError
 from pytermwm.config import validate_config
 
@@ -56,7 +56,8 @@ class NotifyTests(unittest.TestCase):
         time.sleep(0.1)
         with open(out, encoding="utf-8") as f:
             got = f.read()
-        self.assertEqual(got, "T1|it is $(whoami) `id` done")     # passed as data, not interpreted by a shell
+        # passed as data, not interpreted by a shell (Windows: characters cmd/PowerShell treat specially become "_")
+        self.assertEqual(got, "T1|it is __whoami_ _id_ done" if compat.IS_WINDOWS else "T1|it is $(whoami) `id` done")
 
     def test_template_values_are_not_expanded_twice(self):
         tmp = tempfile.mkdtemp()
@@ -74,7 +75,7 @@ class NotifyTests(unittest.TestCase):
         time.sleep(0.2)
         self.assertFalse(os.path.exists(marker))
         with open(out, encoding="utf-8") as f:
-            self.assertEqual(f.read(), "{body}|$(touch %s)" % marker)
+            self.assertEqual(f.read(), ("{body}|__touch %s_" if compat.IS_WINDOWS else "{body}|$(touch %s)") % marker)
 
     def test_c1_controls_are_stripped(self):
         self.assertEqual(notify.clean("a\x9bb\x85c\x1b"), "a b c")
