@@ -1,5 +1,15 @@
 # pytermwm
 
+[![PyPI](https://img.shields.io/pypi/v/pytermwm)](https://pypi.org/project/pytermwm/)
+[![Downloads](https://img.shields.io/pypi/dm/pytermwm)](https://pypi.org/project/pytermwm/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
+[![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
+
+> **1.0.1 is out (2026-09-25):** `pip install pytermwm` now works, plus the `nes`, `matrix` and `dos` themes, SVG
+> screenshots and asciicast recordings of the whole screen, much cheaper background effects, and Windows fixes.
+> See the [changelog](https://github.com/pez2001/pytermwm/blob/main/CHANGELOG.md) and the
+> [announcement](https://github.com/pez2001/pytermwm/discussions/9).
+
 A modern terminal window manager in pure Python ("tmux for 2026"): tiled, floating and docked windows, desktops,
 themes, a status line with a built-in prompt, and **four ways to drive it**: the keyboard, a CLI, an HTTP/web API with
 a browser UI, and an MCP server so AI agents can operate your terminal.
@@ -7,7 +17,8 @@ a browser UI, and an MCP server so AI agents can operate your terminal.
 Runtime dependency: **PyYAML** only (everything else is the standard library). Python 3.9+ on **Linux, macOS and Windows 10 1809+** (ConPTY; Windows Terminal recommended). See [Platforms](#platforms).
 
 ```
-pip install pytermwm
+pipx install pytermwm              # recommended: its own environment, `pytermwm` and `ptw` on your PATH
+pip install pytermwm               # or with pip; upgrade later with `pip install -U pytermwm` / `pipx upgrade pytermwm`
 pytermwm                           # attach to (or create) the default session
 pytermwm --standalone              # everything in one process, no daemon
 pytermwm --web 8765                # ... and serve the web UI (prints the URL with its token)
