@@ -43,6 +43,33 @@ jobs:
       - run: python ptw.py doctor          # real ConPTY + console checks
       - run: python run_tests.py --portable
       - run: python scripts/smoke.py
-      # POSIX-shell-dependent tests: informational until they are ported
+      # POSIX-shell-dependent tests: informational until they are ported (some wait for a POSIX shell that is not
+      # there, so cap the time: a timeout counts as an allowed failure and never holds the job for hours)
       - run: python run_tests.py --all
         continue-on-error: true
+        timeout-minutes: 10
+
+  # what `pip install pytermwm` gives people: build the sdist + wheel, then run the installed wheel (not the checkout)
+  package:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run: {shell: bash}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check --strict dist/*
+      - name: install the wheel into a clean venv and run it from outside the checkout
+        run: |
+          python -m venv "$RUNNER_TEMP/venv"
+          bin="$RUNNER_TEMP/venv/bin"; [ -d "$bin" ] || bin="$RUNNER_TEMP/venv/Scripts"
+          "$bin/pip" install dist/*.whl
+          cd "$RUNNER_TEMP"
+          "$bin/python" -c "import os, pytermwm; d = os.path.dirname(pytermwm.__file__); assert 'site-packages' in d, d; assert os.path.exists(os.path.join(d, 'web', 'index.html'))"
+          "$bin/pytermwm" doctor
+          "$bin/ptw" version

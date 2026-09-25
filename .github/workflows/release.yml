@@ -1,0 +1,39 @@
+name: release
+
+# Publishing a GitHub release (tag vX.Y.Z matching pytermwm.__version__) builds pytermwm and uploads it to PyPI.
+# Uses PyPI Trusted Publishing: no API token is stored in the repository. One-time setup on pypi.org:
+# Account -> Publishing -> add a (pending) publisher: owner pez2001, repository pytermwm, workflow release.yml,
+# environment pypi.
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: the tag must match the version in the code
+        run: |
+          v=$(python -c "import pytermwm; print(pytermwm.__version__)")
+          [ "${GITHUB_REF_NAME#v}" = "$v" ] || { echo "tag $GITHUB_REF_NAME does not match pytermwm.__version__ $v"; exit 1; }
+      - run: pip install build twine
+      - run: python -m build
+      - run: twine check --strict dist/*
+      - uses: actions/upload-artifact@v4
+        with: {name: dist, path: dist/}
+
+  pypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/pytermwm/
+    permissions:
+      id-token: write            # lets PyPI verify that the upload comes from this workflow
+    steps:
+      - uses: actions/download-artifact@v4
+        with: {name: dist, path: dist/}
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -7,14 +7,16 @@ a browser UI, and an MCP server so AI agents can operate your terminal.
 Runtime dependency: **PyYAML** only (everything else is the standard library). Python 3.9+ on **Linux, macOS and Windows 10 1809+** (ConPTY; Windows Terminal recommended). See [Platforms](#platforms).
 
 ```
-pip install -r requirements.txt
-python -m pytermwm                 # attach to (or create) the default session
-python -m pytermwm --standalone    # everything in one process, no daemon
-python -m pytermwm --web 8765      # ... and serve the web UI (prints the URL with its token)
+pip install pytermwm
+pytermwm                           # attach to (or create) the default session
+pytermwm --standalone              # everything in one process, no daemon
+pytermwm --web 8765                # ... and serve the web UI (prints the URL with its token)
+pytermwm doctor                    # check that this machine can run everything
 ```
 
-No installation needed: run straight from a checkout with the wrapper (`./ptw ...` on Linux/macOS, `ptw.cmd ...` or
-`python ptw.py ...` on Windows). `ptw doctor` checks that this machine can run everything.
+`ptw` is a shorter name for the same command, and `python -m pytermwm` works too. Or run straight from a checkout
+without installing anything: `pip install -r requirements.txt`, then the wrapper `./ptw ...` on Linux/macOS,
+`ptw.cmd ...` or `python ptw.py ...` on Windows.
 
 ## Try it in a minute
 
@@ -86,6 +88,16 @@ GitHub Actions (`.github/workflows/ci.yml`) runs Linux, macOS and Windows.
 
 The browser test in `tests/test_web_ui.py` runs only when `playwright` and a Chromium are installed (set
 `PTW_CHROMIUM` to the binary); it is skipped otherwise.
+
+## Releasing
+
+1. Set `__version__` in `pytermwm/__init__.py` and commit.
+2. Publish a GitHub release with the tag `vX.Y.Z` (the same version). `.github/workflows/release.yml` checks the tag
+   against the code, builds the sdist and wheel and uploads them to PyPI with Trusted Publishing.
+
+One-time setup on pypi.org: Account → Publishing → add a (pending) publisher for owner `pez2001`, repository
+`pytermwm`, workflow `release.yml`, environment `pypi`. To try a build locally: `pip install build twine`,
+`python -m build`, `twine check dist/*`.
 
 ## Security notes
 
