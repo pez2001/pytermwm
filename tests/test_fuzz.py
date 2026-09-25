@@ -134,3 +134,42 @@ class FuzzTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FrameWriterDiffFuzz(unittest.TestCase):
+    """The writer only sends what changed, and skips runs of unchanged cells inside a row with a cursor move (for
+    animated backgrounds). Whatever it sends, a terminal fed frame after frame must end up showing exactly the frame
+    that a full repaint would show -- colours, flags and wide characters included."""
+
+    def test_incremental_output_reproduces_every_frame(self):
+        from pytermwm.render import Frame, FrameWriter
+        from pytermwm.colors import WIDE
+        glyphs = "abcXYZ·│█▀▄"
+        wides = "漢字🙂"
+        colors = [None, 1, (200, 30, 30), (0, 255, 70), (10, 10, 10)]
+        for seed in range(25):
+            rng = random.Random(seed)
+            cols, rows = rng.randint(12, 60), rng.randint(3, 12)
+            blank = (" ", None, None, 0)
+            cells = [[blank] * cols for _ in range(rows)]
+            fw = FrameWriter(24)
+            scr = Screen(rows, cols, 0)
+            for step in range(40):
+                for _ in range(rng.randint(0, cols * rows // 3)):
+                    y, x = rng.randrange(rows), rng.randrange(cols)
+                    if cells[y][x][3] & TAIL or (x + 1 < cols and cells[y][x][3] & WIDE):
+                        continue                                    # keep wide pairs whole: never edit half of one
+                    fg, bg = rng.choice(colors), rng.choice(colors)
+                    if rng.random() < 0.1 and x + 1 < cols and not cells[y][x + 1][3] & (WIDE | TAIL):
+                        cells[y][x] = (rng.choice(wides), fg, bg, WIDE)
+                        cells[y][x + 1] = ("", fg, bg, TAIL)
+                    else:
+                        cells[y][x] = (rng.choice(glyphs), fg, bg, rng.choice([0, 1, 2]))
+                frame = Frame([list(r) for r in cells], (rng.randrange(cols), rng.randrange(rows)))
+                scr.feed(fw.write(frame))
+                full = Screen(rows, cols, 0)
+                full.feed(FrameWriter(24).write(frame))
+                for y in range(rows):
+                    got = [(c[0], c[1], c[2], c[3] & 0xFF) for c in scr.lines[y]]
+                    want = [(c[0], c[1], c[2], c[3] & 0xFF) for c in full.lines[y]]
+                    self.assertEqual(got, want, "seed %d step %d row %d" % (seed, step, y))

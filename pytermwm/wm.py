@@ -99,6 +99,7 @@ class WindowManager(SelectionMixin):
         self.start_time = time.time()
         self.sock_path: Optional[str] = None
         self.background = None           # effect object with render(cols, rows, t) -> cells
+        self._bg_frame_at = 0.0          # when tick() last asked for a new background frame
         self.plugins = None
         self.wake = lambda: None        # set by the server: makes the main loop run now (thread safe)
         self.rules = None
@@ -1338,8 +1339,10 @@ class WindowManager(SelectionMixin):
         for w in list(self.windows.values()):
             if isinstance(w, InternalWindow) and w.dirty:
                 self.dirty = True
-        if self.background is not None:
-            self.dirty = True     # animated background
+        bg = self.background
+        if bg is not None and now - self._bg_frame_at >= 1.0 / (getattr(bg, "fps", 0) or 20.0):
+            self._bg_frame_at = now
+            self.dirty = True     # the next frame of the animated background (capped at its fps)
         self.emit("tick", now=now)
 
     # ------------------------------------------------------------------ state export

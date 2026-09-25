@@ -60,7 +60,7 @@ Never touch the WM from a thread directly; use `api.call_soon`.
 | `btop` | per-core CPU, memory, network, disks, sortable/filterable process list | `btop [cpu\|mem\|pid\|name]`, `btop-kill <pid> [signal]`; kinds `btop.*` |
 | `mqtt` | built-in MQTT 3.1.1 client (stdlib only), monitor window, publishing, status items, `mqtt_message` events for rules | config `host port topics username password tls status window`; `mqtt-pub mqtt-sub mqtt-unsub mqtt-status mqtt-window` |
 | `ssh` | ssh windows with hosts from `~/.ssh/config` or the config, forwards, remote commands | `ssh <name\|[user@]host> [-- cmd]`, `ssh-run`, `ssh-forward`, `ssh-list`; config `hosts use_ssh_config reconnect` |
-| `effects` | animated backgrounds (matrix, plasma, starfield, fire, rain, ANSI/ASCII art files) behind the windows | `effect <name\|off\|list> [...]` (e.g. `effect matrix ascii red`, `effect ansi ~/art`); or top-level `effect:` in the config |
+| `effects` | animated backgrounds (matrix, plasma, starfield, fire, rain, ANSI/ASCII art files) behind the windows | `effect <name\|off\|list> [...] [fps=N]` (e.g. `effect matrix ascii red`, `effect ansi ~/art`, `effect plasma fps=10`); or top-level `effect:` in the config |
 | `openai` | chat with any OpenAI-compatible endpoint (OpenAI, Ollama, llama.cpp, vLLM, ...) with token streaming | `ai [--from WINDOW [--last N]] question`, `ai-window`, `ai-cancel`, `ai-clear`; config `base_url model api_key_env system max_context` |
 
 ```yaml
