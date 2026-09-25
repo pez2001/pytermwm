@@ -1,12 +1,16 @@
 name: release
 
-# Publishing a GitHub release (tag vX.Y.Z matching pytermwm.__version__) builds pytermwm and uploads it to PyPI.
-# Uses PyPI Trusted Publishing: no API token is stored in the repository. One-time setup on pypi.org:
+# Pushing a tag vX.Y.Z (matching pytermwm.__version__, with a "## [X.Y.Z]" section in CHANGELOG.md) builds pytermwm,
+# uploads it to PyPI and then creates the GitHub release (notes from CHANGELOG.md, marked "Latest", wheel + sdist
+# attached) with an announcement in Discussions -> Announcements when the repository has Discussions enabled.
+# Publishing a release in the GitHub web UI creates its tag, which starts this workflow too.
+#
+# PyPI Trusted Publishing: no API token is stored in the repository. One-time setup on pypi.org:
 # Account -> Publishing -> add a (pending) publisher: owner pez2001, repository pytermwm, workflow release.yml,
 # environment pypi.
 on:
-  release:
-    types: [published]
+  push:
+    tags: ["v*"]
 
 jobs:
   build:
@@ -19,11 +23,19 @@ jobs:
         run: |
           v=$(python -c "import pytermwm; print(pytermwm.__version__)")
           [ "${GITHUB_REF_NAME#v}" = "$v" ] || { echo "tag $GITHUB_REF_NAME does not match pytermwm.__version__ $v"; exit 1; }
+      - name: release notes from CHANGELOG.md
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          awk -v v="$v" 'index($0, "## [" v "]") == 1 {f = 1; next} f && /^## \[/ {exit} f' CHANGELOG.md > notes.md
+          [ -n "$(tr -d '[:space:]' < notes.md)" ] || { echo "CHANGELOG.md has no '## [$v]' section"; exit 1; }
+          cat notes.md
       - run: pip install build twine
       - run: python -m build
       - run: twine check --strict dist/*
       - uses: actions/upload-artifact@v4
         with: {name: dist, path: dist/}
+      - uses: actions/upload-artifact@v4
+        with: {name: notes, path: notes.md}
 
   pypi:
     needs: build
@@ -37,3 +49,29 @@ jobs:
       - uses: actions/download-artifact@v4
         with: {name: dist, path: dist/}
       - uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    needs: pypi                  # announce only what can really be installed
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write            # create the release
+      discussions: write         # and its announcement
+    steps:
+      - uses: actions/download-artifact@v4
+        with: {name: dist, path: dist/}
+      - uses: actions/download-artifact@v4
+        with: {name: notes, path: .}
+      - name: announce in Discussions only when they are enabled
+        id: discussions
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          if [ "$(gh api "repos/${GITHUB_REPOSITORY}" --jq .has_discussions)" = "true" ]; then
+            echo "category=Announcements" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: pytermwm ${{ github.ref_name }}
+          body_path: notes.md
+          files: dist/*
+          make_latest: true
+          discussion_category_name: ${{ steps.discussions.outputs.category }}
