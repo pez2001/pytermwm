@@ -122,9 +122,12 @@ The browser test in `tests/test_web_ui.py` runs only when `playwright` and a Chr
 
 ## Releasing
 
-1. Set `__version__` in `pytermwm/__init__.py` and commit.
-2. Publish a GitHub release with the tag `vX.Y.Z` (the same version). `.github/workflows/release.yml` checks the tag
-   against the code, builds the sdist and wheel and uploads them to PyPI with Trusted Publishing.
+1. Set `__version__` in `pytermwm/__init__.py`, move the `Unreleased` entries in [CHANGELOG.md](CHANGELOG.md) under a
+   `## [X.Y.Z] - date` heading, and merge that to `main`.
+2. Push the tag: `git tag -a vX.Y.Z -m "pytermwm X.Y.Z" && git push origin vX.Y.Z`. `.github/workflows/release.yml`
+   checks the tag against the code and the changelog, builds the sdist and wheel, uploads them to PyPI with Trusted
+   Publishing, then creates the GitHub release (the changelog section as its notes, marked "Latest") and announces it
+   in Discussions → Announcements. Publishing a release in the GitHub web UI creates the tag and does the same.
 
 One-time setup on pypi.org: Account → Publishing → add a (pending) publisher for owner `pez2001`, repository
 `pytermwm`, workflow `release.yml`, environment `pypi`. To try a build locally: `pip install build twine`,
