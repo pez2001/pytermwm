@@ -14,6 +14,11 @@ from .terminal import RawTerminal, console_palette, detect_depth, detect_glyphs,
 RESIZE_POLL = 0.25          # seconds; used where there is no SIGWINCH (Windows)
 
 
+def _client_version() -> str:
+    from . import __version__
+    return __version__
+
+
 def inside_session() -> Optional[str]:
     """The session this process runs in, when it runs inside one of its windows (``None`` otherwise).
 
@@ -44,11 +49,25 @@ def nesting_refused(session: Optional[str], nested: bool = False) -> Optional[st
     return None
 
 
+def _warn_if_old_server(session: str):
+    """A server from before 1.0.2 cannot warn about a version mismatch itself (newer ones show it in the status line,
+    see the HELLO ``version``), so say it here, where it can still be read before the screen switches over."""
+    from . import __version__
+    info = P.server_info(session)
+    if info is None or info.get("version") is not None:
+        return
+    sys.stderr.write("pytermwm: warning: " + P.version_mismatch(session, info, __version__) + "\n")
+    if sys.stderr.isatty():
+        import time
+        time.sleep(2.5)
+
+
 def attach(session: str, name: Optional[str] = None, mouse: bool = True, nested: bool = False) -> int:
     why = nesting_refused(session, nested)
     if why:
         sys.stderr.write(why + "\n")
         return 1
+    _warn_if_old_server(session)
     try:
         sock = P.connect(session)
     except (ConnectionRefusedError, FileNotFoundError):
@@ -57,7 +76,7 @@ def attach(session: str, name: Optional[str] = None, mouse: bool = True, nested:
     cols, rows = term_size(1)
     sock.sendall(P.pack_json(P.HELLO, {"cols": cols, "rows": rows, "depth": detect_depth(), "glyphs": detect_glyphs(),
                                         "name": name or "tty%d" % os.getpid(),
-                                        "inside": inside_session()}))
+                                        "inside": inside_session(), "version": _client_version()}))
     mb = P.MessageBuffer()
     waker = compat.Waker()
     poll_resize = compat.SIGWINCH is None

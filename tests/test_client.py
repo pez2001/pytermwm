@@ -142,3 +142,31 @@ class NestedAttachTests(unittest.TestCase):
                 pass                                    # RawTerminal needs a real tty; HELLO is sent before that
         hello = [json.loads(p) for k, p in _decode_all(sent) if k == P.HELLO]
         self.assertEqual(hello[0]["inside"], "work")
+
+
+class VersionMismatchTests(unittest.TestCase):
+    def test_messages(self):
+        self.assertIsNone(P.version_mismatch("s", None, "1.0.2"))                       # not running
+        self.assertIsNone(P.version_mismatch("s", {"version": "1.0.2"}, "1.0.2"))       # same
+        old = P.version_mismatch("work", {"version": None}, "1.0.2")                    # a server before 1.0.2
+        self.assertIn("an older pytermwm (before 1.0.2)", old)
+        self.assertIn("pytermwm -s work save && pytermwm -s work kill && pytermwm -s work restore", old)
+        self.assertIn("runs pytermwm 1.0.1, but 1.0.2 is installed", P.version_mismatch("w", {"version": "1.0.1"}, "1.0.2"))
+
+    def test_attach_warns_about_a_server_that_reports_no_version(self):
+        import io
+        from pytermwm import client
+        with mock.patch.object(P, "server_info", return_value={"ok": True, "version": None}), \
+                mock.patch.object(P, "connect", side_effect=FileNotFoundError), \
+                mock.patch("sys.stderr", new_callable=io.StringIO) as err:
+            client.attach("work")
+        self.assertIn("warning: session 'work' runs an older pytermwm", err.getvalue())
+
+    def test_no_warning_for_a_current_server(self):
+        import io
+        from pytermwm import client, __version__
+        with mock.patch.object(P, "server_info", return_value={"ok": True, "version": __version__}), \
+                mock.patch.object(P, "connect", side_effect=FileNotFoundError), \
+                mock.patch("sys.stderr", new_callable=io.StringIO) as err:
+            client.attach("work")
+        self.assertNotIn("warning", err.getvalue())

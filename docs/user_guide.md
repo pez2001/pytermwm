@@ -107,6 +107,11 @@ pytermwm -s work attach  # attach (C-b d to detach)   pytermwm -s work kill
 pytermwm -s work save|restore   # snapshot layout + windows; `autosave:` in the config does it periodically
 ```
 
+A session keeps running the code it was started with, also after `pip install -U pytermwm`: restart it to get the
+new version (`pytermwm save && pytermwm kill && pytermwm restore`). `pytermwm version` lists the version each running
+session's server runs and warns about one that differs (`--check` exits with 1 then, for scripts), and attaching to
+such a session says so too.
+
 Inside a pytermwm window (`$PYTERMWM_WINDOW` is set there) the commands that would take over the terminal refuse to
 run: attaching to the session you are in would show the session inside itself without end. Attaching to another
 session, or `--standalone`, works with `--nested`. Commands that only talk to the session (`run`, `send`, `ctl`,

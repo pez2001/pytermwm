@@ -5,6 +5,16 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-09-26
+
+### Added
+- `pytermwm version` also lists every running session with the version its server runs, and warns when it differs
+  from the installed one (a session keeps running its old code after an upgrade until it is restarted); `--check`
+  exits with 1 then. Attaching to such a session warns too.
+
+### Fixed
+- A status line message wider than the screen no longer blanks the whole status line; it is cut to fit.
+
 ## [1.0.1] - 2026-09-25
 
 ### Added
@@ -44,5 +54,6 @@ and the project uses [semantic versioning](https://semver.org/).
 
 - First public version.
 
+[1.0.2]: https://github.com/pez2001/pytermwm/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/pez2001/pytermwm/compare/894be6ad8027229a99191ddf0380e96f63f5c09a...v1.0.1
 [1.0.0]: https://github.com/pez2001/pytermwm/tree/894be6ad8027229a99191ddf0380e96f63f5c09a

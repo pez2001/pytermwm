@@ -439,6 +439,34 @@ class WebAndMcpTests(DaemonCase):
         wid = json.loads(lines[1]["result"]["content"][0]["text"])["id"]
         self.wait_text(wid, "mcp-stdio-ok")
 
+    def test_version_reports_the_running_server(self):
+        # a session keeps running the code it was started with; `version` shows what each session's server runs
+        from pytermwm import __version__
+        r = self.cli("-s", self.session, "version")
+        self.assertEqual(r.stdout.splitlines()[0], "pytermwm %s" % __version__)       # first line as before
+        self.assertIn("session %s" % self.session, r.stdout)
+        self.assertIn("server %s (pid" % __version__, r.stdout)
+        self.assertNotIn("warning", r.stderr)
+        self.assertEqual(self.cli("version", "--check").returncode, 0)
+
+    def test_hello_from_another_version_shows_a_warning(self):
+        from pytermwm import protocol as P
+        old = dict(os.environ)
+        os.environ.update({k: self.env[k] for k in ("PYTERMWM_RUNTIME_DIR", "PYTERMWM_STATE_DIR")})
+        try:
+            sock = P.connect(self.session)
+            sock.sendall(P.pack_json(P.HELLO, {"cols": 100, "rows": 30, "version": "0.0.1"}))
+            end = time.time() + 5
+            frame = ""
+            while time.time() < end and "restart it to update" not in frame.replace("\n", ""):
+                time.sleep(0.2)
+                frame = self.cli("-s", self.session, "frame").stdout
+            sock.close()
+        finally:
+            os.environ.clear()
+            os.environ.update(old)
+        self.assertIn("the client is 0.0.1", frame.replace("\n", ""))
+
     def test_mcp_survives_garbage_and_missing_session(self):
         r = self.cli("-s", self.session, "mcp", input="not json\n" + json.dumps({"jsonrpc": "2.0", "id": 5, "method": "ping"}) + "\n")
         out = [json.loads(l) for l in r.stdout.splitlines()]
