@@ -5,10 +5,12 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
 [![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
 
-> **1.0.1 is out (2026-09-25):** `pip install pytermwm` now works, plus the `nes`, `matrix` and `dos` themes, SVG
-> screenshots and asciicast recordings of the whole screen, much cheaper background effects, and Windows fixes.
-> See the [changelog](https://github.com/pez2001/pytermwm/blob/main/CHANGELOG.md) and the
-> [announcement](https://github.com/pez2001/pytermwm/discussions/9).
+> **1.0.2 is out (2026-09-26):** `pytermwm version` now shows which version each running session runs (a session
+> keeps its old code after an upgrade until it is restarted), and long status line messages no longer blank the status
+> line. 1.0.1 brought `pip install pytermwm`, the `nes`, `matrix` and `dos` themes, SVG screenshots and asciicast
+> recordings of the whole screen, much cheaper background effects, and Windows fixes. See the
+> [changelog](https://github.com/pez2001/pytermwm/blob/main/CHANGELOG.md) and the
+> [announcement](https://github.com/pez2001/pytermwm/discussions/13).
 
 A modern terminal window manager in pure Python ("tmux for 2026"): tiled, floating and docked windows, desktops,
 themes, a status line with a built-in prompt, and **four ways to drive it**: the keyboard, a CLI, an HTTP/web API with
@@ -19,6 +21,7 @@ Runtime dependency: **PyYAML** only (everything else is the standard library). P
 ```
 pipx install pytermwm              # recommended: its own environment, `pytermwm` and `ptw` on your PATH
 pip install pytermwm               # or with pip; upgrade later with `pip install -U pytermwm` / `pipx upgrade pytermwm`
+brew install pez2001/pytermwm/pytermwm   # or with Homebrew (macOS, Linux); upgrade with `brew upgrade pytermwm`
 pytermwm                           # attach to (or create) the default session
 pytermwm --standalone              # everything in one process, no daemon
 pytermwm --web 8765                # ... and serve the web UI (prints the URL with its token)
