@@ -1,6 +1,7 @@
 """Status line: pluggable segments; the command prompt shares the same row."""
 from __future__ import annotations
 
+import functools
 import os
 import socket
 import time
@@ -152,9 +153,14 @@ def seg_net(wm, o):
     return Segment("↓%s ↑%s" % (human_rate(rx), human_rate(tx)), "normal", prio=2)
 
 
+@functools.lru_cache(maxsize=1)
+def _cached_hostname() -> str:
+    return socket.gethostname()
+
+
 @segment("hostname")
 def seg_hostname(wm, o):
-    return Segment(socket.gethostname(), "dim", prio=2)
+    return Segment(_cached_hostname(), "dim", prio=2)
 
 
 @segment("user")

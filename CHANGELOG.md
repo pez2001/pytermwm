@@ -9,6 +9,11 @@ and the project uses [semantic versioning](https://semver.org/).
 - `dialog poll <id>` returns a dialog's `{closed, result}` directly, including for a little while after it has
   closed; `pytermwm dialog-wait <id> [--timeout SECONDS]` polls it from the CLI and blocks until answered.
 
+### Fixed
+- Starting the web server no longer calls `socket.getfqdn()` on every start (`HTTPServer.server_bind()` does this
+  by default); it can hang for a long time on a machine with no reachable DNS/mDNS resolver. This was hanging CI
+  on macOS runners, where every test that starts a session with the web UI enabled paid that cost.
+
 ## [1.0.2] - 2026-09-26
 
 ### Added

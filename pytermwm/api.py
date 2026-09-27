@@ -20,6 +20,7 @@ Endpoints (all JSON unless noted)::
 from __future__ import annotations
 
 import fnmatch
+import functools
 import hmac
 import ipaddress
 import json
@@ -27,6 +28,7 @@ import mimetypes
 import os
 import secrets
 import socket
+import socketserver
 import threading
 import time
 import urllib.parse
@@ -41,8 +43,32 @@ WEB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "web")
 MAX_BODY = 4 << 20
 
 
+@functools.lru_cache(maxsize=1)
+def _cached_hostname() -> str:
+    return socket.gethostname()
+
+
+@functools.lru_cache(maxsize=1)
+def _cached_fqdn() -> str:
+    # getfqdn() does a reverse-DNS/mDNS lookup that can take a long time to time out when it fails
+    # (seen hanging for minutes at a time on macOS runners with no reachable resolver); this machine's
+    # name doesn't change while we're running, so look it up once per process.
+    return socket.getfqdn()
+
+
 class _HTTPServer(ThreadingHTTPServer):
     daemon_threads = True
+
+    def server_bind(self):
+        # HTTPServer.server_bind() calls socket.getfqdn(host) to set self.server_name, a reverse-DNS/mDNS
+        # lookup of the bind address that can hang for a long time when it can't resolve (seen taking
+        # minutes per call on macOS CI runners, and every WebServer start pays it). server_name is purely
+        # informational here (host_allowed() is the real access check), so skip HTTPServer's own
+        # server_bind() and use the machine's cached name instead of resolving the bind address fresh.
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.server_address[:2]
+        self.server_name = _cached_fqdn() if host in ("", "0.0.0.0", "::") else host
+        self.server_port = port
 
     def handle_error(self, request, client_address):      # clients vanish all the time (closed tabs)
         pass
@@ -108,7 +134,7 @@ class WebServer:
         """Names this machine calls itself (hostname, fully qualified name and their short forms)."""
         if getattr(self, "_own_names", None) is None:
             names = set()
-            for fn in (socket.gethostname, socket.getfqdn):
+            for fn in (_cached_hostname, _cached_fqdn):
                 try:
                     n = fn().lower().rstrip(".")
                 except OSError:
@@ -152,10 +178,10 @@ class WebServer:
         if self.host not in self.WILDCARD:
             return "[%s]" % self.host if ":" in self.host and not self.host.startswith("[") else self.host
         try:
-            fq = socket.getfqdn()
+            fq = _cached_fqdn()
             if fq and "." in fq and not fq.startswith("localhost"):
                 return fq
-            return socket.gethostname() or "127.0.0.1"
+            return _cached_hostname() or "127.0.0.1"
         except OSError:
             return "127.0.0.1"
 
