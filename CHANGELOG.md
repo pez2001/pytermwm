@@ -13,6 +13,9 @@ and the project uses [semantic versioning](https://semver.org/).
 - Starting the web server no longer calls `socket.getfqdn()` on every start (`HTTPServer.server_bind()` does this
   by default); it can hang for a long time on a machine with no reachable DNS/mDNS resolver. This was hanging CI
   on macOS runners, where every test that starts a session with the web UI enabled paid that cost.
+- The open-file soft limit is now capped on startup (POSIX only). A very high limit (seen on macOS CI runners)
+  made every window's `subprocess.Popen(close_fds=True)` slow, since closing every fd up to that limit is the
+  only option on a platform with no `/proc` to list which fds are actually open.
 
 ## [1.0.2] - 2026-09-26
 
