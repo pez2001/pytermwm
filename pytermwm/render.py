@@ -28,6 +28,7 @@ class Frame:
 class Compositor:
     def __init__(self, wm):
         self.wm = wm
+        self._bg = None          # (effect, cols, rows, time, cells): the last background frame
 
     # -------------------------------------------------------------------- main
     def compose(self, cols: int, rows: int) -> Frame:
@@ -42,7 +43,7 @@ class Compositor:
         now = time.time()
         if wm.background is not None:
             try:
-                bgc = wm.background.render(cols, rows, now, th)
+                bgc = self._background(wm.background, cols, rows, now, th)
                 cv.blit(bgc, 0, 0)
             except Exception as e:
                 wm.log.error("background effect failed: %s", e)
@@ -100,6 +101,17 @@ class Compositor:
         elif wm.dialogs.modal() or wm.keymap.mode in ("scroll", "copy"):
             cursor = None if wm.dialogs.modal() else cursor
         return Frame(cv.cells, cursor, title)
+
+    def _background(self, eff, cols: int, rows: int, now: float, th):
+        """The effect's current frame; frames that come faster than its fps (a window printing a lot redraws the
+        screen far more often) reuse the last one instead of rendering, and diffing, a new one."""
+        last = self._bg
+        if last is not None and last[0] is eff and last[1:3] == (cols, rows) \
+                and now - last[3] < 0.75 / (getattr(eff, "fps", 0) or 20.0):     # slack: tick() asks at 1/fps
+            return last[4]
+        cells = eff.render(cols, rows, now, th)
+        self._bg = (eff, cols, rows, now, cells)
+        return cells
 
     def _compose_copy_view(self, cols: int, rows: int) -> Optional[Frame]:
         """One window's text, no borders or neighbours, at the top left: what a terminal's own mouse selection needs to copy
@@ -384,19 +396,51 @@ class FrameWriter:
         self.prev_cursor = None
         self.cursor_visible = None
 
+    # synchronized output (DEC mode 2026): terminals that know it show only the finished frame -- no half-drawn rows
+    # and no hidden-then-shown cursor, which at animation frame rates looks like a very fast blinking cursor; others
+    # ignore it
+    SYNC_BEGIN, SYNC_END = "\x1b[?2026h", "\x1b[?2026l"
+
+    GAP = 8      # unchanged cells worth skipping with a cursor move rather than writing them again
+
+    @classmethod
+    def _segments(cls, prow, row, first: int, last: int):
+        """The changed parts of a row, from ``first`` to ``last``, as (start, end) ranges. Runs of at least GAP
+        unchanged cells are jumped over: an animation that touches cells all over a row (matrix rain) would otherwise
+        rewrite the whole row, colour codes included, every frame. A range never starts or ends inside a wide
+        character."""
+        if prow is None:
+            return [(first, last)]
+        segs = []
+        start = first
+        x = first
+        same = 0
+        while x <= last:
+            if prow[x] == row[x]:
+                same += 1
+            else:
+                if same >= cls.GAP and x - same > start:
+                    end = x - same - 1
+                    if row[end][3] & WIDE:
+                        end += 1
+                    s2 = x
+                    if row[s2][3] & TAIL:
+                        s2 -= 1
+                    if s2 > end + 1:
+                        segs.append((start, end))
+                        start = s2
+                same = 0
+            x += 1
+        segs.append((start, last))
+        return segs
+
     def write(self, frame: Frame, force: bool = False) -> str:
-        out: List[str] = []
         cells = frame.cells
         prev = None if force else self.prev
         if prev is not None and (len(prev) != len(cells) or (cells and len(prev[0]) != len(cells[0]))):
             prev = None
         depth = self.depth
-        if prev is None:
-            # autowrap off and a full-screen scroll region: a row that comes out wider than we measured it (a glyph the
-            # terminal draws double width) must not wrap and scroll the screen -- the diff would then paint onto a shifted
-            # screen and the status line vanish until the next full repaint
-            out.append("\x1b[?7l\x1b[r\x1b[0m\x1b[2J")
-        out.append("\x1b[?25l")
+        body: List[str] = []
         cur_style = None
         for y, row in enumerate(cells):
             prow = prev[y] if prev is not None else None
@@ -416,26 +460,37 @@ class FrameWriter:
                 first -= 1
             if last + 1 < n and row[last][3] & WIDE:
                 last += 1
-            out.append("\x1b[%d;%dH" % (y + 1, first + 1))
-            x = first
-            buf: List[str] = []
-            while x <= last:
-                c = row[x]
-                if c[3] & TAIL:
+            for start, end in self._segments(prow, row, first, last):
+                body.append("\x1b[%d;%dH" % (y + 1, start + 1))
+                x = start
+                buf: List[str] = []
+                while x <= end:
+                    c = row[x]
+                    if c[3] & TAIL:
+                        x += 1
+                        continue
+                    st = (c[1], c[2], c[3] & 0xFF)
+                    if st != cur_style:
+                        if buf:
+                            body.append("".join(buf))
+                            buf = []
+                        body.append(sgr(st[0], st[1], st[2], depth))
+                        cur_style = st
+                    ch = c[0]
+                    buf.append(ch if ch else " ")
                     x += 1
-                    continue
-                st = (c[1], c[2], c[3] & 0xFF)
-                if st != cur_style:
-                    if buf:
-                        out.append("".join(buf))
-                        buf = []
-                    out.append(sgr(st[0], st[1], st[2], depth))
-                    cur_style = st
-                ch = c[0]
-                buf.append(ch if ch else " ")
-                x += 1
-            if buf:
-                out.append("".join(buf))
+                if buf:
+                    body.append("".join(buf))
+        if prev is not None and not body and frame.cursor == self.prev_cursor and frame.title == self.prev_title:
+            return ""                   # nothing changed: send nothing (not even a cursor hide/show pair)
+        out: List[str] = [self.SYNC_BEGIN]
+        if prev is None:
+            # autowrap off and a full-screen scroll region: a row that comes out wider than we measured it (a glyph the
+            # terminal draws double width) must not wrap and scroll the screen -- the diff would then paint onto a shifted
+            # screen and the status line vanish until the next full repaint
+            out.append("\x1b[?7l\x1b[r\x1b[0m\x1b[2J")
+        out.append("\x1b[?25l")
+        out.extend(body)
         if cur_style is not None:
             out.append("\x1b[0m")
         if frame.cursor is not None:
@@ -445,6 +500,7 @@ class FrameWriter:
             t = frame.title.replace("\x1b", "").replace("\x07", "")
             out.append("\x1b]0;pytermwm: %s\x07" % t if t else "\x1b]0;pytermwm\x07")
             self.prev_title = frame.title
+        out.append(self.SYNC_END)
         self.prev = [list(r) for r in cells]
         self.prev_cursor = frame.cursor
         return "".join(out)

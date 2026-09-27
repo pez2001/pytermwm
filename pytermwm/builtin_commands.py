@@ -1015,7 +1015,7 @@ def c_keys(wm, args):
     return "\n".join("%-10s %-18s %s" % (t, k, v) for t, k, v in wm.keymap.bindings())
 
 
-@command("effect", usage="effect <name|off|list> [...]", help="Background effect in unused screen areas; `effect matrix [katakana|ascii|binary|hex] [color]`, `effect ansi FILE|DIR [hold=15 scroll=4 pause=2 order=name|random align=center|top dim=1]`", category="ui",
+@command("effect", usage="effect <name|off|list> [...] [fps=N]", help="Background effect in unused screen areas; `effect matrix [katakana|ascii|binary|hex] [color]`, `effect ansi FILE|DIR [hold=15 scroll=4 pause=2 order=name|random align=center|top dim=1]`; `fps=N` (1-60, default 20) caps its frame rate", category="ui",
          completer=lambda wm, p, x: (["off", "list", "matrix", "plasma", "starfield", "fire", "rain", "ansi"] if not p else
                                      ["katakana", "ascii", "binary", "hex"] if len(p) == 1 and p[0] == "matrix" else
                                      ["green", "red", "blue", "cyan", "amber", "white", "purple"] if len(p) == 2 and p[0] == "matrix" else []))

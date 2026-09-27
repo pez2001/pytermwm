@@ -1,5 +1,17 @@
 name: ci
-on: [push, pull_request]
+# One run per change: pull requests are tested through their pull_request event, main through push (a push to a PR
+# branch used to start a second, identical run). Other branches: open a PR, or start the workflow by hand.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A new push to a pull request cancels its run that is still going, so outdated runs never hold the (small) runner
+# queue; on main every commit keeps its own run.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   linux:

@@ -130,8 +130,12 @@ def cmd_server(args) -> int:
 
 
 def cmd_attach(args) -> int:
-    from .client import attach
+    from .client import attach, nesting_refused
     session = _session_name(args)
+    why = nesting_refused(None if args.standalone else session, args.nested)
+    if why:                                   # before a daemon is started for nothing
+        sys.stderr.write(why + "\n")
+        return 1
     if args.standalone:
         from .server import run_standalone
         return run_standalone(session, _find_config(args), args.debug, _web_arg(args.web))
@@ -141,7 +145,7 @@ def cmd_attach(args) -> int:
             return 1
         if not start_daemon(session, _find_config(args), args.web if args.web is not None else None, debug=args.debug):
             return 1
-    return attach(session, mouse=not args.no_mouse)
+    return attach(session, mouse=not args.no_mouse, nested=args.nested)
 
 
 def cmd_start(args) -> int:
@@ -181,8 +185,10 @@ def cmd_up(args) -> int:
     print("%s (session %r)" % ((res.get("result") or "up").split("\n")[0], session))
     if args.no_attach or not (sys.stdin.isatty() and sys.stdout.isatty()):
         return 0
-    from .client import attach
-    return attach(session, mouse=not args.no_mouse)
+    from .client import attach, inside_session
+    if inside_session() == session:
+        return 0                                # built into the session this shell runs in: it is already on screen
+    return attach(session, mouse=not args.no_mouse, nested=args.nested)
 
 
 def shlex_quote(text: str) -> str:
@@ -399,7 +405,7 @@ def cmd_restore(args) -> int:
         return 1
     if args.attach:
         from .client import attach
-        return attach(session)
+        return attach(session, nested=args.nested)
     print("restored session %r" % session)
     return 0
 
@@ -490,7 +496,20 @@ def cmd_web(args) -> int:
 
 def cmd_version(args) -> int:
     print("pytermwm %s" % __version__)
-    return 0
+    # the running sessions too: a session started before an upgrade keeps running the old code
+    stale = False
+    for name in P.list_sessions():
+        info = P.server_info(name)
+        if info is None:
+            continue
+        started = time.strftime("%Y-%m-%d %H:%M", time.localtime(info["started"])) if info.get("started") else "?"
+        print("  session %-12s server %s (pid %s, started %s)" % (name, info["version"] or "older than 1.0.2",
+                                                                 info.get("pid", "?"), started))
+        why = P.version_mismatch(name, info, __version__)
+        if why:
+            stale = True
+            sys.stderr.write("warning: " + why + "\n")
+    return 1 if stale and getattr(args, "check", False) else 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -501,6 +520,8 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--web", nargs="?", const="", default=None, metavar="[HOST:]PORT", help="enable the web interface")
     ap.add_argument("--debug", action="store_true", help="verbose logging")
     ap.add_argument("--no-mouse", action="store_true")
+    ap.add_argument("--nested", action="store_true",
+                    help="allow attaching to another session (or --standalone) from inside a pytermwm window")
     ap.add_argument("--version", action="store_true")
     sub = ap.add_subparsers(dest="cmd")
 
@@ -583,7 +604,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--http", metavar="PORT", help="serve MCP over HTTP instead")
     sp("doctor", cmd_doctor, "check that this machine can run pytermwm (pty/ConPTY, sockets, terminal)")
     sp("web", cmd_web, "print the URL (with token) of the web interface")
-    sp("version", cmd_version, "print the version")
+    p = sp("version", cmd_version, "print the version, and the version each running session's server runs")
+    p.add_argument("--check", action="store_true", help="exit with 1 when a running session runs another version")
     return ap
 
 

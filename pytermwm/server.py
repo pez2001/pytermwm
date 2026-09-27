@@ -438,6 +438,14 @@ class Server:
         wm = self.wm
         if kind == P.HELLO:
             info = json.loads(payload.decode() or "{}")
+            if info.get("inside") == self.session:
+                # a client started in one of this session's own windows: showing the session inside itself feeds its
+                # output back into itself without end (a newer client refuses this already; older ones do not)
+                c.send_json(P.EXIT, {"reason": "refused: you are inside session %r already" % self.session,
+                                     "session": self.session})
+                c.close_after_flush = True
+                self.log.warning("refused an attach from inside session %s", self.session)
+                return
             c.cols, c.rows = int(info.get("cols", 80)), int(info.get("rows", 24))
             c.depth = int(info.get("depth", 8))
             g = info.get("glyphs")
@@ -451,6 +459,11 @@ class Server:
             wm.resize(c.cols, c.rows)
             wm.dirty = True
             c.send_json(P.MESSAGE, {"mouse": wm.mouse_effective(), "session": self.session})
+            from . import __version__
+            theirs = info.get("version")
+            if theirs and theirs != __version__:           # e.g. pip upgraded pytermwm while this session kept running
+                wm.message("this session runs pytermwm %s, the client is %s: restart it to update (pytermwm save, "
+                           "pytermwm kill, pytermwm restore)" % (__version__, theirs), "warn", 15.0)
             self.log.info("client %s attached (%dx%d, depth %d)", c.name, c.cols, c.rows, c.depth)
             wm.emit("client_attached", client=c.name)
         elif kind == P.INPUT:

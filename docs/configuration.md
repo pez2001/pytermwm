@@ -37,7 +37,7 @@ including file wins.
 | `web` | disabled | `{enabled, host, port, token, allowed_hosts, tokens}` |
 | `notify` | | `{osc: true, command: "..."}`, see [Notifications](#notifications) |
 | `selection` | | mouse selection and clipboard, see [Selection](#selection) |
-| `effect` | | background effect: `matrix plasma starfield fire rain ansi` or empty for none; or a mapping: `{name: matrix, glyphs: katakana\|ascii\|binary\|hex, color: green\|red\|blue\|cyan\|amber\|white\|purple\|R,G,B}`, `{name: ansi, path: ~/art, hold: 15, ...}` (see [ANSI art background](#ansi-art-background)) |
+| `effect` | | background effect: `matrix plasma starfield fire rain ansi` or empty for none; or a mapping: `{name: matrix, glyphs: katakana\|ascii\|binary\|hex, color: green\|red\|blue\|cyan\|amber\|white\|purple\|R,G,B}`, `{name: ansi, path: ~/art, hold: 15, ...}` (see [ANSI art background](#ansi-art-background)); every effect takes `fps: N` (1-60, default 20; `plugins: [{name: effects, fps: N}]` sets the default), fewer frames use less CPU and send less to the terminal |
 | `charts` | | `{glyphs: unicode\|blocks\|ascii}` for the CPU sparkline and other bars/gauges; see [Charts and the status line](user_guide.md#charts-and-the-status-line) |
 | `log` | | `{level: debug\|info\|warning\|error}` |
 | `autosave` | 30 | seconds between automatic session snapshots (0 disables) |

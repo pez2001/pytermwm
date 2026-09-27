@@ -57,6 +57,16 @@ class RenderTests(UICase):
         self.wm.execute("status-set build passing")
         self.assertIn("passing", self.rows()[-1])
 
+    def test_long_message_is_cut_not_dropped(self):
+        # a message wider than the screen used to blank the whole status line
+        for theme in ("default", "bbs", "hacker"):
+            self.wm.execute("theme " + theme)
+            self.wm.message("warning: " + "x" * 300 + " END", "warn", 15.0)
+            line = Screen.line_text(screen_of_frame(self.wm)[0].lines[-1])
+            self.assertIn("warning: xxx", line, theme)
+            self.assertIn("…", line, theme)
+            self.assertNotIn("END", line, theme)
+
     def test_status_line_top(self):
         self.wm.create_window({"cmd": "sleep 5"})
         self.wm.execute("statusline top")

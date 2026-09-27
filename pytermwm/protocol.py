@@ -80,6 +80,36 @@ def connect(session: str, timeout: float = 3.0) -> socket.socket:
     return s
 
 
+def server_info(session: str, timeout: float = 3.0) -> Optional[dict]:
+    """``ping`` of a running session: its pytermwm version, pid, start time (``None`` if it is not running).
+
+    A server older than 1.0.2 answers without a version; the result then has ``version: None``."""
+    try:
+        c = ControlClient(session)
+    except OSError:
+        return None
+    try:
+        res = c.request({"op": "ping"}, timeout)
+    except (OSError, ValueError, ConnectionError):
+        return None
+    finally:
+        c.close()
+    if not res.get("ok"):
+        return None
+    res.setdefault("version", None)
+    return res
+
+
+def version_mismatch(session: str, info: Optional[dict], installed: str) -> Optional[str]:
+    """A one-paragraph warning when the running server is not the installed version, else ``None``."""
+    if not info or info.get("version") == installed:
+        return None
+    running = ("pytermwm " + info["version"]) if info.get("version") else "an older pytermwm (before 1.0.2)"
+    return ("session %r runs %s, but %s is installed: it keeps running the old code until it is restarted.\n"
+            "  restart it (windows and layout come back):  pytermwm -s %s save && pytermwm -s %s kill && "
+            "pytermwm -s %s restore" % (session, running, installed, session, session, session))
+
+
 def list_sessions(cleanup: bool = True) -> List[str]:
     """Names of live sessions (removes stale sockets)."""
     out = []

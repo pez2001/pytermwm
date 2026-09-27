@@ -1,5 +1,17 @@
 # pytermwm
 
+[![PyPI](https://img.shields.io/pypi/v/pytermwm)](https://pypi.org/project/pytermwm/)
+[![Downloads](https://img.shields.io/pypi/dm/pytermwm)](https://pypi.org/project/pytermwm/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
+[![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
+
+> **1.0.2 is out (2026-09-26):** `pytermwm version` now shows which version each running session runs (a session
+> keeps its old code after an upgrade until it is restarted), and long status line messages no longer blank the status
+> line. 1.0.1 brought `pip install pytermwm`, the `nes`, `matrix` and `dos` themes, SVG screenshots and asciicast
+> recordings of the whole screen, much cheaper background effects, and Windows fixes. See the
+> [changelog](https://github.com/pez2001/pytermwm/blob/main/CHANGELOG.md) and the
+> [announcement](https://github.com/pez2001/pytermwm/discussions/13).
+
 A modern terminal window manager in pure Python ("tmux for 2026"): tiled, floating and docked windows, desktops,
 themes, a status line with a built-in prompt, and **four ways to drive it**: the keyboard, a CLI, an HTTP/web API with
 a browser UI, and an MCP server so AI agents can operate your terminal.
@@ -7,7 +19,9 @@ a browser UI, and an MCP server so AI agents can operate your terminal.
 Runtime dependency: **PyYAML** only (everything else is the standard library). Python 3.9+ on **Linux, macOS and Windows 10 1809+** (ConPTY; Windows Terminal recommended). See [Platforms](#platforms).
 
 ```
-pip install pytermwm
+pipx install pytermwm              # recommended: its own environment, `pytermwm` and `ptw` on your PATH
+pip install pytermwm               # or with pip; upgrade later with `pip install -U pytermwm` / `pipx upgrade pytermwm`
+brew install pez2001/pytermwm/pytermwm   # or with Homebrew (macOS, Linux); upgrade with `brew upgrade pytermwm`
 pytermwm                           # attach to (or create) the default session
 pytermwm --standalone              # everything in one process, no daemon
 pytermwm --web 8765                # ... and serve the web UI (prints the URL with its token)
@@ -101,6 +115,7 @@ model, which is how the Windows code paths are tested without Windows.
 * [Plugins](docs/plugins.md) - bundled plugins and how to write one
 * [Control API](docs/api.md) - socket ops, HTTP/SSE, MCP, security model
 * [Command reference](docs/reference/commands.md) and [MCP tools](docs/reference/mcp.md) (generated)
+* [Contributing](CONTRIBUTING.md) - bug reports, setting up, tests, generated files, pull requests
 * Project management: [evaluation](docs/evaluation.md), [implementation plan](docs/implementation_plan.md),
   [milestones](docs/milestones.md), [tickets](docs/tickets/), [ideas](docs/ideas.md)
 
@@ -121,9 +136,12 @@ The browser test in `tests/test_web_ui.py` runs only when `playwright` and a Chr
 
 ## Releasing
 
-1. Set `__version__` in `pytermwm/__init__.py` and commit.
-2. Publish a GitHub release with the tag `vX.Y.Z` (the same version). `.github/workflows/release.yml` checks the tag
-   against the code, builds the sdist and wheel and uploads them to PyPI with Trusted Publishing.
+1. Set `__version__` in `pytermwm/__init__.py`, move the `Unreleased` entries in [CHANGELOG.md](CHANGELOG.md) under a
+   `## [X.Y.Z] - date` heading, and merge that to `main`.
+2. Push the tag: `git tag -a vX.Y.Z -m "pytermwm X.Y.Z" && git push origin vX.Y.Z`. `.github/workflows/release.yml`
+   checks the tag against the code and the changelog, builds the sdist and wheel, uploads them to PyPI with Trusted
+   Publishing, then creates the GitHub release (the changelog section as its notes, marked "Latest") and announces it
+   in Discussions → Announcements. Publishing a release in the GitHub web UI creates the tag and does the same.
 
 One-time setup on pypi.org: Account → Publishing → add a (pending) publisher for owner `pez2001`, repository
 `pytermwm`, workflow `release.yml`, environment `pypi`. To try a build locally: `pip install build twine`,

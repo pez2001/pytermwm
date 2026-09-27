@@ -313,11 +313,14 @@ class StatusLine:
         center = self._collect("center")
         right = self._collect("right")
         msg = wm.current_message()
-        if msg:
-            left = [Segment(msg[0], msg[1], prio=20)] + [s for s in left if s.style == "accent"]
         prefix = th.o("status_prefix")
         style = th.o("status_style")
         sep = th.o("status_sep")
+        if msg:
+            # a message wider than the line is cut to fit: fit() below drops whole segments, and would otherwise drop
+            # the message too and leave the status line empty
+            room = width - str_width(prefix) - 2            # the text is drawn as " text " or "[text]"
+            left = [Segment(truncate(msg[0], max(1, room)), msg[1], prio=20)] + [s for s in left if s.style == "accent"]
 
         def text_of(s: Segment) -> str:
             t = s.text

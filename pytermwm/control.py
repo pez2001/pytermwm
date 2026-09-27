@@ -201,7 +201,11 @@ def _dispatch(wm, op: str, req: dict) -> dict:
     if op == "selection":
         return wm.selection_info()
     if op == "ping":
-        return {"pong": time.time()}
+        import sys
+        from . import __version__
+        # what is running: a session keeps running (old code included) across upgrades until it is restarted
+        return {"pong": time.time(), "version": __version__, "pid": os.getpid(), "started": wm.start_time,
+                "python": sys.executable}
     raise CommandError("unknown op: %s" % op)
 
 

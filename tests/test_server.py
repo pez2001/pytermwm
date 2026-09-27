@@ -233,6 +233,46 @@ class AttachTests(DaemonCase):
         finally:
             c.close()
 
+    def test_ptw_inside_its_own_session_is_refused_and_the_session_survives(self):
+        # the reported crash: `python ptw.py` in a shell inside the session attached to that same session
+        ptw = os.path.join(ROOT, "ptw.py")
+        self.s("run", "--name", "nest", "--", sys.executable, "-c",
+               "import subprocess, sys; r = subprocess.call([sys.executable, %r]); print('nest-rc=%%d' %% r); "
+               "import time; time.sleep(30)" % ptw)
+        out = self.wait_text("nest", "nest-rc=1", timeout=15)
+        self.assertIn("inside session", out.replace("\n", ""))           # the message wraps in a narrow window
+        self.assertEqual(self.s("ls").returncode, 0)                    # the window manager is still alive
+        self.assertIn("nest-rc=1", self.s("capture", "-t", "nest").stdout)
+
+    def test_server_refuses_a_client_from_its_own_window(self):
+        # an older client (no CLI guard) that says it runs inside this session gets EXIT, not the screen
+        from pytermwm import protocol as P
+        old = dict(os.environ)
+        os.environ.update({k: self.env[k] for k in ("PYTERMWM_RUNTIME_DIR", "PYTERMWM_STATE_DIR")})
+        try:
+            sock = P.connect(self.session)
+            sock.sendall(P.pack_json(P.HELLO, {"cols": 80, "rows": 24, "inside": self.session}))
+            mb, got, end = P.MessageBuffer(), [], time.time() + 5
+            sock.settimeout(1)
+            while time.time() < end and not any(k == P.EXIT for k, _ in got):
+                try:
+                    data = sock.recv(65536)
+                except OSError:
+                    continue
+                if not data:
+                    break
+                got.extend(mb.feed(data))
+            sock.close()
+        finally:
+            os.environ.clear()
+            os.environ.update(old)
+        kinds = [k for k, _ in got]
+        self.assertIn(P.EXIT, kinds)
+        self.assertNotIn(P.OUTPUT, kinds)
+        reason = json.loads([p for k, p in got if k == P.EXIT][0].decode())["reason"]
+        self.assertIn("inside session", reason)
+        self.assertEqual(self.s("ls").returncode, 0)
+
     def test_two_clients_share_session_and_resize(self):
         a = Attached(self.env, self.session, 100, 30)
         b = Attached(self.env, self.session, 70, 20)
@@ -399,11 +439,52 @@ class WebAndMcpTests(DaemonCase):
         wid = json.loads(lines[1]["result"]["content"][0]["text"])["id"]
         self.wait_text(wid, "mcp-stdio-ok")
 
+    def test_version_reports_the_running_server(self):
+        # a session keeps running the code it was started with; `version` shows what each session's server runs
+        from pytermwm import __version__
+        r = self.cli("-s", self.session, "version")
+        self.assertEqual(r.stdout.splitlines()[0], "pytermwm %s" % __version__)       # first line as before
+        self.assertIn("session %s" % self.session, r.stdout)
+        self.assertIn("server %s (pid" % __version__, r.stdout)
+        self.assertNotIn("warning", r.stderr)
+        self.assertEqual(self.cli("version", "--check").returncode, 0)
+
+    def test_hello_from_another_version_shows_a_warning(self):
+        from pytermwm import protocol as P
+        old = dict(os.environ)
+        os.environ.update({k: self.env[k] for k in ("PYTERMWM_RUNTIME_DIR", "PYTERMWM_STATE_DIR")})
+        try:
+            sock = P.connect(self.session)
+            sock.sendall(P.pack_json(P.HELLO, {"cols": 100, "rows": 30, "version": "0.0.1"}))
+            end = time.time() + 5
+            frame = ""
+            while time.time() < end and "restart it to update" not in frame.replace("\n", ""):
+                time.sleep(0.2)
+                frame = self.cli("-s", self.session, "frame").stdout
+            sock.close()
+        finally:
+            os.environ.clear()
+            os.environ.update(old)
+        self.assertIn("the client is 0.0.1", frame.replace("\n", ""))
+
     def test_mcp_survives_garbage_and_missing_session(self):
         r = self.cli("-s", self.session, "mcp", input="not json\n" + json.dumps({"jsonrpc": "2.0", "id": 5, "method": "ping"}) + "\n")
         out = [json.loads(l) for l in r.stdout.splitlines()]
         self.assertEqual(out[0]["error"]["code"], -32700)
         self.assertEqual(out[1]["id"], 5)
+
+    def test_mcp_without_a_running_session_says_so(self):
+        # what an MCP client (LM Studio, ...) shows when the session it points at was never started
+        msgs = [{"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {"protocolVersion": "2025-06-18"}},
+                {"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+                 "params": {"name": "run_command", "arguments": {"line": "layout grid"}}},
+                {"jsonrpc": "2.0", "id": 3, "method": "resources/read", "params": {"uri": "pytermwm://state"}}]
+        r = self.cli("-s", "no-such-session", "mcp", input="".join(json.dumps(m) + "\n" for m in msgs))
+        out = {m["id"]: m for m in (json.loads(l) for l in r.stdout.splitlines())}
+        self.assertIn("protocolVersion", out[1]["result"])                 # the handshake still works
+        self.assertTrue(out[2]["result"]["isError"])
+        self.assertIn("no pytermwm session 'no-such-session' is running", out[2]["result"]["content"][0]["text"])
+        self.assertIn("pytermwm -s no-such-session start", out[3]["error"]["message"])
 
 
 if __name__ == "__main__":
