@@ -1030,8 +1030,8 @@ def c_effect(wm, args):
 
 
 # ----------------------------------------------------------------------------- dialogs
-@command("dialog", usage="dialog message|confirm|input|menu|close|list ...", help="Show a dialog",
-         completer=lambda wm, p, x: ["message", "confirm", "input", "menu", "close", "list", "focus"] if not p else [], category="ui")
+@command("dialog", usage="dialog message|confirm|input|menu|close|list|focus|poll ...", help="Show a dialog",
+         completer=lambda wm, p, x: ["message", "confirm", "input", "menu", "close", "list", "focus", "poll"] if not p else [], category="ui")
 def c_dialog(wm, args):
     from .dialogs import ConfirmDialog, InputDialog, MenuDialog, MessageDialog
     if not args:
@@ -1070,6 +1070,17 @@ def c_dialog(wm, args):
         return
     elif kind == "list":
         return [x.describe() for x in wm.dialogs.stack]
+    elif kind == "poll":
+        if not rest:
+            raise CommandError("usage: dialog poll <id>")
+        try:
+            did = int(rest[0])
+        except ValueError:
+            raise CommandError("dialog poll: id must be a number")
+        d = wm.dialogs.poll(did)
+        if d is None:
+            raise CommandError("no such dialog: %d" % did)
+        return {"dialog": d.id, "closed": d.closed, "result": d.result}
     else:
         raise CommandError("unknown dialog kind: %s" % kind)
     wm.open_dialog(d)

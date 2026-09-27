@@ -170,6 +170,14 @@ class OtherTriggerTests(RuleCase):
         self.wm.create_window({"cmd": "sleep 30", "title": "watch-me"})
         self.assertEqual(self.wm.status_items["seen"]["value"], "watch-me")
 
+    def test_dialog_result_event_and_result_variable(self):
+        # matches the docs/automation.md example: a dialog's answer, picked up by an `event: dialog_result` rule
+        self.rules([{"name": "after", "when": {"event": "dialog_result"}, "do": ["status-set answer $result"]}])
+        self.wm.execute('dialog confirm "Deploy?" "run deploy.sh" "message cancelled"')
+        d = self.wm.dialogs.stack[-1]
+        d.finish(d._buttons[0], d.actions[0])           # press "Yes"
+        self.assertEqual(self.wm.status_items["answer"]["value"], "Yes")
+
     def test_status_trigger_edge(self):
         self.rules([{"name": "hot", "when": {"status": "temp", "above": 80}, "do": ["message hot"]}])
         self.wm.execute("status-set temp 50")

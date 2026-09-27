@@ -4,7 +4,7 @@ Everything the WM can do is reachable through the same operations, whatever the 
 
 | transport | how |
 |---|---|
-| CLI | `pytermwm ctl "layout grid"`, `pytermwm ls / send / capture / state / logs / wait / frame` |
+| CLI | `pytermwm ctl "layout grid"`, `pytermwm ls / send / capture / state / logs / wait / dialog-wait / frame` |
 | unix socket | length-prefixed JSON (`pytermwm/protocol.py`), path from `PYTERMWM_SOCK` inside windows |
 | HTTP + SSE | `pytermwm --web PORT` or `web: {enabled: true}`; `pytermwm web` prints the URL |
 | MCP | `pytermwm mcp` (stdio), `pytermwm mcp --http PORT`, or `POST /mcp` on the web server |
