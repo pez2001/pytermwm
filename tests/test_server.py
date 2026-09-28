@@ -487,5 +487,41 @@ class WebAndMcpTests(DaemonCase):
         self.assertIn("pytermwm -s no-such-session start", out[3]["error"]["message"])
 
 
+class SelectTimeoutTests(unittest.TestCase):
+    """Unit tests for Server._select_timeout (no daemon needed): a pending Esc/arrow-key disambiguation
+    deadline must not be overslept, or a bare Esc feels laggy - resolving up to 100ms later than its
+    own 50ms deadline, on top of it."""
+
+    def setUp(self):
+        from pytermwm.server import Server
+        from unittest import mock
+        self.srv = Server.__new__(Server)     # skip __init__: no socket/waker needed for this
+        self.srv.clients = []
+        self.srv.wm = mock.Mock(dirty=False)
+
+    def client(self, esc_deadline):
+        from unittest import mock
+        return mock.Mock(esc_deadline=esc_deadline)
+
+    def test_no_pending_deadline_uses_the_normal_idle_timeout(self):
+        self.assertEqual(self.srv._select_timeout(100.0), 0.1)
+
+    def test_dirty_uses_the_normal_dirty_timeout(self):
+        self.srv.wm.dirty = True
+        self.assertEqual(self.srv._select_timeout(100.0), 0.02)
+
+    def test_a_pending_deadline_shortens_the_wait_to_match_it(self):
+        self.srv.clients = [self.client(100.03)]
+        self.assertAlmostEqual(self.srv._select_timeout(100.0), 0.03)
+
+    def test_the_nearest_of_several_pending_deadlines_wins(self):
+        self.srv.clients = [self.client(100.08), self.client(100.01), self.client(0)]
+        self.assertAlmostEqual(self.srv._select_timeout(100.0), 0.01)
+
+    def test_an_overdue_deadline_returns_zero_not_negative(self):
+        self.srv.clients = [self.client(99.9)]
+        self.assertEqual(self.srv._select_timeout(100.0), 0.0)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -244,7 +244,7 @@ class Server:
         try:
             while not self.stop and not wm.quit_requested:
                 self._sync_fds()
-                timeout = 0.02 if wm.dirty else 0.1
+                timeout = self._select_timeout(time.time())
                 try:
                     events = self.sel.select(timeout)
                 except InterruptedError:
@@ -504,6 +504,16 @@ class Server:
             wm.process_events(evs, c)
         finally:
             self.active_client = None
+
+    def _select_timeout(self, now: float) -> float:
+        timeout = 0.02 if self.wm.dirty else 0.1
+        deadlines = [c.esc_deadline for c in self.clients if c.esc_deadline]
+        if deadlines:
+            # otherwise a bare Esc (or the first byte of an arrow/function-key sequence split across
+            # reads) only resolves on the next unrelated wakeup - up to a further 100ms of apparent
+            # input lag on top of the deadline itself.
+            timeout = max(0.0, min(timeout, min(deadlines) - now))
+        return timeout
 
     def _esc_timeouts(self, now: float):
         for c in self.clients:
