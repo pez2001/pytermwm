@@ -16,6 +16,9 @@ and the project uses [semantic versioning](https://semver.org/).
 - The open-file soft limit is now capped on startup (POSIX only). A very high limit (seen on macOS CI runners)
   made every window's `subprocess.Popen(close_fds=True)` slow, since closing every fd up to that limit is the
   only option on a platform with no `/proc` to list which fds are actually open.
+- `RawTerminal.__exit__` no longer waits for its output to be read before restoring terminal attributes
+  (`TCSADRAIN` -> `TCSANOW`). A real terminal always drains immediately, but a pty with no active reader can
+  make `TCSADRAIN` wait forever depending on the platform - this was hanging CI on macOS runners.
 
 ## [1.0.2] - 2026-09-26
 

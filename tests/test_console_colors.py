@@ -104,6 +104,16 @@ class RawTerminalPaletteTests(unittest.TestCase):
         self.assertIn(b"\x1b]Pfffffff", entered)    # index 15 (hex "f") -> #ffffff
         self.assertIn(b"\x1b]R", left)               # reset on the way out
 
+    def test_exit_restores_attrs_without_waiting_for_output_to_be_read(self):
+        # TCSADRAIN waits for previously-written output to be transmitted first, which on some platforms
+        # means waiting for a reader that, here, isn't there yet (the test only drains afterwards) - this
+        # locks in TCSANOW instead, which was the actual fix for a real hang seen on macOS CI.
+        import termios
+        with mock.patch("pytermwm.compat.termios.tcsetattr") as tcsetattr:
+            with RawTerminal(fd_in=self.slave, fd_out=self.slave, mouse=False, palette=None):
+                pass
+        self.assertEqual(tcsetattr.call_args.args[1], termios.TCSANOW)
+
     def test_no_palette_means_no_palette_escapes_either_way(self):
         with RawTerminal(fd_in=self.slave, fd_out=self.slave, mouse=False, palette=None):
             entered = self._read_all()

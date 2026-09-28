@@ -790,7 +790,12 @@ class RawTerminal:
             if self.console is not None:
                 self.console.leave()
         elif self.saved is not None:
-            termios.tcsetattr(self.fd_in, termios.TCSADRAIN, self.saved)
+            # TCSADRAIN waits for previously-written output (the MOUSE_OFF/LEAVE sequence just above) to be
+            # transmitted first. A real terminal's emulator always drains that immediately, but on some
+            # platforms (seen hanging CI on macOS) the pty layer only considers it transmitted once the other
+            # end has actually read it - if nothing is reading right now, this waits forever. TCSANOW applies
+            # the restored settings immediately without waiting on that.
+            termios.tcsetattr(self.fd_in, termios.TCSANOW, self.saved)
             try:
                 os.set_blocking(self.fd_in, True)
             except OSError:
