@@ -9,6 +9,7 @@
     python run_tests.py --smoke         afterwards run scripts/smoke.py (real daemon, HTTP, MCP)
 """
 import argparse
+import faulthandler
 import os
 import subprocess
 import sys
@@ -19,6 +20,12 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 PORTABLE = ["tests.test_ansi", "tests.test_keys", "tests.test_layout", "tests.test_docs", "tests.test_platform", "tests.test_web_ui",
             "tests.test_fuzz", "tests.test_golden", "tests.test_project", "tests.test_recording", "tests.test_notify",
             "tests.test_selection", "tests.test_ansiart", "tests.test_chart_glyphs"]
+
+# A wedged pty/fork/thread interaction (seen hanging CI for hours, deterministically, on some platforms) is
+# otherwise silent: nothing times out, nothing prints, and the run only ever ends when the CI provider's own
+# multi-hour ceiling kills it. Dumping every thread's stack after a generous timeout turns that into a fast,
+# diagnosable failure instead - harmless when the suite is healthy, since it only fires this late.
+WATCHDOG_SECONDS = 600
 
 
 def main(argv=None) -> int:
@@ -69,7 +76,9 @@ def main(argv=None) -> int:
             print(t.id())
         return 0
     suite = unittest.TestSuite(tests)
+    faulthandler.dump_traceback_later(WATCHDOG_SECONDS, exit=True)
     result = unittest.TextTestRunner(verbosity=2 if args.verbose else 1, failfast=args.failfast).run(suite)
+    faulthandler.cancel_dump_traceback_later()
     code = 0 if result.wasSuccessful() else 1
     if args.smoke and code == 0:
         code = subprocess.call([sys.executable, os.path.join(ROOT, "scripts", "smoke.py")], cwd=ROOT)
