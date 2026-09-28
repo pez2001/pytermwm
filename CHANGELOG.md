@@ -19,6 +19,8 @@ and the project uses [semantic versioning](https://semver.org/).
 - `RawTerminal.__exit__` no longer waits for its output to be read before restoring terminal attributes
   (`TCSADRAIN` -> `TCSANOW`). A real terminal always drains immediately, but a pty with no active reader can
   make `TCSADRAIN` wait forever depending on the platform - this was hanging CI on macOS runners.
+- The `btop` window's process list now falls back to `ps` on platforms with no `/proc` (macOS and other BSDs),
+  instead of always coming back empty there.
 
 ## [1.0.2] - 2026-09-26
 
