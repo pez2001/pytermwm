@@ -5,6 +5,11 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Alt-key combos, arrow keys and other Escape-prefixed sequences could feel laggy: the server waits up to 50ms
+  to tell a bare Esc apart from the start of such a sequence, but only checked that deadline on the next
+  unrelated wakeup, up to 100ms later. The event loop now wakes up exactly when the deadline is due.
+
 ## [1.0.3] - 2026-09-28
 
 ### Added
