@@ -5,22 +5,24 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-09-28
+
 ### Added
 - `dialog poll <id>` returns a dialog's `{closed, result}` directly, including for a little while after it has
   closed; `pytermwm dialog-wait <id> [--timeout SECONDS]` polls it from the CLI and blocks until answered.
 
 ### Fixed
-- Starting the web server no longer calls `socket.getfqdn()` on every start (`HTTPServer.server_bind()` does this
-  by default); it can hang for a long time on a machine with no reachable DNS/mDNS resolver. This was hanging CI
-  on macOS runners, where every test that starts a session with the web UI enabled paid that cost.
-- The open-file soft limit is now capped on startup (POSIX only). A very high limit (seen on macOS CI runners)
-  made every window's `subprocess.Popen(close_fds=True)` slow, since closing every fd up to that limit is the
-  only option on a platform with no `/proc` to list which fds are actually open.
-- `RawTerminal.__exit__` no longer waits for its output to be read before restoring terminal attributes
-  (`TCSADRAIN` -> `TCSANOW`). A real terminal always drains immediately, but a pty with no active reader can
-  make `TCSADRAIN` wait forever depending on the platform - this was hanging CI on macOS runners.
-- The `btop` window's process list now falls back to `ps` on platforms with no `/proc` (macOS and other BSDs),
-  instead of always coming back empty there.
+- Several macOS-specific issues, most from tracking down CI hanging there for hours on end:
+  - Starting the web server no longer calls `socket.getfqdn()` on every start (`HTTPServer.server_bind()` does
+    this by default); it can hang for a long time on a machine with no reachable DNS/mDNS resolver.
+  - The open-file soft limit is now capped on startup (POSIX only). A very high limit (seen on macOS) made every
+    window's `subprocess.Popen(close_fds=True)` slow, since closing every fd up to that limit is the only option
+    on a platform with no `/proc` to list which fds are actually open.
+  - `RawTerminal.__exit__` no longer waits for its output to be read before restoring terminal attributes
+    (`TCSADRAIN` -> `TCSANOW`). A real terminal always drains immediately, but a pty with no active reader can
+    make `TCSADRAIN` wait forever depending on the platform.
+  - The `btop` window's process list now falls back to `ps` on platforms with no `/proc` (macOS and other BSDs),
+    instead of always coming back empty there.
 
 ## [1.0.2] - 2026-09-26
 
