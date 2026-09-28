@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import subprocess
 import time
 
 from .compat import IS_WINDOWS
@@ -182,7 +183,7 @@ class Sampler:
         try:
             pids = [p for p in os.listdir("/proc") if p.isdigit()]
         except OSError:
-            return procs
+            return self._ps_processes(limit, sort)     # no /proc (macOS and other BSDs): shell out to ps
         now = time.time()
         if not hasattr(self, "_pp"):
             self._pp = {}
@@ -214,6 +215,29 @@ class Sampler:
         if now - self._pp_t >= 0.5 or not self._pp:
             self._pp = newpp
             self._pp_t = now
+        key = {"cpu": lambda p: -p["cpu"], "mem": lambda p: -p["rss"], "pid": lambda p: p["pid"],
+               "name": lambda p: p["name"]}.get(sort, lambda p: -p["cpu"])
+        procs.sort(key=key)
+        return procs[:limit]
+
+    def _ps_processes(self, limit: int, sort: str) -> List[dict]:
+        """Top processes via ``ps`` (macOS and other BSDs with no /proc); ps already reports %cpu itself,
+        so unlike the /proc path above there's no need to sample twice and compute our own delta."""
+        procs: List[dict] = []
+        try:
+            out = subprocess.run(["ps", "-axo", "pid=,pcpu=,rss=,state=,comm="],
+                                  capture_output=True, text=True, timeout=2).stdout
+        except (OSError, subprocess.SubprocessError):
+            return procs
+        for line in out.splitlines():
+            parts = line.split(None, 4)
+            if len(parts) < 5:
+                continue
+            try:
+                pid, cpu, rss = int(parts[0]), float(parts[1]), int(parts[2]) * 1024
+            except ValueError:
+                continue
+            procs.append({"pid": pid, "name": os.path.basename(parts[4]), "state": parts[3], "cpu": cpu, "rss": rss})
         key = {"cpu": lambda p: -p["cpu"], "mem": lambda p: -p["rss"], "pid": lambda p: p["pid"],
                "name": lambda p: p["name"]}.get(sort, lambda p: -p["cpu"])
         procs.sort(key=key)

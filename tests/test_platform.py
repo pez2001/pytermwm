@@ -305,6 +305,19 @@ class Plumbing(unittest.TestCase):
     def test_install_signal_tolerates_missing_signals(self):
         self.assertFalse(compat.install_signal(None, lambda *a: None))
 
+    @unittest.skipIf(compat.IS_WINDOWS, "RLIMIT_NOFILE is POSIX only")
+    def test_cap_nofile_limit_lowers_a_high_soft_limit(self):
+        import resource
+        soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+        try:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (min(hard, 8192) if hard != resource.RLIM_INFINITY else 8192, hard))
+            compat.cap_nofile_limit(cap=1024)
+            self.assertEqual(resource.getrlimit(resource.RLIMIT_NOFILE)[0], 1024)
+            compat.cap_nofile_limit(cap=1024)          # already below the cap: left alone
+            self.assertEqual(resource.getrlimit(resource.RLIMIT_NOFILE)[0], 1024)
+        finally:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (soft, hard))
+
 
 PY = sys.executable
 

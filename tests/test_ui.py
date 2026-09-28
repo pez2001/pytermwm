@@ -371,6 +371,28 @@ class DialogTests(UICase):
         self.wm.execute("dialog close")
         self.assertEqual(len(self.wm.dialogs.stack), 0)
 
+    def test_dialog_poll_before_and_after_answer(self):
+        did = self.wm.execute("dialog confirm proceed? 'layout grid' 'layout rows'")["result"]["dialog"]
+        before = self.wm.execute("dialog poll %d" % did)["result"]
+        self.assertEqual(before, {"dialog": did, "closed": False, "result": None})
+        self.keys("y")
+        after = self.wm.execute("dialog poll %d" % did)["result"]
+        self.assertEqual(after, {"dialog": did, "closed": True, "result": "Yes"})
+
+    def test_dialog_poll_unknown_id_errors(self):
+        res = self.wm.execute("dialog poll 9999")
+        self.assertFalse(res["ok"])
+        self.assertIn("no such dialog", res["error"])
+
+    def test_dialog_poll_history_bounded(self):
+        from pytermwm.dialogs import HISTORY_SIZE
+        for i in range(HISTORY_SIZE + 5):
+            self.wm.execute("dialog message note%d Info --modeless" % i)
+            self.wm.dialogs.stack[-1].finish("ok")
+        first_id = self.wm.dialogs.history[0].id
+        self.assertGreater(first_id, 5)   # the oldest ones fell out of history
+        self.assertEqual(len(self.wm.dialogs.history), HISTORY_SIZE)
+
     def test_dialog_rendered_centered(self):
         self.wm.execute("dialog message 'body text' CenterMe")
         rows = self.rows()

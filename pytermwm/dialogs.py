@@ -281,6 +281,9 @@ class MenuDialog(Dialog):
         self._refilter()
 
 
+HISTORY_SIZE = 50   # closed dialogs whose result stays pollable
+
+
 class DialogManager:
     """Keeps the dialog stack for a WindowManager."""
 
@@ -289,6 +292,7 @@ class DialogManager:
         self.stack: List[Dialog] = []
         self._next = 1
         self.focus: Optional[int] = None    # id of a focused non-modal dialog
+        self.history: List[Dialog] = []     # recently-closed dialogs, most recent last
 
     def add(self, d: Dialog) -> Dialog:
         d.id = self._next
@@ -305,6 +309,8 @@ class DialogManager:
             self.stack.remove(d)
         if self.focus == d.id:
             self.focus = None
+        self.history.append(d)
+        del self.history[:-HISTORY_SIZE]
         self.wm.dirty = True
 
     def modal(self) -> Optional[Dialog]:
@@ -332,6 +338,17 @@ class DialogManager:
 
     def get(self, did: int) -> Optional[Dialog]:
         for d in self.stack:
+            if d.id == did:
+                return d
+        return None
+
+    def poll(self, did: int) -> Optional[Dialog]:
+        """Look up a dialog by id whether it is still open or has already closed
+        (as long as it's within the last HISTORY_SIZE closed dialogs)."""
+        d = self.get(did)
+        if d is not None:
+            return d
+        for d in self.history:
             if d.id == did:
                 return d
         return None

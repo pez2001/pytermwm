@@ -330,6 +330,29 @@ def cmd_wait(args) -> int:
     return 124
 
 
+def cmd_dialog_wait(args) -> int:
+    """Poll `dialog poll <id>` until the dialog closes, then print its result as JSON."""
+    end = time.time() + args.timeout
+    c = _control(args)
+    try:
+        while True:
+            res = c.request({"op": "command", "line": "dialog poll %d" % args.id, "source": "cli"})
+            if not res.get("ok"):
+                sys.stderr.write("error: %s\n" % res.get("error"))
+                return 1
+            r = res["result"]
+            if r["closed"]:
+                print(json.dumps(r, default=str))
+                return 0
+            if time.time() >= end:
+                break
+            time.sleep(0.2)
+    finally:
+        c.close()
+    sys.stderr.write("timeout waiting for dialog %d\n" % args.id)
+    return 124
+
+
 def cmd_pipe(args) -> int:
     """cmd | pytermwm pipe : show a stream in a viewer window."""
     c = _control(args)
@@ -552,6 +575,9 @@ def build_parser() -> argparse.ArgumentParser:
     p = sp("wait", cmd_wait, "wait until a window's output matches a regex")
     p.add_argument("pattern")
     p.add_argument("-t", "--target")
+    p.add_argument("--timeout", type=float, default=30)
+    p = sp("dialog-wait", cmd_dialog_wait, "wait for a dialog to be answered and print its result (JSON)")
+    p.add_argument("id", type=int)
     p.add_argument("--timeout", type=float, default=30)
     p = sp("pipe", cmd_pipe, "show stdin in a viewer window:  cmd | pytermwm pipe")
     p.add_argument("--title", "-t")

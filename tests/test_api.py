@@ -7,6 +7,7 @@ import sys
 import threading
 import time
 import unittest
+import unittest.mock
 
 from tests.helpers import *
 from pytermwm.api import WebServer
@@ -458,6 +459,27 @@ class HostCheckTests(unittest.TestCase):
         self.assertEqual(self.web("127.0.0.1").url.split("/?")[0], "http://127.0.0.1:0")
         self.assertEqual(self.web("192.168.1.5").display_host(), "192.168.1.5")
         self.assertEqual(self.web("0.0.0.0", public_host="mcp.lan").display_host(), "mcp.lan")
+
+    def test_starting_the_server_does_not_call_getfqdn(self):
+        # HTTPServer.server_bind() normally calls socket.getfqdn(host) on every start, a reverse-DNS/mDNS
+        # lookup that can hang for a long time when it can't resolve (seen taking minutes per call on some
+        # CI runners); _HTTPServer overrides server_bind() to avoid it. socket.getfqdn is still allowed to
+        # be called once in the process overall (our own cached lookup for the machine's name).
+        import pytermwm.api as api_mod
+        api_mod._cached_fqdn.cache_clear()
+        calls = []
+        orig = socket.getfqdn
+
+        def counting(*a, **kw):
+            calls.append((a, kw))
+            return orig(*a, **kw)
+
+        with unittest.mock.patch("socket.getfqdn", counting):
+            for host in ("0.0.0.0", "127.0.0.1"):
+                w = self.web(host)
+                w.start()
+                w.stop()
+        self.assertLessEqual(len(calls), 1, calls)
 
     def test_over_http_a_foreign_host_is_refused_and_a_local_name_accepted(self):
         w = self.web("0.0.0.0", allowed_hosts=[])

@@ -45,6 +45,30 @@ except ImportError:                     # Windows
 
 O_BINARY = getattr(os, "O_BINARY", 0)
 
+NOFILE_CAP = 4096
+
+
+def cap_nofile_limit(cap: int = NOFILE_CAP) -> None:
+    """Lower the open-file soft limit if it's above ``cap`` (POSIX only, a no-op on Windows).
+
+    subprocess.Popen(close_fds=True) (the default, used for every window's pty) has no fast way to find
+    only-open fds on a platform with no /proc (macOS): it falls back to closing every fd up to the open-file
+    limit on every single spawn. Some CI runners report a very high (or "unlimited") soft limit there, which
+    turns each spawn from milliseconds into a noticeable delay - multiplied across the many windows a full
+    test run opens, minutes into hours. Capping it to something pytermwm is nowhere near needing is free."""
+    if IS_WINDOWS:
+        return
+    try:
+        import resource
+        soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+        if soft > cap:
+            resource.setrlimit(resource.RLIMIT_NOFILE, (cap, hard))
+    except (ValueError, OSError):
+        pass
+
+
+cap_nofile_limit()
+
 # signals that do not exist on Windows
 SIGHUP = getattr(signal, "SIGHUP", None)
 SIGWINCH = getattr(signal, "SIGWINCH", None)
@@ -766,7 +790,12 @@ class RawTerminal:
             if self.console is not None:
                 self.console.leave()
         elif self.saved is not None:
-            termios.tcsetattr(self.fd_in, termios.TCSADRAIN, self.saved)
+            # TCSADRAIN waits for previously-written output (the MOUSE_OFF/LEAVE sequence just above) to be
+            # transmitted first. A real terminal's emulator always drains that immediately, but on some
+            # platforms (seen hanging CI on macOS) the pty layer only considers it transmitted once the other
+            # end has actually read it - if nothing is reading right now, this waits forever. TCSANOW applies
+            # the restored settings immediately without waiting on that.
+            termios.tcsetattr(self.fd_in, termios.TCSANOW, self.saved)
             try:
                 os.set_blocking(self.fd_in, True)
             except OSError:
