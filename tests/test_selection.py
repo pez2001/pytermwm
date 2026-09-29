@@ -60,6 +60,23 @@ class MouseSelectionTests(SelCase):
         self.assertEqual(self.wm.paste_buffer, "")
         self.assertIsNone(self.wm.active_selection())
 
+    def test_activating_an_unfocused_window_does_not_start_a_selection(self):
+        # a real click almost always has a little pointer jitter between press and release; on an
+        # already-focused window that's a (tiny, intentional) drag-select, but the click that merely
+        # activates an unfocused window must not also start selecting - see the reported bug: copying
+        # unwanted characters on almost every click used to activate a window.
+        w2 = self.wm.create_window({"cmd": SLEEPER, "name": "b"})
+        inner2 = self.wm.inner_rect(w2, self.wm.desk.rects[w2.id])
+        self.wm.focus_window(self.w.id)                    # w2 starts unfocused
+        x0, y0 = inner2.x + 2, inner2.y + 0
+        x1, y1 = inner2.x + 8, inner2.y + 0                # a little jitter, as a real click would have
+        self.wm.handle_mouse(mouse("press", x0, y0))
+        self.wm.handle_mouse(mouse("move", x1, y1))
+        self.wm.handle_mouse(mouse("release", x1, y1))
+        self.assertEqual(self.wm.desk.focus, w2.id)         # the click did activate the window
+        self.assertEqual(self.wm.paste_buffer, "")
+        self.assertIsNone(self.wm.active_selection())
+
     def test_double_click_word_and_triple_click_line(self):
         self.click(1, 0)
         self.click(1, 0)

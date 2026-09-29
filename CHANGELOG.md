@@ -10,6 +10,9 @@ and the project uses [semantic versioning](https://semver.org/).
   pasted text) no longer freezes keyboard and mouse input for that client until it reconnects: every later
   keystroke was being silently absorbed into the still-open paste buffer forever. It now times out after 5s
   and finishes the paste with whatever arrived.
+- Clicking an unfocused window to activate it no longer also starts (and, with `copy_on_release`, copies) a
+  text selection at the click point. A real click almost always has a little pointer jitter between press and
+  release, which used to turn the activating click into a tiny accidental drag-select.
 
 ## [1.0.4] - 2026-09-28
 
