@@ -137,7 +137,12 @@ class SelectionMixin:
         button = m["button"]
         if button == 1:
             if self.desk.focus != w.id:
+                # the click that activates an unfocused window just activates it - the tiny amount of
+                # pointer jitter a real click almost always has would otherwise turn it into a drag,
+                # visibly selecting (and, with copy_on_release, copying) a character or two nobody wanted.
                 self.focus_window(w.id)
+                self.dirty = True
+                return True
             self._sel_press(w, inner, m, cfg)
             return True
         wanted = [BUTTONS.get(str(b).lower()) for b in (cfg.get("paste_buttons") or [])]

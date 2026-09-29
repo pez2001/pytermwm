@@ -45,6 +45,9 @@ class Event:
         return "Event(%s,%r)" % (self.type, self.name or self.data)
 
 
+PASTE_TIMEOUT = 5.0   # a bracketed paste whose closing marker never arrives must not hang input forever
+
+
 class KeyParser:
     """Incremental parser: bytes -> list of events (key / mouse / paste / focus)."""
 
@@ -52,6 +55,7 @@ class KeyParser:
         self.buf = b""
         self.dec = codecs.getincrementaldecoder("utf-8")("replace")
         self.paste: Optional[List[bytes]] = None
+        self.paste_deadline = 0.0
         self.esc_time = 0.0
 
     def pending(self) -> bool:
@@ -64,6 +68,18 @@ class KeyParser:
     def flush(self) -> List[Event]:
         """Call after an idle timeout: a lone ESC becomes an Esc key press."""
         return self._parse(final=True)
+
+    def expire_paste(self, now: float) -> List[Event]:
+        """A stray/malformed ESC[200~ with no closing ESC[201~ (seen from some terminal/multiplexer
+        combinations on specific pasted text) would otherwise swallow every later keystroke and mouse
+        event into the open paste buffer forever, freezing input for that client until it reconnects.
+        Call every tick; finalizes the paste with whatever arrived so far once it's been open too long."""
+        if self.paste is None or now < self.paste_deadline:
+            return []
+        text = b"".join(self.paste).decode("utf-8", "replace")
+        ev = Event("paste", "paste", b"".join(self.paste), text)
+        self.paste = None
+        return [ev]
 
     def _parse(self, final: bool) -> List[Event]:
         out: List[Event] = []
@@ -107,6 +123,7 @@ class KeyParser:
                         pass
                     elif ev.type == "paste_start":
                         self.paste = []
+                        self.paste_deadline = time.time() + PASTE_TIMEOUT
                     else:
                         out.append(ev)
                     i = j + 1

@@ -525,6 +525,13 @@ class Server:
                         self.wm.process_events(c.parser.flush(), c)
                     finally:
                         self.active_client = None
+            pevs = c.parser.expire_paste(now)
+            if pevs:
+                self.active_client = c
+                try:
+                    self.wm.process_events(pevs, c)
+                finally:
+                    self.active_client = None
 
     def _stdin_readable(self, c: Client):
         data = self.stdin_reader.read()
