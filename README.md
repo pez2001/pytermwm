@@ -5,13 +5,14 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
 [![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
 
-> **1.0.3 is out (2026-09-28):** `dialog poll <id>` and `pytermwm dialog-wait <id>` retrieve a dialog's result
-> directly, and several macOS-specific hangs and gaps are fixed (the web server starting, `pytermwm attach`
-> restoring the terminal on exit, and the `btop` window's process list). 1.0.2 added `pytermwm version` showing
-> which version each running session runs and fixed long status line messages blanking the status line. 1.0.1
-> brought `pip install pytermwm`, the `nes`, `matrix` and `dos` themes, SVG screenshots and asciicast recordings
-> of the whole screen, much cheaper background effects, and Windows fixes. See the
-> [changelog](https://github.com/pez2001/pytermwm/blob/main/CHANGELOG.md) and the
+> **1.0.4 is out (2026-09-28):** fixes up to 100ms of extra input lag on Alt-key combos, arrow keys and other
+> Escape-prefixed sequences. 1.0.3 added `dialog poll <id>` and `pytermwm dialog-wait <id>` for retrieving a
+> dialog's result directly, and fixed several macOS-specific hangs and gaps (the web server starting,
+> `pytermwm attach` restoring the terminal on exit, and the `btop` window's process list). 1.0.2 added
+> `pytermwm version` showing which version each running session runs and fixed long status line messages
+> blanking the status line. 1.0.1 brought `pip install pytermwm`, the `nes`, `matrix` and `dos` themes, SVG
+> screenshots and asciicast recordings of the whole screen, much cheaper background effects, and Windows fixes.
+> See the [changelog](https://github.com/pez2001/pytermwm/blob/main/CHANGELOG.md) and the
 > [announcement](https://github.com/pez2001/pytermwm/discussions/13).
 
 A modern terminal window manager in pure Python ("tmux for 2026"): tiled, floating and docked windows, desktops,
