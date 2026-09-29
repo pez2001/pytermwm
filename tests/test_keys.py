@@ -1,3 +1,4 @@
+import time
 import unittest
 from tests.helpers import *
 from pytermwm.keys import *
@@ -47,6 +48,24 @@ class KeyTests(unittest.TestCase):
         p.feed(b"\x1b[200~ab")
         evs = p.feed(b"cd\x1b[201~")
         self.assertEqual(evs[0].data, "abcd")
+
+    def test_unclosed_paste_does_not_swallow_input_forever(self):
+        # a closing ESC[201~ that never arrives (seen with some terminal/multiplexer combinations on
+        # specific pasted text) used to leave every later keystroke and mouse event silently absorbed
+        # into the open paste buffer - freezing input for that client until it reconnected.
+        p = KeyParser()
+        self.assertEqual(p.feed(b"\x1b[200~some pasted text"), [])
+        self.assertEqual(p.feed(b"a\r"), [])            # swallowed into the still-open paste, not lost
+        self.assertEqual(p.expire_paste(time.time()), [])                        # not overdue yet
+        evs = p.expire_paste(time.time() + PASTE_TIMEOUT + 1)
+        self.assertEqual(evs[0].type, "paste")
+        self.assertEqual(evs[0].data, "some pasted texta\r")
+        # normal input works again immediately afterwards
+        self.assertEqual(names(p.feed(b"x")), ["x"])
+
+    def test_expire_paste_is_a_noop_without_an_open_paste(self):
+        p = KeyParser()
+        self.assertEqual(p.expire_paste(time.time() + 1000), [])
 
     def test_mouse_sgr(self):
         p = KeyParser()

@@ -5,6 +5,12 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- A paste whose closing marker never arrives (seen with some terminal/multiplexer combinations on specific
+  pasted text) no longer freezes keyboard and mouse input for that client until it reconnects: every later
+  keystroke was being silently absorbed into the still-open paste buffer forever. It now times out after 5s
+  and finishes the paste with whatever arrived.
+
 ## [1.0.4] - 2026-09-28
 
 ### Fixed
