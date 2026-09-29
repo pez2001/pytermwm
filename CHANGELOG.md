@@ -5,6 +5,8 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-09-29
+
 ### Fixed
 - A paste whose closing marker never arrives (seen with some terminal/multiplexer combinations on specific
   pasted text) no longer freezes keyboard and mouse input for that client until it reconnects: every later

@@ -5,7 +5,9 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
 [![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
 
-> **1.0.4 is out (2026-09-28):** fixes up to 100ms of extra input lag on Alt-key combos, arrow keys and other
+> **1.0.5 is out (2026-09-29):** fixes a paste whose closing marker never arrives freezing keyboard/mouse input
+> for that client, and clicking an unfocused window to activate it accidentally starting (and copying) a text
+> selection. 1.0.4 fixed up to 100ms of extra input lag on Alt-key combos, arrow keys and other
 > Escape-prefixed sequences. 1.0.3 added `dialog poll <id>` and `pytermwm dialog-wait <id>` for retrieving a
 > dialog's result directly, and fixed several macOS-specific hangs and gaps (the web server starting,
 > `pytermwm attach` restoring the terminal on exit, and the `btop` window's process list). 1.0.2 added
