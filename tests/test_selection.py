@@ -78,16 +78,18 @@ class MouseSelectionTests(SelCase):
         self.assertIsNone(self.wm.active_selection())
 
     def test_regaining_terminal_focus_does_not_start_a_selection(self):
-        # alt-tabbing away from the terminal app and clicking back into it (its window was already focused
-        # inside pytermwm, e.g. a single-window session) sends a focus-in escape right before that same click;
-        # the click must only restore OS focus to the terminal, not start a text selection.
+        # alt-tabbing away from the terminal app (its window was already focused inside pytermwm, e.g. a
+        # single-window session) sends a focus-out escape; clicking back into it must only restore OS focus,
+        # not start a text selection - even though some terminals (seen with Windows Terminal over SSH) send
+        # the matching focus-in escape only *after* that click's mouse press, not before it.
         from pytermwm.keys import Event
-        self.wm.process_event(Event("focus", "FocusIn", b"\x1b[I", True))
+        self.wm.process_event(Event("focus", "FocusOut", b"\x1b[O", False))
         x0, y0 = self.cell(2, 0)
         x1, y1 = self.cell(8, 0)                            # a little jitter, as a real click would have
         self.wm.handle_mouse(mouse("press", x0, y0))
         self.wm.handle_mouse(mouse("move", x1, y1))
         self.wm.handle_mouse(mouse("release", x1, y1))
+        self.wm.process_event(Event("focus", "FocusIn", b"\x1b[I", True))    # arrives late - must not matter
         self.assertEqual(self.wm.paste_buffer, "")
         self.assertIsNone(self.wm.active_selection())
         # the next click, with no further focus-in, behaves normally again

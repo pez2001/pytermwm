@@ -5,6 +5,13 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- The 1.0.6 fix for clicking the terminal back into OS focus starting a selection didn't actually work with
+  some terminals (seen with Windows Terminal over SSH): they send the focus-in escape *after* the click's
+  mouse press, not before it, so the fix never armed in time. Now it no longer depends on that ordering: a
+  window with no OS focus gets no mouse events at all, so the first mouse press seen after a focus-out is
+  known to be the reactivating click regardless of when, or whether, the matching focus-in escape arrives.
+
 ## [1.0.6] - 2026-10-03
 
 ### Fixed
