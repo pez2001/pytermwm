@@ -5,6 +5,12 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Clicking back into the terminal application itself to give it OS focus (e.g. after alt-tabbing away) no
+  longer starts a text selection when it lands on the window that was already focused inside pytermwm. The
+  1.0.5 fix only covered clicking an *unfocused pytermwm window* to activate it; this covers the terminal's
+  own focus-in event (`CSI I`), reported with Windows Terminal over SSH.
+
 ## [1.0.5] - 2026-09-29
 
 ### Fixed

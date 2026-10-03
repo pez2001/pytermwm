@@ -77,6 +77,23 @@ class MouseSelectionTests(SelCase):
         self.assertEqual(self.wm.paste_buffer, "")
         self.assertIsNone(self.wm.active_selection())
 
+    def test_regaining_terminal_focus_does_not_start_a_selection(self):
+        # alt-tabbing away from the terminal app and clicking back into it (its window was already focused
+        # inside pytermwm, e.g. a single-window session) sends a focus-in escape right before that same click;
+        # the click must only restore OS focus to the terminal, not start a text selection.
+        from pytermwm.keys import Event
+        self.wm.process_event(Event("focus", "FocusIn", b"\x1b[I", True))
+        x0, y0 = self.cell(2, 0)
+        x1, y1 = self.cell(8, 0)                            # a little jitter, as a real click would have
+        self.wm.handle_mouse(mouse("press", x0, y0))
+        self.wm.handle_mouse(mouse("move", x1, y1))
+        self.wm.handle_mouse(mouse("release", x1, y1))
+        self.assertEqual(self.wm.paste_buffer, "")
+        self.assertIsNone(self.wm.active_selection())
+        # the next click, with no further focus-in, behaves normally again
+        self.drag(2, 0, 8, 0)
+        self.assertEqual(self.wm.paste_buffer, "llo wor")
+
     def test_double_click_word_and_triple_click_line(self):
         self.click(1, 0)
         self.click(1, 0)
