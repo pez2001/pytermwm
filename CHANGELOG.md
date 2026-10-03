@@ -5,6 +5,8 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.6] - 2026-10-03
+
 ### Fixed
 - Clicking back into the terminal application itself to give it OS focus (e.g. after alt-tabbing away) no
   longer starts a text selection when it lands on the window that was already focused inside pytermwm. The
