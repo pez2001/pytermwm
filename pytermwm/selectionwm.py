@@ -24,7 +24,6 @@ MODS = {"alt": "M-", "shift": "S-", "ctrl": "C-"}
 BUTTONS = {"left": 1, "middle": 2, "right": 3}
 DOUBLE_CLICK = 0.45
 PASTE_HISTORY = 20
-REFOCUS_CLICK_WINDOW = 0.5     # a terminal's own FocusIn arrives essentially with the click that caused it
 
 
 class SelectionMixin:
@@ -36,7 +35,11 @@ class SelectionMixin:
         self.copy_view: Optional[dict] = None
         self.sel_drag: Optional[dict] = None
         self._click = None
-        self._refocus_click_deadline = 0.0   # set when the terminal itself regains OS focus (CSI I)
+        # a window with no OS focus gets no mouse events at all, so the very first mouse press seen
+        # after a FocusOut must be the click that gives OS focus back - regardless of whether, or
+        # when, the terminal's own matching FocusIn escape arrives (some terminals send it only after
+        # that click, not before).
+        self._term_focused = True
 
     def sel_cfg(self) -> dict:
         c = dict(DEFAULT_SELECTION)
