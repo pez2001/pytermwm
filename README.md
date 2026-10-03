@@ -5,11 +5,12 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
 [![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
 
-> **1.0.6 is out (2026-10-03):** fixes clicking back into the terminal application itself to give it OS focus
-> (e.g. after alt-tabbing away) accidentally starting (and copying) a text selection, on top of 1.0.5's fix for
-> the same bug when activating an unfocused pytermwm window. 1.0.5 also fixed a paste whose closing marker
-> never arrives freezing keyboard/mouse input for that client. 1.0.4 fixed up to 100ms of extra input lag on
-> Alt-key combos, arrow keys and other Escape-prefixed sequences. 1.0.3 added `dialog poll <id>` and
+> **1.0.7 is out (2026-10-03):** fixes clicking back into the terminal application itself to give it OS focus
+> accidentally starting (and copying) a text selection, with terminals (seen with Windows Terminal over SSH)
+> that send the focus-in escape only *after* that click, which 1.0.6's first attempt at this fix missed. 1.0.6
+> covered the same bug for terminals that send focus-in before the click. 1.0.5 fixed a paste whose closing
+> marker never arrives freezing keyboard/mouse input for that client. 1.0.4 fixed up to 100ms of extra input
+> lag on Alt-key combos, arrow keys and other Escape-prefixed sequences. 1.0.3 added `dialog poll <id>` and
 > `pytermwm dialog-wait <id>` for retrieving a dialog's result directly, and fixed several macOS-specific hangs
 > and gaps. 1.0.2 added `pytermwm version` showing which version each running session runs and fixed long
 > status line messages blanking the status line. 1.0.1 brought `pip install pytermwm`, the `nes`, `matrix` and

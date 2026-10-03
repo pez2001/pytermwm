@@ -5,6 +5,8 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.7] - 2026-10-03
+
 ### Fixed
 - The 1.0.6 fix for clicking the terminal back into OS focus starting a selection didn't actually work with
   some terminals (seen with Windows Terminal over SSH): they send the focus-in escape *after* the click's
