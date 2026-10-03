@@ -848,6 +848,7 @@ class WindowManager(SelectionMixin):
             if self.cfg.get("mouse", True):
                 self.handle_mouse(ev.data)
         elif ev.type == "focus":
+            self.log.info("terminal focus event: %s", "in" if ev.data else "out")
             if ev.data:
                 # the click that gives the terminal application itself OS focus back (e.g. after alt-tabbing
                 # away and clicking back in) lands on whatever window was already focused inside pytermwm, and
@@ -939,6 +940,8 @@ class WindowManager(SelectionMixin):
         if kind == "press":
             just_refocused = time.time() < self._refocus_click_deadline
             self._refocus_click_deadline = 0.0
+            if m["button"] == 1:
+                self.log.info("mouse press at (%d,%d), just_refocused=%s", x, y, just_refocused)
         # dialogs first
         if self.dialogs.modal():
             return
