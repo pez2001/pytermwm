@@ -849,6 +849,7 @@ class WindowManager(SelectionMixin):
                 self.handle_mouse(ev.data)
         elif ev.type == "focus":
             self._term_focused = bool(ev.data)
+            self.log.info("focus event: %s -> term_focused=%s", "in" if ev.data else "out", self._term_focused)
             w = self.focused
             if w and w.screen.focus_events and w.source:
                 w.source.write(b"\x1b[I" if ev.data else b"\x1b[O")
@@ -931,7 +932,11 @@ class WindowManager(SelectionMixin):
 
     def handle_mouse(self, m: dict):
         x, y, kind = m["x"], m["y"], m["kind"]
-        just_refocused = kind == "press" and not self._term_focused
+        term_focused_before = self._term_focused
+        just_refocused = kind == "press" and not term_focused_before
+        if kind == "press" and m["button"] == 1:
+            self.log.info("mouse press at (%d,%d), term_focused_before=%s just_refocused=%s",
+                          x, y, term_focused_before, just_refocused)
         self._term_focused = True
         # dialogs first
         if self.dialogs.modal():

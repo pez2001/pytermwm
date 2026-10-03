@@ -208,6 +208,7 @@ class SelectionMixin:
         if not sel.visible:
             self.selection = None
             return
+        self.log.info("selection release: copying on window %d", w.id)
         if self.sel_cfg().get("copy_on_release", True):
             text = sel.text(w.screen)
             if text.strip("\n "):
