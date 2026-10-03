@@ -16,7 +16,7 @@ from .layout import (Rect, TileTree, carve_docks, cascade_rect, clamp_rect, focu
                      layout_grid, layout_master, layout_spiral, layout_stack, layout_table, AUTO_MODES)
 from .logs import ring_of, setup_logging
 from .prompt import Palette, Prompt
-from .selectionwm import SelectionMixin
+from .selectionwm import SelectionMixin, REFOCUS_CLICK_WINDOW
 from .statusline import StatusLine
 from .theme import Theme, get_theme
 from .window import (FileSource, InternalWindow, PipeSource, ProcessWindow, PtySource, TextWindow, Window,
@@ -848,6 +848,11 @@ class WindowManager(SelectionMixin):
             if self.cfg.get("mouse", True):
                 self.handle_mouse(ev.data)
         elif ev.type == "focus":
+            if ev.data:
+                # the click that gives the terminal application itself OS focus back (e.g. after alt-tabbing
+                # away and clicking back in) lands on whatever window was already focused inside pytermwm, and
+                # must not also start a text selection there - see the next mouse press in handle_mouse.
+                self._refocus_click_deadline = time.time() + REFOCUS_CLICK_WINDOW
             w = self.focused
             if w and w.screen.focus_events and w.source:
                 w.source.write(b"\x1b[I" if ev.data else b"\x1b[O")
@@ -930,6 +935,10 @@ class WindowManager(SelectionMixin):
 
     def handle_mouse(self, m: dict):
         x, y, kind = m["x"], m["y"], m["kind"]
+        just_refocused = False
+        if kind == "press":
+            just_refocused = time.time() < self._refocus_click_deadline
+            self._refocus_click_deadline = 0.0
         # dialogs first
         if self.dialogs.modal():
             return
@@ -962,6 +971,11 @@ class WindowManager(SelectionMixin):
         r = d.rects[hit]
         inner = self.inner_rect(w, r)
         in_inner = inner.contains(x, y)
+        if kind == "press" and just_refocused and m["button"] == 1:
+            if d.focus != hit:
+                self.focus_window(hit)
+            self.dirty = True
+            return
         if kind == "press" and self.selection_press(m, w, inner, in_inner):
             return
         if kind == "press" and m["button"] == 1:
