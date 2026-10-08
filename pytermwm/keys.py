@@ -350,6 +350,7 @@ DEFAULT_KEYS = {
         "M-p": "palette", "M-:": "prompt", "M-;": "prompt", "M-/": "help", "M-?": "help",
         "M-n": "desktop new", "M-,": "desktop prev", "M-.": "desktop next",
         "M-PageUp": "scroll page-up", "M-PageDown": "scroll page-down",
+        "S-PageUp": "scroll page-up", "S-PageDown": "scroll page-down",
         "M-c": "window-set cp437 toggle", "M-z": "layout zoom-master",
         "M-y": "copy-mode", "M-Y": "copy-view", "M-v": "paste",
         "M-1": "desktop 1", "M-2": "desktop 2", "M-3": "desktop 3", "M-4": "desktop 4",
