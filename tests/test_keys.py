@@ -49,6 +49,23 @@ class KeyTests(unittest.TestCase):
         evs = p.feed(b"cd\x1b[201~")
         self.assertEqual(evs[0].data, "abcd")
 
+    def test_paste_end_marker_split_across_reads(self):
+        # the closing ESC[201~ arriving in two reads used to be missed, freezing input until PASTE_TIMEOUT
+        for cut in range(1, 6):
+            p = KeyParser()
+            p.feed(b"\x1b[200~./llama-bench -p 128\n")
+            self.assertEqual(p.feed(b"\x1b[201~"[:cut]), [])
+            evs = p.feed(b"\x1b[201~"[cut:] + b"x")
+            self.assertEqual(evs[0].type, "paste", cut)
+            self.assertEqual(evs[0].data, "./llama-bench -p 128\n")
+            self.assertEqual(evs[1].name, "x")
+
+    def test_paste_split_marker_prefix_inside_text(self):
+        p = KeyParser()
+        p.feed(b"\x1b[200~a\x1b[")
+        evs = p.feed(b"Zb\x1b[201~")
+        self.assertEqual(evs[0].data, "a\x1b[Zb")
+
     def test_unclosed_paste_does_not_swallow_input_forever(self):
         # a closing ESC[201~ that never arrives (seen with some terminal/multiplexer combinations on
         # specific pasted text) used to leave every later keystroke and mouse event silently absorbed
