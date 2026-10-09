@@ -45,7 +45,8 @@ class Event:
         return "Event(%s,%r)" % (self.type, self.name or self.data)
 
 
-PASTE_TIMEOUT = 5.0   # a bracketed paste whose closing marker never arrives must not hang input forever
+_PASTE_END = b"\x1b[201~"
+PASTE_TIMEOUT = 5.0  # a bracketed paste whose closing marker never arrives must not hang input forever
 
 
 class KeyParser:
@@ -76,6 +77,9 @@ class KeyParser:
         Call every tick; finalizes the paste with whatever arrived so far once it's been open too long."""
         if self.paste is None or now < self.paste_deadline:
             return []
+        if self.buf:                                    # a held-back partial closing marker belongs to the paste
+            self.paste.append(self.buf)
+            self.buf = b""
         text = b"".join(self.paste).decode("utf-8", "replace")
         ev = Event("paste", "paste", b"".join(self.paste), text)
         self.paste = None
@@ -90,8 +94,14 @@ class KeyParser:
             if self.paste is not None:
                 end = b.find(b"\x1b[201~", i)
                 if end < 0:
-                    self.paste.append(b[i:])
-                    i = n
+                    # the closing marker may be split across reads: hold back a trailing partial match
+                    keep = 0
+                    for k in range(min(len(_PASTE_END) - 1, n - i), 0, -1):
+                        if b.endswith(_PASTE_END[:k]):
+                            keep = k
+                            break
+                    self.paste.append(b[i:n - keep])
+                    i = n - keep
                     break
                 self.paste.append(b[i:end])
                 text = b"".join(self.paste).decode("utf-8", "replace")
