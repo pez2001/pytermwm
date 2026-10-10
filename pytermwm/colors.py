@@ -22,6 +22,7 @@ HIDDEN = 64
 STRIKE = 128
 WIDE = 256   # first half of a double width character
 TAIL = 512   # placeholder cell following a WIDE cell
+WRAP = 1024  # last cell of a row that autowrapped onto the next one (a soft line break, not a real newline)
 
 FLAG_NAMES = {
     "bold": BOLD, "dim": DIM, "italic": ITALIC, "underline": UNDERLINE,

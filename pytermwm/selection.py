@@ -13,7 +13,7 @@ from __future__ import annotations
 import base64
 from typing import List, Optional, Tuple
 
-from .colors import REVERSE, TAIL, WIDE
+from .colors import REVERSE, TAIL, WIDE, WRAP
 
 Pos = Tuple[int, int]                       # (line_id, column)
 
@@ -159,7 +159,8 @@ class Selection:
         if not self.visible or (self.copy_mode and not self.selecting):
             return ""
         first, last = self.bounds(scr)
-        out: List[str] = []
+        out: List[Tuple[str, bool]] = []
+        joined = False                            # the previous row soft-wrapped into this one: no newline between
         for lid in range(first[0], last[0] + 1):
             line = line_at(scr, lid)
             cols = self.columns_on(scr, lid, first, last)
@@ -171,8 +172,12 @@ class Selection:
             if c1 < len(line) and line[c1][3] & WIDE:
                 c1 += 1
             seg = line[c0:c1 + 1]
-            out.append("".join((c[0] or " ") for c in seg if not c[3] & TAIL).rstrip())
-        text = "\n".join(out)
+            piece = "".join((c[0] or " ") for c in seg if not c[3] & TAIL)
+            wrapped = (not self.rect and bool(line) and bool(line[-1][3] & WRAP) and c1 >= len(line) - 1
+                       and lid < last[0])
+            out.append((piece if wrapped else piece.rstrip(), joined))
+            joined = wrapped
+        text = "".join(p if i == 0 or j else "\n" + p for i, (p, j) in enumerate(out))
         return text.rstrip("\n") if not self.rect else text
 
     def is_empty(self, scr) -> bool:
