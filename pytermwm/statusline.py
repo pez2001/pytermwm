@@ -397,6 +397,11 @@ class StatusLine:
             start = pos - (avail - 1)
         shown = text[start:start + avail]
         cv.put(x + 1, 0, shown, fg, bg)
+        sel = pr.editor.selection()
+        if sel:
+            s0, s1 = max(sel[0], start) - start, min(sel[1], start + avail) - start
+            if s1 > s0:
+                cv.put(x + 1 + s0, 0, shown[s0:s1], fg, bg, REVERSE)
         cursor_x = x + 1 + (pos - start)
         if pr.suggestion and pos >= len(text):
             cv.put(cursor_x, 0, pr.suggestion, th.c("status_dim_fg"), bg, max_w=max(0, width - cursor_x))

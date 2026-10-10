@@ -15,14 +15,46 @@ class LineEditor:
         self.hist_idx: Optional[int] = None
         self._draft = ""
         self.kill = ""
+        self.selectable = False                  # Shift+movement selects (only where the selection is drawn: the prompt)
+        self.anchor: Optional[int] = None        # other end of the selection (Shift+movement); None = nothing selected
 
     def set(self, text: str):
         self.text = text
         self.pos = len(text)
+        self.anchor = None
 
     def insert(self, s: str):
+        self.delete_selection()
         self.text = self.text[:self.pos] + s + self.text[self.pos:]
         self.pos += len(s)
+
+    # ---------------------------------------------------------------- selection
+    def selection(self) -> Optional[Tuple[int, int]]:
+        """(start, end) of the selected text, end exclusive, or None."""
+        if self.anchor is None or self.anchor == self.pos:
+            return None
+        a = max(0, min(self.anchor, len(self.text)))
+        p = max(0, min(self.pos, len(self.text)))
+        return (min(a, p), max(a, p)) if a != p else None
+
+    def selected_text(self) -> str:
+        sel = self.selection()
+        return self.text[sel[0]:sel[1]] if sel else ""
+
+    def delete_selection(self) -> bool:
+        """Remove the selected text (if any); the cursor ends up where it was."""
+        sel = self.selection()
+        self.anchor = None
+        if not sel:
+            return False
+        self.text = self.text[:sel[0]] + self.text[sel[1]:]
+        self.pos = sel[0]
+        return True
+
+    def _extend_to(self, newpos: int):
+        if self.anchor is None:
+            self.anchor = self.pos
+        self.pos = max(0, min(len(self.text), newpos))
 
     def _word_start(self) -> int:
         i = self.pos
@@ -71,6 +103,43 @@ class LineEditor:
             return "complete"
         if key == "S-Tab":
             return "complete-back"
+        shift_move = {"S-Left": lambda: self.pos - 1, "S-Right": lambda: self.pos + 1,
+                      "S-Home": lambda: 0, "S-End": lambda: len(self.text),
+                      "C-S-Left": self._word_start, "C-S-Right": self._word_end}
+        if self.selectable and key in shift_move:
+            self._extend_to(shift_move[key]())
+            return "moved"
+        if self.selectable and key == "M-a":                       # select all
+            self.anchor, self.pos = 0, len(self.text)
+            return "moved"
+        if key in ("M-w", "C-Insert"):                           # copy the selection
+            if self.selection():
+                self.kill = self.selected_text()
+                return "copy"
+            return None
+        if key in ("C-x", "S-Delete"):                           # cut the selection
+            if self.selection():
+                self.kill = self.selected_text()
+                self.delete_selection()
+                return "cut"
+            return None
+        if key in ("Backspace", "C-h", "Delete", "C-d", "C-w", "M-Backspace") and self.selection():
+            if key in ("C-w", "M-Backspace"):
+                self.kill = self.selected_text()
+            self.delete_selection()
+            return "changed"
+        sel = self.selection()
+        if sel and key in ("Left", "C-b", "Right", "C-f", "Home", "C-a", "End", "C-e"):
+            if key in ("Left", "C-b"):
+                self.pos = sel[0]
+            elif key in ("Right", "C-f"):
+                self.pos = sel[1]
+            else:
+                self.pos = 0 if key in ("Home", "C-a") else len(self.text)
+            self.anchor = None
+            return "moved"
+        if key in ("Left", "Right", "Home", "End", "C-Left", "C-Right", "C-b", "C-f", "C-a", "C-e", "M-b", "M-f"):
+            self.anchor = None
         if key == "Backspace" or key == "C-h":
             if self.pos > 0:
                 self.text = self.text[:self.pos - 1] + self.text[self.pos:]
@@ -108,6 +177,8 @@ class LineEditor:
         if key in ("C-Right", "M-f"):
             self.pos = self._word_end()
             return "moved"
+        if key in ("C-u", "C-k", "M-d", "Up", "C-p", "Down", "C-n"):
+            self.anchor = None
         if key == "C-w" or key == "M-Backspace":
             s = self._word_start()
             self.kill = self.text[s:self.pos]
@@ -198,6 +269,7 @@ class Prompt:
         self.active = True
         self.mode = mode
         self.editor = LineEditor(prefill, self.history)
+        self.editor.selectable = True
         self.on_submit = on_submit
         self.label = label or ("❯" if mode == "auto" else ":" if mode == "command" else "/" if mode == "search" else "?")
         self.completions = []
@@ -255,6 +327,9 @@ class Prompt:
                 ed.set(ed.text + self.suggestion)
                 self.suggestion = ""
             return
+        if res in ("copy", "cut"):
+            self.wm.copy_text(ed.kill)
+            res = "changed" if res == "cut" else "moved"
         if res in ("changed", "moved"):
             self.completions = []
             self.comp_index = -1
