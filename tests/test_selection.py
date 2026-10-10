@@ -449,3 +449,36 @@ class ConfigAndApiTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SoftWrapCopyTests(unittest.TestCase):
+    def sel(self, scr, a, b):
+        s = S.Selection(1, scr, (S.base_id(scr) + a[0], a[1]))
+        s.head = (S.base_id(scr) + b[0], b[1])
+        return s.text(scr)
+
+    def test_soft_wrapped_line_copies_without_newline(self):
+        from pytermwm.ansi import Screen
+        scr = Screen(5, 10, 100)
+        scr.feed("0123456789ABCDE\r\nshort\r\n")
+        self.assertEqual(self.sel(scr, (0, 0), (2, 9)), "0123456789ABCDE\nshort")
+
+    def test_wrapped_row_keeps_trailing_space_and_real_newlines(self):
+        from pytermwm.ansi import Screen
+        scr = Screen(5, 10, 100)
+        scr.feed("012345678 next\r\nx\r\n")
+        self.assertEqual(self.sel(scr, (0, 0), (2, 9)), "012345678 next\nx")
+
+    def test_wrapped_line_in_scrollback_stays_joined(self):
+        from pytermwm.ansi import Screen
+        scr = Screen(3, 10, 100)
+        scr.feed("0123456789ABCDE\r\n" + "\r\n".join("l%d" % i for i in range(6)))
+        self.assertEqual(self.sel(scr, (0, 0), (1, 9)), "0123456789ABCDE")
+
+    def test_rect_selection_keeps_row_breaks(self):
+        from pytermwm.ansi import Screen
+        scr = Screen(5, 10, 100)
+        scr.feed("0123456789ABCDE\r\n")
+        s = S.Selection(1, scr, (S.base_id(scr), 2), rect=True)
+        s.head = (S.base_id(scr) + 1, 4)
+        self.assertEqual(s.text(scr), "234\nCDE")

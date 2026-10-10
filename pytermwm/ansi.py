@@ -14,7 +14,7 @@ from itertools import islice
 from typing import Callable, Deque, List, Optional, Tuple
 
 from .colors import (BOLD, DIM, ITALIC, UNDERLINE, BLINK, REVERSE, HIDDEN, STRIKE,
-                     WIDE, TAIL)
+                     WIDE, TAIL, WRAP)
 
 Cell = Tuple[str, object, object, int]
 BLANK: Cell = (" ", None, None, 0)
@@ -304,6 +304,7 @@ class Screen:
         wrap_ok = self.autowrap and not self.force_no_wrap
         if self.wrap_pending:
             if wrap_ok:
+                self._mark_wrap()
                 self.x = 0
                 self._linefeed()
                 if self.on_wrap:
@@ -314,6 +315,7 @@ class Screen:
                 w = 1
             elif wrap_ok:
                 self._set_cell(self.y, self.x, " ")
+                self._mark_wrap()
                 self.x = 0
                 self._linefeed()
                 if self.on_wrap:
@@ -351,6 +353,11 @@ class Screen:
             self.wrap_pending = wrap_ok
         else:
             self.x = x
+
+    def _mark_wrap(self):
+        line = self.lines[self.y]
+        c = line[-1]
+        line[-1] = (c[0], c[1], c[2], c[3] | WRAP)
 
     def _set_cell(self, y, x, ch):
         self.lines[y][x] = (ch, self.fg, self.bg, self.flags)
