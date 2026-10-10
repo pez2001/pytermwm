@@ -237,7 +237,7 @@ class Compositor:
         if w.activity and not focused:
             ind.append("●")
         if w.bell and not focused:
-            ind.append("␇")
+            ind.append("♪")
         if w.vsize:
             ind.append("%dx%d" % w.vsize)
         if w.desktop is not None and w.desktop.zoom == w.id:
