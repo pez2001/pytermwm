@@ -393,6 +393,57 @@ class ClipboardOutputTests(SelCase):
         self.assertEqual(ev[-1]["data"], {"length": 12})
 
 
+class ProgramClipboardTests(SelCase):
+    """OSC 52 written by the program running in a window."""
+    def osc52(self, text, term=b"\x07", targets=b"c"):
+        return b"\x1b]52;" + targets + b";" + base64.b64encode(text.encode("utf-8")) + term
+
+    def test_program_copy_reaches_buffer_and_terminal(self):
+        self.wm.pending_terminal_output.clear()
+        self.w.feed_bytes(self.osc52("yanked ✓"))
+        self.assertEqual(self.wm.paste_buffer, "yanked ✓")
+        self.assertEqual(self.wm.pending_terminal_output[-1], S.osc52("yanked ✓"))
+        self.assertIn("copied 8", self.wm.current_message()[0])
+        ev = [e for e in self.wm.event_ring if e["event"] == "clipboard"][-1]
+        self.assertEqual(ev["data"]["window"], self.w.id)
+
+    def test_st_terminator_split_across_reads_and_no_visible_output(self):
+        seq = self.osc52("split", term=b"\x1b\\", targets=b"")
+        for i in range(0, len(seq), 3):
+            self.w.feed_bytes(seq[i:i + 3])
+        self.assertEqual(self.wm.paste_buffer, "split")
+        self.assertNotIn("52", self.w.screen.text())
+
+    def test_invalid_or_empty_payload_is_ignored(self):
+        self.wm.copy_text("keep", quiet=True)
+        self.w.feed_bytes(b"\x1b]52;c;not*base64\x07\x1b]52;c;\x07")
+        self.assertEqual(self.wm.paste_buffer, "keep")
+
+    def test_program_copy_can_be_switched_off(self):
+        self.wm.cfg["selection"] = {"programs_can_copy": False}
+        self.w.feed_bytes(self.osc52("nope"))
+        self.assertEqual(self.wm.paste_buffer, "")
+
+    def test_query_is_refused_by_default_and_answered_when_allowed(self):
+        self.wm.copy_text("secret", quiet=True)
+        self.assertIsNone(self.wm.window_clipboard(self.w, None))
+        self.wm.cfg["selection"] = {"programs_can_read": True}
+        scr = Screen(5, 20, 0)
+        scr.on_clipboard = lambda targets, text: self.wm.window_clipboard(self.w, text)
+        scr.feed("\x1b]52;c;?\x1b\\")
+        self.assertEqual(scr.take_responses(), "\x1b]52;c;%s\x1b\\" % base64.b64encode(b"secret").decode())
+
+    def test_large_payload(self):
+        big = "z" * 300000
+        self.w.feed_bytes(self.osc52(big))
+        self.assertEqual(self.wm.paste_buffer, big)
+
+    def test_replayed_output_does_not_touch_the_clipboard(self):
+        self.w.emits_output = False
+        self.w.feed_bytes(self.osc52("replayed"))
+        self.assertEqual(self.wm.paste_buffer, "")
+
+
 class StabilityTests(unittest.TestCase):
     def test_line_ids_are_stable_while_history_scrolls(self):
         from pytermwm.ansi import Screen
@@ -426,8 +477,9 @@ class StabilityTests(unittest.TestCase):
 class ConfigAndApiTests(unittest.TestCase):
     def test_config_validation(self):
         self.assertEqual(validate_config({"selection": {"copy_on_release": True, "modifier": "shift", "paste_buttons": ["right"],
-                                                        "osc52": False, "command": "clip", "word_chars": "-_"}})[0], [])
-        for bad in ("x", {"copy_on_release": "yes"}, {"modifier": "hyper"}, {"paste_buttons": ["left"]}, {"nope": 1}, {"command": 3}):
+                                                        "osc52": False, "command": "clip", "word_chars": "-_",
+                                                        "programs_can_copy": False, "programs_can_read": True}})[0], [])
+        for bad in ("x", {"copy_on_release": "yes"}, {"programs_can_read": "yes"}, {"modifier": "hyper"}, {"paste_buttons": ["left"]}, {"nope": 1}, {"command": 3}):
             self.assertTrue(validate_config({"selection": bad})[0], bad)
 
     def test_api_op_and_scope(self):

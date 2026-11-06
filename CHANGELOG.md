@@ -5,6 +5,12 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- OSC 52 from programs running in windows: neovim, vim, tmux, zellij or a shell on an SSH host can now put text on
+  the clipboard. It goes into the paste buffer, on to the outer terminal as OSC 52 and to `selection.command`,
+  like a pytermwm copy. `selection.programs_can_copy: false` turns this off. Clipboard queries (`OSC 52 ; c ; ?`)
+  are answered with the paste buffer only with `selection.programs_can_read: true` (off by default).
+
 ## [1.0.7] - 2026-10-03
 
 ### Fixed

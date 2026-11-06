@@ -603,6 +603,7 @@ class Window:
         self.screen = Screen(rows, cols, self.opts["history"])
         self.screen.on_title = self._on_title
         self.screen.on_resize_request = self._on_resize_request
+        self.screen.on_clipboard = self._on_clipboard
         self.dyn_title = ""
         self.default_title = ""
         self.drag_overlay_title: Optional[str] = None   # transient: shown instead of the title while
@@ -645,6 +646,12 @@ class Window:
         self.dyn_title = t
         if self.wm:
             self.wm.emit("window_title", window=self)
+
+    def _on_clipboard(self, targets: str, text: Optional[str]) -> Optional[str]:
+        """OSC 52 from the program in this window (text None: it asks for the clipboard)."""
+        if self.wm is None or not self.emits_output:      # a replayed recording does not touch the clipboard
+            return None
+        return self.wm.window_clipboard(self, text)
 
     def _on_resize_request(self, rows: int, cols: int):
         if rows > 0 and cols > 0:
