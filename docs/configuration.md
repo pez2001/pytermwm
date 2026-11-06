@@ -138,6 +138,8 @@ selection:
   osc52: true                   # also send copies to the terminal clipboard (OSC 52, not supported by PuTTY)
   command: "wl-copy"            # optional: receives every copy on stdin (runs where the session runs)
   word_chars: "_-.~/%+=:@#?&"   # punctuation that counts as part of a word for double click
+  programs_can_copy: true       # programs in windows may set the clipboard with OSC 52 (nvim, tmux, ssh ...)
+  programs_can_read: false      # programs may read the paste buffer with an OSC 52 query (off by default)
 ```
 
 See the user guide's *Selection and clipboard* for behaviour. Copied text is never published in events and the `selection` operation and `get_selection` tool are unavailable to `read` and `agent` tokens.

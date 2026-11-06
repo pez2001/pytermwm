@@ -6,6 +6,7 @@ sequences (``Screen.feed``) and keeps a scrollback history.  A cell is a tuple
 """
 from __future__ import annotations
 
+import base64
 import re
 import unicodedata
 from collections import deque
@@ -56,6 +57,8 @@ def blank_line(cols: int, bg=None) -> List[Cell]:
 
 
 _G, _ESC, _ESCI, _CSI, _OSC, _STR, _OSCE = range(7)
+_STR_END = re.compile(r"[\x07\x1b\x18\x1a]")
+OSC52_MAX = 1 << 20      # an OSC 52 clipboard string may be longer than other OSC strings (base64 characters)
 
 
 class Screen:
@@ -107,6 +110,9 @@ class Screen:
         self.on_bell: Optional[Callable[[], None]] = None
         self.on_wrap: Optional[Callable[[], None]] = None                  # diagnostics: a real (non-pending) autowrap just happened
         self.on_unknown_csi: Optional[Callable[[str, list], None]] = None  # diagnostics: an unrecognised CSI final byte was ignored
+        # OSC 52 from the program: on_clipboard(targets, text) sets the clipboard; with text None it is a query and
+        # the callback returns the clipboard text to report back (or None to stay silent)
+        self.on_clipboard: Optional[Callable[[str, Optional[str]], Optional[str]]] = None
         self._st = _G
         self._buf = ""
         self._last_char = " "
@@ -120,10 +126,10 @@ class Screen:
 
     def reset(self):
         h = self.history_limit
-        keep_cb = (self.on_title, self.on_resize_request, self.on_bell, self.on_wrap, self.on_unknown_csi)
+        keep_cb = (self.on_title, self.on_resize_request, self.on_bell, self.on_wrap, self.on_unknown_csi, self.on_clipboard)
         limit_ver = self.version + 1
         Screen.__init__(self, self.rows, self.cols, h)
-        self.on_title, self.on_resize_request, self.on_bell, self.on_wrap, self.on_unknown_csi = keep_cb
+        self.on_title, self.on_resize_request, self.on_bell, self.on_wrap, self.on_unknown_csi, self.on_clipboard = keep_cb
         self.version = limit_ver
 
     def set_history_limit(self, n: int):
@@ -183,10 +189,19 @@ class Screen:
                 self._st = _G
                 self._buf = ""
             elif st in (_OSC, _STR):
+                m = _STR_END.search(data, i)
+                j = m.start() if m else n
+                if j > i:                  # the string's text up to its terminator, in one go
+                    self._buf += data[i:j]
+                    i = j
+                    if len(self._buf) > (OSC52_MAX if self._buf.startswith("52;") else 65536):
+                        self._st = _G
+                        self._buf = ""
+                    continue
                 c = data[i]
                 i += 1
                 if c == "\x07" and st == _OSC:
-                    self._osc(self._buf)
+                    self._osc(self._buf, "\x07")
                     self._st = _G
                     self._buf = ""
                 elif c == "\x1b":
@@ -196,7 +211,7 @@ class Screen:
                     self._buf = ""
                 else:
                     self._buf += c
-                    if len(self._buf) > 65536:
+                    if len(self._buf) > (OSC52_MAX if self._buf.startswith("52;") else 65536):
                         self._st = _G
                         self._buf = ""
             elif st == _OSCE:
@@ -204,7 +219,7 @@ class Screen:
                 i += 1
                 if c == "\\":
                     if self._buf[:1].isdigit() or self._buf.startswith(("0;", "2;")):
-                        self._osc(self._buf)
+                        self._osc(self._buf, "\x1b\\")
                     self._st = _G
                     self._buf = ""
                 else:
@@ -414,7 +429,7 @@ class Screen:
                 self.lines[y] = [("E", None, None, 0)] * self.cols
 
     # ---------------------------------------------------------------- OSC
-    def _osc(self, s: str):
+    def _osc(self, s: str, term: str = "\x07"):
         if not s:
             return
         cmd, _, arg = s.partition(";")
@@ -428,6 +443,27 @@ class Screen:
             m = re.match(r"file://[^/]*(/.*)", arg)
             if m:
                 self.cwd = m.group(1)
+        elif cmd == "52":
+            self._osc52(arg, term)
+
+    def _osc52(self, arg: str, term: str):
+        """OSC 52 ; targets ; base64 - set (or, with ``?``, query) the clipboard."""
+        if self.on_clipboard is None or ";" not in arg:
+            return
+        targets, _, data = arg.partition(";")
+        targets = "".join(t for t in targets if t in "cpqs01234567") or "s0"
+        if data == "?":
+            text = self.on_clipboard(targets, None)
+            if text is not None:
+                payload = base64.b64encode(text.encode("utf-8", "replace")).decode("ascii")
+                self.responses.append("\x1b]52;%s;%s%s" % (targets[0], payload, term))
+            return
+        try:
+            raw = base64.b64decode(re.sub(r"\s+", "", data), validate=True)
+        except (ValueError, TypeError):
+            return                         # not base64: ignored, like xterm does
+        if raw:                            # an empty payload asks to clear the selection: we keep the paste buffer
+            self.on_clipboard(targets, raw.decode("utf-8", "replace"))
 
     # ---------------------------------------------------------------- CSI
     def _params(self, buf: str, default: int = 0):

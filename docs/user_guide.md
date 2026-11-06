@@ -41,6 +41,13 @@ Keyboard copy mode (`M-y`, `C-b y` or `v` in scroll mode): move with `h j k l`, 
 
 You can test your terminal with `printf '\e]52;c;%s\a' $(printf hello | base64)` and then paste somewhere.
 
+**Programs inside windows can copy too.** When a program running in a window sends OSC 52 itself (neovim's `"+y`
+with the OSC 52 provider, vim/tmux/zellij with clipboard forwarding, a shell on an SSH host, the `printf` above), pytermwm
+takes it like one of its own copies: into the paste buffer, on to your terminal as OSC 52 and to `selection.command`.
+The status line names the window that copied. Switch this off with `selection.programs_can_copy: false`. Programs may
+also *ask* for the clipboard (`OSC 52 ; c ; ?`); pytermwm answers with the paste buffer only when
+`selection.programs_can_read: true`, because any output shown in a window (a `cat`ed file, a remote host) could ask.
+
 Known limits: soft-wrapped lines are copied with a line break at each wrap; the web UI does not have pytermwm selection yet (use the browser's own).
 
 ```yaml
@@ -50,6 +57,8 @@ selection:
   paste_buttons: [middle, right]
   osc52: true
   command: "xclip -selection clipboard"   # optional
+  programs_can_copy: true    # programs in windows may copy with OSC 52
+  programs_can_read: false   # ... and read the paste buffer with an OSC 52 query
 ```
 
 ## The prompt and palette

@@ -122,7 +122,9 @@ Commands: copy-mode copy-selection select-all paste clipboard [show|list|set]
 Clipboard: paste buffer + OSC 52 to the terminal. PuTTY ignores OSC 52, so press
 M-Y (C-b Y) for the COPY VIEW: only this window's text, mouse off, so PuTTY's own
 drag-to-copy gets clean text. Any key returns.
-Config: selection: {copy_on_release, modifier, paste_buttons, osc52, command}
+Programs in windows (nvim, tmux, ssh) can copy with OSC 52 as well.
+Config: selection: {copy_on_release, modifier, paste_buttons, osc52, command,
+        programs_can_copy, programs_can_read}
 """),
     "automation": ("Automation & plugins", """\
 Rules in the config react to events:

@@ -19,6 +19,8 @@ DEFAULT_SELECTION = {
     "osc52": True,                         # also send the copy to the terminal's clipboard (OSC 52)
     "command": None,                       # optional: pipe the copy into a program, e.g. "clip" / "wl-copy" / "xclip -sel c"
     "word_chars": DEFAULT_WORD_CHARS,
+    "programs_can_copy": True,             # programs in windows may set the clipboard with OSC 52 (vim, tmux, ssh ...)
+    "programs_can_read": False,            # ... and read the paste buffer with an OSC 52 query (off: any output could)
 }
 MODS = {"alt": "M-", "shift": "S-", "ctrl": "C-"}
 BUTTONS = {"left": 1, "middle": 2, "right": 3}
@@ -66,7 +68,7 @@ class SelectionMixin:
         return bool(self.cfg.get("mouse", True)) and self.copy_view is None
 
     # ------------------------------------------------------------------ copy / paste buffer
-    def copy_text(self, text: str, quiet: bool = False) -> int:
+    def copy_text(self, text: str, quiet: bool = False, window=None) -> int:
         """Put ``text`` in the paste buffer and on the clipboards we can reach.  Returns the number of characters."""
         if not text:
             return 0
@@ -83,11 +85,27 @@ class SelectionMixin:
                 del self.pending_terminal_output[:-5]
         if cfg.get("command"):
             self._pipe_to_command(str(cfg["command"]), text)
-        self.emit("clipboard", length=len(text))
+        if window is None:
+            self.emit("clipboard", length=len(text))
+        else:                              # copied by the program in that window (OSC 52)
+            self.emit("clipboard", length=len(text), window=window)
         if not quiet:
             self.message("copied %d characters%s" % (len(text), note), "ok", 2.5)
         self.dirty = True
         return len(text)
+
+    def window_clipboard(self, w, text: Optional[str]) -> Optional[str]:
+        """An OSC 52 sequence from the program in window ``w``: copy ``text``, or (None) answer a clipboard query."""
+        cfg = self.sel_cfg()
+        if text is None:
+            if not cfg.get("programs_can_read", False):
+                return None
+            return self.paste_buffer
+        if not cfg.get("programs_can_copy", True):
+            return None
+        if self.copy_text(text, quiet=True, window=w):
+            self.message("%s copied %d characters" % (w.title, len(text)), "ok", 2.5)
+        return None
 
     def _pipe_to_command(self, cmd: str, text: str):
         try:
