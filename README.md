@@ -10,15 +10,15 @@
 > longer adds line breaks, and a bracketed paste whose end marker is split across reads no longer freezes input.
 > 1.0.7 fixed clicking back into the terminal application to give it OS focus accidentally starting (and
 > copying) a text selection, with terminals (seen with Windows Terminal over SSH) that send the focus-in escape
-> only *after* that click. 1.0.6 covered the same bug for terminals that send focus-in before the click. 1.0.5 fixed a paste whose closing
-> marker never arrives freezing keyboard/mouse input for that client. 1.0.4 fixed up to 100ms of extra input
+> only *after* that click. 1.0.6 covered the same bug for terminals that send focus-in before the click. 1.0.5
+> fixed a paste whose closing marker never arrives freezing keyboard/mouse input for that client. 1.0.4 fixed up to 100ms of extra input
 > lag on Alt-key combos, arrow keys and other Escape-prefixed sequences. 1.0.3 added `dialog poll <id>` and
 > `pytermwm dialog-wait <id>` for retrieving a dialog's result directly, and fixed several macOS-specific hangs
 > and gaps. 1.0.2 added `pytermwm version` showing which version each running session runs and fixed long
 > status line messages blanking the status line. 1.0.1 brought `pip install pytermwm`, the `nes`, `matrix` and
 > `dos` themes, SVG screenshots and asciicast recordings of the whole screen, much cheaper background effects,
 > and Windows fixes. See the [changelog](https://github.com/pez2001/pytermwm/blob/main/CHANGELOG.md) and the
-> [announcement](https://github.com/pez2001/pytermwm/discussions/13).
+> [announcement](https://github.com/pez2001/pytermwm/discussions/36).
 
 A modern terminal window manager in pure Python ("tmux for 2026"): tiled, floating and docked windows, desktops,
 themes, a status line with a built-in prompt, and **four ways to drive it**: the keyboard, a CLI, an HTTP/web API with
