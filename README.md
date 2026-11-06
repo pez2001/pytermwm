@@ -5,10 +5,12 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
 [![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
 
-> **1.0.7 is out (2026-10-03):** fixes clicking back into the terminal application itself to give it OS focus
-> accidentally starting (and copying) a text selection, with terminals (seen with Windows Terminal over SSH)
-> that send the focus-in escape only *after* that click, which 1.0.6's first attempt at this fix missed. 1.0.6
-> covered the same bug for terminals that send focus-in before the click. 1.0.5 fixed a paste whose closing
+> **1.0.8 is out (2026-11-06):** programs inside windows (neovim, vim, tmux, a shell over SSH) can now copy to
+> the clipboard with OSC 52, the command prompt gets Shift+arrow text selection, copying soft-wrapped lines no
+> longer adds line breaks, and a bracketed paste whose end marker is split across reads no longer freezes input.
+> 1.0.7 fixed clicking back into the terminal application to give it OS focus accidentally starting (and
+> copying) a text selection, with terminals (seen with Windows Terminal over SSH) that send the focus-in escape
+> only *after* that click. 1.0.6 covered the same bug for terminals that send focus-in before the click. 1.0.5 fixed a paste whose closing
 > marker never arrives freezing keyboard/mouse input for that client. 1.0.4 fixed up to 100ms of extra input
 > lag on Alt-key combos, arrow keys and other Escape-prefixed sequences. 1.0.3 added `dialog poll <id>` and
 > `pytermwm dialog-wait <id>` for retrieving a dialog's result directly, and fixed several macOS-specific hangs

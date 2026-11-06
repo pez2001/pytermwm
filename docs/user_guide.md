@@ -48,7 +48,7 @@ The status line names the window that copied. Switch this off with `selection.pr
 also *ask* for the clipboard (`OSC 52 ; c ; ?`); pytermwm answers with the paste buffer only when
 `selection.programs_can_read: true`, because any output shown in a window (a `cat`ed file, a remote host) could ask.
 
-Known limits: soft-wrapped lines are copied with a line break at each wrap; the web UI does not have pytermwm selection yet (use the browser's own).
+Known limits: the web UI does not have pytermwm selection yet (use the browser's own).
 
 ```yaml
 selection:
