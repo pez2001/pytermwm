@@ -5,11 +5,26 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.8] - 2026-11-06
+
 ### Added
 - OSC 52 from programs running in windows: neovim, vim, tmux, zellij or a shell on an SSH host can now put text on
   the clipboard. It goes into the paste buffer, on to the outer terminal as OSC 52 and to `selection.command`,
   like a pytermwm copy. `selection.programs_can_copy: false` turns this off. Clipboard queries (`OSC 52 ; c ; ?`)
   are answered with the paste buffer only with `selection.programs_can_read: true` (off by default).
+- Text selection in the command prompt: Shift+Left/Right/Home/End select (Ctrl+Shift+Left/Right by word),
+  `M-a` selects all, `M-w` copies to the paste buffer, `C-x` cuts, and typing, pasting, Backspace or Delete
+  replace the selection.
+- Shift+PageUp/PageDown scroll the focused window's history, like `M-PageUp`/`M-PageDown`.
+
+### Changed
+- The bell indicator in a window's title border is now `♪` instead of the control-picture glyph `␇`.
+
+### Fixed
+- Copying text that the terminal soft-wrapped no longer adds a line break at each wrap point: a long line
+  comes out as one line, with its trailing spaces kept.
+- A bracketed paste whose closing marker arrived split across two reads froze keyboard and mouse input until
+  the 5s paste timeout; the split marker is now recognised.
 
 ## [1.0.7] - 2026-10-03
 
