@@ -170,6 +170,17 @@ def c_paste(wm, args):
     wm.paste_text(" ".join(args) if args else None)
 
 
+@command("passthrough", usage="passthrough [on|off|toggle]",
+         help="Send every key and mouse event to the focused window (a nested pytermwm) until the toggle key (F12) is pressed again",
+         category="window")
+def c_passthrough(wm, args):
+    a = args[0] if args else "toggle"
+    if a not in ("on", "off", "toggle"):
+        raise CommandError("usage: passthrough [on|off|toggle]")
+    wm.set_passthrough(not wm.passthrough if a == "toggle" else a == "on")
+    return "on" if wm.passthrough else "off"
+
+
 @command("clipboard", usage="clipboard [show|set TEXT...|list]", help="Show or set the paste buffer", category="window")
 def c_clipboard(wm, args):
     a = args[0] if args else "show"

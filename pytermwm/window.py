@@ -604,6 +604,8 @@ class Window:
         self.screen.on_title = self._on_title
         self.screen.on_resize_request = self._on_resize_request
         self.screen.on_clipboard = self._on_clipboard
+        self.screen.on_nested = self._on_nested
+        self.nested_client = False                      # a pytermwm runs in this window (it said so with OSC 7790)
         self.dyn_title = ""
         self.default_title = ""
         self.drag_overlay_title: Optional[str] = None   # transient: shown instead of the title while
@@ -652,6 +654,11 @@ class Window:
         if self.wm is None or not self.emits_output:      # a replayed recording does not touch the clipboard
             return None
         return self.wm.window_clipboard(self, text)
+
+    def _on_nested(self, arg: str) -> Optional[str]:
+        if self.wm is None or not self.emits_output:
+            return None
+        return self.wm.nested_query(self)
 
     def _on_resize_request(self, rows: int, cols: int):
         if rows > 0 and cols > 0:
