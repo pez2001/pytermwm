@@ -46,7 +46,8 @@ with the OSC 52 provider, vim/tmux/zellij with clipboard forwarding, a shell on 
 takes it like one of its own copies: into the paste buffer, on to your terminal as OSC 52 and to `selection.command`.
 The status line names the window that copied. Switch this off with `selection.programs_can_copy: false`. Programs may
 also *ask* for the clipboard (`OSC 52 ; c ; ?`); pytermwm answers with the paste buffer only when
-`selection.programs_can_read: true`, because any output shown in a window (a `cat`ed file, a remote host) could ask.
+`selection.programs_can_read: true`, because any output shown in a window (a `cat`ed file, a remote host) could ask. A pytermwm
+running in a window (see *Nested pytermwm*) may always ask.
 
 Known limits: the web UI does not have pytermwm selection yet (use the browser's own).
 

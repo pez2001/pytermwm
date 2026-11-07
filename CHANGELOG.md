@@ -5,6 +5,8 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.9] - 2026-11-07
+
 ### Added
 - Nested pytermwm (also after `ssh` in a window): a pytermwm inside a window of another one learns its depth through
   the terminal (a private `OSC 7790` query that a pytermwm window answers; environment variables would not survive
