@@ -113,6 +113,8 @@ class Screen:
         # OSC 52 from the program: on_clipboard(targets, text) sets the clipboard; with text None it is a query and
         # the callback returns the clipboard text to report back (or None to stay silent)
         self.on_clipboard: Optional[Callable[[str, Optional[str]], Optional[str]]] = None
+        # OSC 7790 ; ? from a pytermwm in this window asking who is outside: on_nested(arg) returns the answer
+        self.on_nested: Optional[Callable[[str], Optional[str]]] = None
         self._st = _G
         self._buf = ""
         self._last_char = " "
@@ -445,6 +447,10 @@ class Screen:
                 self.cwd = m.group(1)
         elif cmd == "52":
             self._osc52(arg, term)
+        elif cmd == "7790" and arg == "?" and self.on_nested is not None:
+            ans = self.on_nested(arg)
+            if ans:
+                self.responses.append("\x1b]7790;%s%s" % (ans, term))
 
     def _osc52(self, arg: str, term: str):
         """OSC 52 ; targets ; base64 - set (or, with ``?``, query) the clipboard."""

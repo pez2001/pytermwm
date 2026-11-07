@@ -144,6 +144,18 @@ selection:
 
 See the user guide's *Selection and clipboard* for behaviour. Copied text is never published in events and the `selection` operation and `get_selection` tool are unavailable to `read` and `agent` tokens.
 
+## Nesting
+
+```yaml
+nesting:
+  passthrough_key: F12          # toggle key; default F12, S-F12, C-F12, M-F12 for levels 1, 2, 3 ...; none: no toggle key
+  pull_clipboard: true          # nested: paste asks the level above for its paste buffer first
+  nested_can_read: true         # a pytermwm in a window may read this paste buffer (OSC 52 query)
+  command_when_nested: false    # run selection.command also when this pytermwm is itself nested
+```
+
+See the user guide's *Nested pytermwm*.
+
 ## ANSI art background
 
 `effect ansi FILE-OR-DIRECTORY [key=value ...]` shows ANSI or ASCII art behind and between the windows (`.ans .ansi .asc

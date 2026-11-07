@@ -68,7 +68,7 @@ class SelectionMixin:
         return bool(self.cfg.get("mouse", True)) and self.copy_view is None
 
     # ------------------------------------------------------------------ copy / paste buffer
-    def copy_text(self, text: str, quiet: bool = False, window=None) -> int:
+    def copy_text(self, text: str, quiet: bool = False, window=None, relay: bool = False) -> int:
         """Put ``text`` in the paste buffer and on the clipboards we can reach.  Returns the number of characters."""
         if not text:
             return 0
@@ -83,7 +83,7 @@ class SelectionMixin:
             else:
                 self.pending_terminal_output.append(seq)
                 del self.pending_terminal_output[:-5]
-        if cfg.get("command"):
+        if cfg.get("command") and (self.nest_depth == 0 or self.nesting_cfg().get("command_when_nested")):
             self._pipe_to_command(str(cfg["command"]), text)
         if window is None:
             self.emit("clipboard", length=len(text))
@@ -98,13 +98,16 @@ class SelectionMixin:
         """An OSC 52 sequence from the program in window ``w``: copy ``text``, or (None) answer a clipboard query."""
         cfg = self.sel_cfg()
         if text is None:
-            if not cfg.get("programs_can_read", False):
+            if not cfg.get("programs_can_read", False) and not (
+                    getattr(w, "nested_client", False) and self.nesting_cfg().get("nested_can_read", True)):
                 return None
             return self.paste_buffer
         if not cfg.get("programs_can_copy", True):
             return None
-        if self.copy_text(text, quiet=True, window=w):
-            self.message("%s copied %d characters" % (w.title, len(text)), "ok", 2.5)
+        nested = bool(getattr(w, "nested_client", False))
+        if self.copy_text(text, quiet=True, window=w, relay=nested):
+            self.message("copied %d characters (from the pytermwm in %s)" % (len(text), w.title) if nested
+                         else "%s copied %d characters" % (w.title, len(text)), "ok", 2.5)
         return None
 
     def _pipe_to_command(self, cmd: str, text: str):
@@ -135,7 +138,9 @@ class SelectionMixin:
         self.copy_text(text)
         return text
 
-    def paste_text(self, text: Optional[str] = None):
+    def paste_text(self, text: Optional[str] = None, pull: bool = True):
+        if text is None and pull and self.request_outer_clipboard():
+            return                                   # nested: the level above answers first (nesting_reply pastes)
         text = self.paste_buffer if text is None else text
         if not text:
             self.message("paste buffer is empty", "warn", 2.0)

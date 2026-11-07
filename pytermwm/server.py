@@ -18,6 +18,7 @@ from .commands import CommandError
 from .config import ConfigError, attach_config
 from .keys import KeyParser
 from .logs import setup_logging
+from .nesting import NEST_QUERY, ReplyFilter
 from .render import Compositor, Frame, FrameWriter, crop_frame
 from .charts import GLYPH_SETS
 from .terminal import RawTerminal, StdinReader, console_palette, detect_depth, detect_glyphs, term_size
@@ -38,6 +39,7 @@ class Client:
         self.cols, self.rows, self.depth = 80, 24, 8
         self.glyphs = "unicode"
         self.parser = KeyParser()
+        self.nest_filter = ReplyFilter()
         self.writer: Optional[FrameWriter] = None
         self.esc_deadline = 0.0
         self.closed = False
@@ -236,7 +238,9 @@ class Server:
         self.wm.chart_glyphs_hint = c.glyphs
         self.stdin_reader = self.term.stdin_reader() if self.term else StdinReader()
         self.sel.register(self.stdin_reader.fileno(), selectors.EVENT_READ, ("stdin", c))
+        self.wm.set_nest_hint(os.environ.get("PYTERMWM_DEPTH"))
         self.wm.resize(c.cols, c.rows)
+        c.send_output(NEST_QUERY.encode())
 
     # ------------------------------------------------------------------ main loop
     def run(self):
@@ -456,8 +460,10 @@ class Server:
             c.last_input = time.time()
             self.primary = c
             wm.chart_glyphs_hint = c.glyphs
+            wm.set_nest_hint(info.get("nest_depth"))
             wm.resize(c.cols, c.rows)
             wm.dirty = True
+            c.send_output(NEST_QUERY.encode())           # a pytermwm outside answers with its depth (nesting.py)
             c.send_json(P.MESSAGE, {"mouse": wm.mouse_effective(), "session": self.session})
             from . import __version__
             theirs = info.get("version")
@@ -496,6 +502,11 @@ class Server:
 
     def _handle_input(self, c: Client, data: bytes):
         wm = self.wm
+        data, replies = c.nest_filter.feed(data)         # answers to our nesting / clipboard queries
+        for cmd, arg in replies:
+            wm.nesting_reply(cmd, arg)
+        if not data:
+            return
         self.active_client = c
         try:
             evs = c.parser.feed(data)

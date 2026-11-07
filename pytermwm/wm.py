@@ -17,6 +17,7 @@ from .layout import (Rect, TileTree, carve_docks, cascade_rect, clamp_rect, focu
 from .logs import ring_of, setup_logging
 from .prompt import Palette, Prompt
 from .selectionwm import SelectionMixin
+from .nesting import NestingMixin
 from .statusline import StatusLine
 from .theme import Theme, get_theme
 from .window import (FileSource, InternalWindow, PipeSource, ProcessWindow, PtySource, TextWindow, Window,
@@ -62,7 +63,7 @@ class Desktop:
                 "zoom": self.zoom, "params": dict(self.params)}
 
 
-class WindowManager(SelectionMixin):
+class WindowManager(SelectionMixin, NestingMixin):
     def __init__(self, cols: int = 80, rows: int = 24, config: Optional[dict] = None,
                  session_name: str = "default", logger: Optional[logging.Logger] = None):
         self.lock = threading.RLock()
@@ -76,6 +77,7 @@ class WindowManager(SelectionMixin):
         self.pending_terminal_output: List[str] = []      # escape sequences for attached terminals (e.g. OSC 777)
         self.chart_glyphs_hint = "unicode"                 # from the attaching terminal's own environment (see terminal.detect_glyphs)
         self._init_selection()
+        self._init_nesting()
         self.cur = 0
         self.dirty = True
         self.theme: Theme = get_theme("default")
@@ -584,6 +586,7 @@ class WindowManager(SelectionMixin):
         env = dict(spec.get("env") or {})
         env["PYTERMWM_SESSION"] = self.session_name
         env["PYTERMWM_WINDOW"] = str(w.id)
+        env["PYTERMWM_DEPTH"] = str(self.nest_depth + 1)
         if self.sock_path:
             env["PYTERMWM_SOCK"] = self.sock_path
         cwd = spec.get("cwd")
@@ -873,6 +876,9 @@ class WindowManager(SelectionMixin):
 
     def handle_key(self, name: str, raw: bytes = b""):
         self.emit("key", key=name)
+        if self.passthrough_key_event(name, raw):
+            self.dirty = True
+            return
         if self.copy_view is not None:
             self.copy_view_key(name)
             return
@@ -930,6 +936,9 @@ class WindowManager(SelectionMixin):
         w.write_input(raw)
 
     def handle_mouse(self, m: dict):
+        if self.passthrough:
+            self.passthrough_mouse(m)
+            return
         x, y, kind = m["x"], m["y"], m["kind"]
         just_refocused = kind == "press" and not self._term_focused
         self._term_focused = True
@@ -1331,6 +1340,7 @@ class WindowManager(SelectionMixin):
     def tick(self, now: Optional[float] = None):
         now = now or time.time()
         self.selection_tick(now)
+        self.nesting_tick(now)
         for w in list(self.windows.values()):
             try:
                 w.on_tick(now)

@@ -76,7 +76,8 @@ def attach(session: str, name: Optional[str] = None, mouse: bool = True, nested:
     cols, rows = term_size(1)
     sock.sendall(P.pack_json(P.HELLO, {"cols": cols, "rows": rows, "depth": detect_depth(), "glyphs": detect_glyphs(),
                                         "name": name or "tty%d" % os.getpid(),
-                                        "inside": inside_session(), "version": _client_version()}))
+                                        "inside": inside_session(), "version": _client_version(),
+                                        "nest_depth": os.environ.get("PYTERMWM_DEPTH")}))
     mb = P.MessageBuffer()
     waker = compat.Waker()
     poll_resize = compat.SIGWINCH is None

@@ -15,7 +15,7 @@ from .sysinfo import SAMPLER, human_bytes, human_rate, human_time
 
 DEFAULT_STATUSLINE = {
     "position": "bottom",
-    "left": ["desktops", "layout", "mode"],
+    "left": ["desktops", "layout", "mode", "nest"],
     "center": ["title"],
     "right": ["pv", "status", "cpu", "mem", "disk", "time"],
 }
@@ -71,8 +71,18 @@ def seg_layout(wm, o):
 def seg_mode(wm, o):
     if wm.keymap.mode != "normal":
         return Segment("-- %s --" % wm.keymap.mode.upper(), "warn", prio=10)
+    if wm.passthrough:
+        return Segment("PASSTHROUGH (%s ends)" % (wm.passthrough_key() or "passthrough off"), "warn", prio=10)
     if wm.keymap.prefix_active:
         return Segment("PREFIX", "warn", prio=10)
+    return None
+
+
+@segment("nest")
+def seg_nest(wm, o):
+    """Shows ``L2`` and so on while this pytermwm runs inside another one (nothing at the outermost level)."""
+    if wm.nest_depth > 0:
+        return Segment("L%d" % (wm.nest_depth + 1), "dim", prio=6)
     return None
 
 

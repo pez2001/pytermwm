@@ -5,6 +5,18 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Nested pytermwm (also after `ssh` in a window): a pytermwm inside a window of another one learns its depth through
+  the terminal (a private `OSC 7790` query that a pytermwm window answers; environment variables would not survive
+  ssh) and the status line shows `L2`, `L3`... for it. New windows get `$PYTERMWM_DEPTH`.
+- `passthrough [on|off|toggle]` and the toggle key `F12`: every key and mouse event goes to the focused window (the
+  inner pytermwm) until the key is pressed again; the status line says `PASSTHROUGH`. Each level further in
+  defaults to its own toggle key (`S-F12`, `C-F12`, `M-F12`), or set `nesting.passthrough_key`.
+- Nested clipboard: a copy at an inner level goes up through every level to the real terminal and is taken quietly
+  by the level above; only the outermost level runs `selection.command` (`nesting.command_when_nested` changes
+  that). Pasting at an inner level asks the level above for its paste buffer first (`nesting.pull_clipboard`);
+  a nested pytermwm may read it without `selection.programs_can_read` (`nesting.nested_can_read`).
+
 ## [1.0.8] - 2026-11-06
 
 ### Added

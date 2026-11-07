@@ -24,7 +24,7 @@ KNOWN_KEYS = {
     "new_window_position", "on_last_close", "prompt_takeover", "mouse", "window_defaults", "confirm_quit",
     "keys", "statusline", "windows", "rules", "plugins", "web", "include", "effect", "log", "allow_eval",
     "allow_remote_debug", "session", "auto_create_desktops", "desktop_start_window", "cp437", "autosave",
-    "scripts", "plugin_dirs", "notify", "selection", "charts",
+    "scripts", "plugin_dirs", "notify", "selection", "nesting", "charts",
 }
 
 WINDOW_KEYS = {"name", "title", "cmd", "cwd", "env", "kind", "path", "pipe", "desktop", "floating", "rect", "dock",
@@ -201,6 +201,7 @@ def validate_config(cfg: dict) -> Tuple[List[str], List[str]]:
     need("web", dict, "a mapping")
     need("window_defaults", dict, "a mapping")
     errors += _validate_selection(cfg.get("selection"))
+    errors += _validate_nesting(cfg.get("nesting"))
     if "charts" in cfg:
         from .charts import GLYPH_SETS
         c = cfg["charts"]
@@ -286,6 +287,23 @@ def validate_config(cfg: dict) -> Tuple[List[str], List[str]]:
         except ImportError:
             pass
     return errors, warnings
+
+
+def _validate_nesting(nest) -> List[str]:
+    if nest is None:
+        return []
+    if not isinstance(nest, dict):
+        return ["nesting: expected a mapping"]
+    errs = []
+    for k, v in nest.items():
+        if k not in ("passthrough_key", "pull_clipboard", "nested_can_read", "command_when_nested"):
+            errs.append("nesting: unknown key %r" % k)
+        elif k == "passthrough_key":
+            if v is not None and not isinstance(v, str):
+                errs.append("nesting.passthrough_key: expected a key name such as F12, or none")
+        elif not isinstance(v, bool):
+            errs.append("nesting.%s: expected true/false" % k)
+    return errs
 
 
 def _validate_selection(sel) -> List[str]:

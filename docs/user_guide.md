@@ -61,6 +61,26 @@ selection:
   programs_can_read: false   # ... and read the paste buffer with an OSC 52 query
 ```
 
+## Nested pytermwm
+
+Running pytermwm in a window of pytermwm works, also over SSH (`ssh host` in a window, then `pytermwm` there). Each
+level finds out that it is nested by asking its terminal (`OSC 7790`), which a pytermwm window answers, so it works
+through `ssh` without any environment setup; unknown terminals ignore the question. A nested level shows `L2`, `L3`...
+in its status line.
+
+- **Keys.** The outer level takes `M-*` keys and the prefix first. Press **F12** to hand everything (keys and mouse)
+  to the focused window; the status line shows `PASSTHROUGH (F12 ends)`. Press F12 again to get the outer level
+  back. The next level in toggles with **S-F12** (then C-F12, M-F12), so you can reach it while the outer levels
+  are in passthrough. Change it with `nesting.passthrough_key` in that level's config, or use `passthrough on|off`.
+  A level with `passthrough_key: none` has no toggle key.
+- **Copy.** A copy at any level reaches the real terminal clipboard (OSC 52) and every level's paste buffer on the
+  way. Only the outermost level runs `selection.command` (that is where the clipboard tool lives).
+- **Paste.** At a nested level `M-v` asks the level above for its paste buffer and pastes the answer (the local
+  buffer if nobody answers within 0.6 s). Your terminal's own paste (Ctrl+Shift+V) always works: it goes in as
+  a bracketed paste and is passed down.
+- Over SSH make sure the outer terminal and `ssh` pass OSC 52 through (they do by default); the remote machine needs
+  no extra configuration.
+
 ## The prompt and palette
 
 Commands that return text (`plugin list`, `effect list`, `keys`, `windows`, ...) show it: one line in the status line, longer output in a
