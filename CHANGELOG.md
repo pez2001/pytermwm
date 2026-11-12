@@ -5,6 +5,16 @@ and the project uses [semantic versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.10] - 2026-11-12
+
+### Added
+- Paste brings in the terminal's clipboard: middle/right click, `M-v` and `paste` first ask the terminal that pytermwm
+  runs in for its clipboard (an `OSC 52` query, like a nested level already asked the level above), so text copied
+  in other programs can be pasted into windows. Terminals that answer: pyterm (`osc52: read-write`), xterm with
+  `allowWindowOps`, kitty/foot/WezTerm when allowed. A terminal that does not answer within 0.6 s is not asked again
+  until a terminal attaches anew, and its paste falls back to pytermwm's own paste buffer as before.
+  `selection.terminal_clipboard: auto | true | false`.
+
 ## [1.0.9] - 2026-11-07
 
 ### Added

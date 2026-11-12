@@ -313,13 +313,15 @@ def _validate_selection(sel) -> List[str]:
         return ["selection: expected a mapping"]
     errs = []
     known = {"copy_on_release", "modifier", "paste_buttons", "osc52", "command", "word_chars",
-             "programs_can_copy", "programs_can_read"}
+             "programs_can_copy", "programs_can_read", "terminal_clipboard"}
     for k in sel:
         if k not in known:
             errs.append("selection: unknown key %r" % k)
     for k in ("copy_on_release", "osc52", "programs_can_copy", "programs_can_read"):
         if k in sel and not isinstance(sel[k], bool):
             errs.append("selection.%s: expected true/false" % k)
+    if "terminal_clipboard" in sel and sel["terminal_clipboard"] not in (True, False, "auto"):
+        errs.append("selection.terminal_clipboard: auto, true or false")
     if sel.get("modifier") is not None and str(sel["modifier"]).lower() not in ("alt", "shift", "ctrl", "none"):
         errs.append("selection.modifier: alt, shift, ctrl or none")
     pb = sel.get("paste_buttons")
