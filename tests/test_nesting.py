@@ -1,5 +1,6 @@
 import base64
 import time
+import types
 import unittest
 from tests.helpers import *
 from pytermwm.keys import KeyParser
@@ -213,10 +214,59 @@ class NestedClipboardTests(unittest.TestCase):
         self.wm.nesting_reply("52", "c;" + base64.b64encode(b"x").decode())
         self.assertEqual(self.sink.data, b"")
 
-    def test_outermost_level_pastes_directly(self):
+    def test_outermost_level_pastes_directly_without_terminal_clipboard(self):
+        self.wm.cfg["selection"] = {"terminal_clipboard": False}
         self.wm.paste_buffer = "direct"
         self.wm.paste_text()
         self.assertEqual(self.sink.data, b"direct")
+        self.assertNotIn("\x1b]52;c;?\x07", self.wm.pending_terminal_output)
+
+    def attach_terminal(self):
+        self.wm.server = types.SimpleNamespace(clients=[types.SimpleNamespace(hello=True, writer=object())])
+
+    def test_outermost_level_without_a_terminal_pastes_directly(self):
+        self.wm.paste_buffer = "direct"
+        self.wm.paste_text()
+        self.assertEqual(self.sink.data, b"direct")
+
+    def test_outermost_level_pastes_the_terminal_clipboard(self):
+        self.attach_terminal()
+        self.wm.paste_buffer = "old"
+        self.wm.paste_text()
+        self.assertEqual(self.sink.data, b"")                          # asked the real terminal first
+        self.assertIn("\x1b]52;c;?\x07", self.wm.pending_terminal_output)
+        self.wm.nesting_reply("52", "c;" + base64.b64encode(b"copied elsewhere").decode())
+        self.assertEqual(self.sink.data, b"copied elsewhere")
+        self.assertTrue(self.wm.terminal_clipboard_ok)
+
+    def test_terminal_refusing_to_answer_pastes_the_own_buffer_at_once(self):
+        self.attach_terminal()
+        self.wm.paste_buffer = "mine"
+        self.wm.paste_text()
+        self.wm.nesting_reply("52", "c;")                              # answered, but with nothing
+        self.assertEqual(self.sink.data, b"mine")
+
+    def test_silent_terminal_is_asked_only_once(self):
+        self.attach_terminal()
+        self.wm.paste_buffer = "mine"
+        self.wm.paste_text()
+        self.wm.nesting_tick(time.time() + 5)                          # no answer: paste the own buffer
+        self.assertEqual(self.sink.data, b"mine")
+        self.assertIs(self.wm.terminal_clipboard_ok, False)
+        self.wm.pending_terminal_output.clear()
+        self.wm.paste_text()                                           # next paste does not wait any more
+        self.assertEqual(self.sink.data, b"minemine")
+        self.assertEqual(self.wm.pending_terminal_output, [])
+        self.wm.set_nest_hint(0)                                       # a terminal attaches: ask again
+        self.assertIsNone(self.wm.terminal_clipboard_ok)
+
+    def test_terminal_clipboard_true_keeps_asking(self):
+        self.attach_terminal()
+        self.wm.cfg["selection"] = {"terminal_clipboard": True}
+        self.wm.terminal_clipboard_ok = False
+        self.wm.paste_buffer = "mine"
+        self.wm.paste_text()
+        self.assertIn("\x1b]52;c;?\x07", self.wm.pending_terminal_output)
 
 
 class ConfigTests(unittest.TestCase):
@@ -224,6 +274,11 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(validate_config({"nesting": {"passthrough_key": "F11", "pull_clipboard": False}})[0], [])
         for bad in ("x", {"nope": 1}, {"pull_clipboard": "yes"}, {"passthrough_key": 3}):
             self.assertTrue(validate_config({"nesting": bad})[0], bad)
+
+    def test_terminal_clipboard_validation(self):
+        for good in ("auto", True, False):
+            self.assertEqual(validate_config({"selection": {"terminal_clipboard": good}})[0], [], good)
+        self.assertTrue(validate_config({"selection": {"terminal_clipboard": "sometimes"}})[0])
 
 
 if __name__ == "__main__":

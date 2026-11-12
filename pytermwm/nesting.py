@@ -9,7 +9,9 @@ Environment variables do not survive ``ssh``, so the levels talk to each other i
   focused window, the inner pytermwm, until the same key is pressed again;
 * **clipboard**: the inner level's OSC 52 copy travels up through every level to the real terminal (the outer level
   takes it quietly, and only the outermost level pipes it into ``selection.command``); pasting at an inner level asks
-  the level above with an OSC 52 query, which a nested pytermwm is always allowed to answer.
+  the level above with an OSC 52 query, which a nested pytermwm is always allowed to answer.  The outermost level asks
+  the real terminal the same way (``selection.terminal_clipboard``), so a paste brings in what was copied in other
+  programs; a terminal that never answers is not asked again until a terminal attaches anew.
 """
 from __future__ import annotations
 
@@ -79,6 +81,8 @@ class NestingMixin:
         self.nest_hint = 0                  # what the environment of the attaching client says
         self.passthrough = False
         self._pull: Optional[float] = None  # deadline of a clipboard query to the level above
+        self._pull_terminal = False         # ... that query went to the real terminal (outermost level)
+        self.terminal_clipboard_ok: Optional[bool] = None   # does the real terminal answer clipboard queries?
 
     def nesting_cfg(self) -> dict:
         c = dict(DEFAULT_NESTING)
@@ -92,6 +96,7 @@ class NestingMixin:
         except (TypeError, ValueError):
             self.nest_hint = 0
         self.nest_depth = self.nest_hint
+        self.terminal_clipboard_ok = None   # a (re)attached terminal may be a different one: ask it again
         self.dirty = True
 
     def nested_query(self, w) -> str:
@@ -112,6 +117,8 @@ class NestingMixin:
             if self._pull is None:
                 return
             self._pull = None
+            if self._pull_terminal:
+                self.terminal_clipboard_ok = True
             _, _, data = arg.partition(";")
             try:
                 text = base64.b64decode(data, validate=True).decode("utf-8", "replace") if data and data != "?" else ""
@@ -124,18 +131,35 @@ class NestingMixin:
 
     # ------------------------------------------------------------------ clipboard
     def request_outer_clipboard(self) -> bool:
-        """Ask the level above for its paste buffer; the answer pastes (see ``nesting_reply``).  False: not applicable."""
-        if self.nest_depth <= 0 or not self.nesting_cfg().get("pull_clipboard", True):
-            return False
+        """Ask the level above (or, outermost, the real terminal) for its clipboard; the answer pastes (see
+        ``nesting_reply``).  False: not applicable - paste the own buffer right away."""
+        if self.nest_depth > 0:
+            if not self.nesting_cfg().get("pull_clipboard", True):
+                return False
+            self._pull_terminal = False
+        else:
+            mode = self.sel_cfg().get("terminal_clipboard", "auto")
+            if mode is False or (mode == "auto" and self.terminal_clipboard_ok is False):
+                return False
+            if not self.terminal_attached():          # web UI only, scripts, tests: nobody could answer
+                return False
+            self._pull_terminal = True
         self._pull = time.time() + PULL_TIMEOUT
         self.pending_terminal_output.append(CLIPBOARD_QUERY)
         del self.pending_terminal_output[:-5]
         self.dirty = True
         return True
 
+    def terminal_attached(self) -> bool:
+        """Is a real terminal attached that a query could reach?"""
+        server = getattr(self, "server", None)
+        return any(getattr(c, "hello", None) and getattr(c, "writer", None) for c in getattr(server, "clients", None) or ())
+
     def nesting_tick(self, now: float) -> None:
         if self._pull is not None and now >= self._pull:
             self._pull = None
+            if self._pull_terminal and self.terminal_clipboard_ok is None:
+                self.terminal_clipboard_ok = False  # this terminal does not answer: stop making every paste wait
             self.paste_text(None, pull=False)       # the level above did not answer: use what we have
         if self.passthrough:
             w = self.focused

@@ -21,6 +21,7 @@ DEFAULT_SELECTION = {
     "word_chars": DEFAULT_WORD_CHARS,
     "programs_can_copy": True,             # programs in windows may set the clipboard with OSC 52 (vim, tmux, ssh ...)
     "programs_can_read": False,            # ... and read the paste buffer with an OSC 52 query (off: any output could)
+    "terminal_clipboard": "auto",          # paste asks the real terminal for its clipboard (OSC 52 query): auto | true | false
 }
 MODS = {"alt": "M-", "shift": "S-", "ctrl": "C-"}
 BUTTONS = {"left": 1, "middle": 2, "right": 3}
@@ -140,7 +141,7 @@ class SelectionMixin:
 
     def paste_text(self, text: Optional[str] = None, pull: bool = True):
         if text is None and pull and self.request_outer_clipboard():
-            return                                   # nested: the level above answers first (nesting_reply pastes)
+            return                                   # the level above / the terminal answers first (nesting_reply pastes)
         text = self.paste_buffer if text is None else text
         if not text:
             self.message("paste buffer is empty", "warn", 2.0)

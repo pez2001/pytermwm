@@ -5,6 +5,9 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue)](https://pypi.org/project/pytermwm/)
 [![License: LGPL-2.1-or-later](https://img.shields.io/badge/license-LGPL--2.1--or--later-blue)](https://github.com/pez2001/pytermwm/blob/main/LICENSE)
 
+> **1.0.10 (2026-11-12):** paste (middle/right click, `M-v`) brings in the clipboard of the terminal pytermwm runs in
+> when the terminal answers OSC 52 queries (pyterm, xterm, kitty, foot, WezTerm with reading allowed), so text copied in
+> other programs can be pasted into windows; see *Selection and clipboard*.
 > **1.0.9 is out (2026-11-07):** pytermwm inside pytermwm, also after `ssh` in a window, works much better. A
 > nested session knows its depth (`L2` in its status line), **F12** hands all keys and the mouse to the inner
 > session until pressed again (S-F12, C-F12, M-F12 for the levels further in), copies travel up to the real

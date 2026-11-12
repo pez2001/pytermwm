@@ -140,6 +140,8 @@ selection:
   word_chars: "_-.~/%+=:@#?&"   # punctuation that counts as part of a word for double click
   programs_can_copy: true       # programs in windows may set the clipboard with OSC 52 (nvim, tmux, ssh ...)
   programs_can_read: false      # programs may read the paste buffer with an OSC 52 query (off by default)
+  terminal_clipboard: auto      # paste asks the terminal for its clipboard (OSC 52 query) first; auto: stop asking a
+                                # terminal that does not answer until the next attach; true: always ask; false: never
 ```
 
 See the user guide's *Selection and clipboard* for behaviour. Copied text is never published in events and the `selection` operation and `get_selection` tool are unavailable to `read` and `agent` tokens.

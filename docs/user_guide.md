@@ -28,7 +28,7 @@ pytermwm captures the mouse, so your terminal's own selection is switched off; p
 
 * **Drag** with the left button inside a window to select; the text is **copied when you release** the button. Selection stays inside that window (borders are never copied) and follows scrollback while output scrolls. Dragging above or below the window scrolls it.
 * **Double click** selects a word (path characters like `/ . - _` count as part of it), **triple click** a line; keep dragging to extend by words or lines. **Alt+drag** selects a rectangle.
-* **Middle or right click** pastes the paste buffer into the window (bracketed paste when the program asked for it).
+* **Middle or right click** pastes into the window (bracketed paste when the program asked for it). pytermwm first asks your terminal for its clipboard (an OSC 52 query), so text copied in other programs comes in too; terminals that don't answer (most of them by default) get pytermwm's own paste buffer, and are not asked again until you attach anew. `selection.terminal_clipboard: false` never asks, `true` always does.
 * A program that uses the mouse itself (`vim`, `htop`, ...) keeps it. Hold **Alt** to select in such a window (`selection.modifier` changes the key; terminals reserve Shift for their own selection).
 * Typing, or a plain click, clears the selection.
 
@@ -60,6 +60,7 @@ selection:
   command: "xclip -selection clipboard"   # optional
   programs_can_copy: true    # programs in windows may copy with OSC 52
   programs_can_read: false   # ... and read the paste buffer with an OSC 52 query
+  terminal_clipboard: auto   # paste asks your terminal for its clipboard first: auto | true | false
 ```
 
 ## Nested pytermwm
